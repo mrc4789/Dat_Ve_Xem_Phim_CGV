@@ -1,0 +1,271 @@
+﻿@model List<Dat_Ve_Xem_Phim_CGV.Models.LayDanhSachGheResult>
+
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning text-center my-5">
+        Không có dữ liệu ghế cho suất chiếu này.
+    </div>
+}
+else
+{
+
+    <div class="text-center my-5">
+        <div class="screen mx-auto"></div>
+        <p class="text-muted mt-3 fw-bold fs-5">SCREEN</p>
+    </div>
+
+    <div class="container-fluid">
+        <div class="seat-map mx-auto" style="max-width: 950px;">
+            @{
+                var groupedRows = Model.GroupBy(g => g.DAYGHE)
+                                       .OrderBy(g => g.Key)
+                                       .ToList();
+            }
+            @foreach (var row in groupedRows)
+            {
+                var seats = row.OrderBy(g => g.COT).ToList();
+                <div class="seat-row d-flex align-items-center justify-content-center my-4 gap-3">
+   
+
+                    <div class="d-flex flex-nowrap justify-content-center gap-2" style="min-width:600px;">
+                        @for (int i = 0; i < seats.Count; i++)
+                        {
+                            var ghe = seats[i];
+                            var isSweetbox = ghe.LOAIGHE.Contains("Đôi") || ghe.LOAIGHE == "SWEETBOX";
+                            var isVIP = ghe.LOAIGHE.Contains("VIP");
+                            var isDaDat = ghe.TINHTRANG.Contains("Đã");
+                            var seatTypeClass = isSweetbox ? "seat-sweetbox"
+                                              : isVIP ? "seat-vip"
+                                              : "seat-standard";
+                            var statusClass = isDaDat ? "seat-unavailable" : "seat-available";
+                            <div class="seat @seatTypeClass @statusClass"
+                                 style="width:@(isSweetbox ? "82px" : "44px"); height:44px;"
+                                 data-maghe="@ghe.MAGHE">
+                                @ghe.SOGHE
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+<div class="container my-5">
+    <!--Chú thích-->
+    <div class="d-flex flex-row flex-wrap justify-content-center align-items-center gap-3 mt-3 text-center">
+        <div class="d-flex align-items-center gap-3">
+            <div class="legend-seat seat-standard"></div>
+            <span class="fw-bold">Ghế thường</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="legend-seat seat-vip"></div>
+            <span class="fw-bold">Ghế VIP</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="legend-seat seat-sweetbox"></div>
+            <span class="fw-bold">Sweetbox</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="legend-seat seat-selected"></div>
+            <span class="fw-bold">Ghế đang chọn</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="legend-seat seat-unavailable"></div>
+            <span class="fw-bold">Đã đặt</span>
+        </div>
+    </div>
+</div>
+   
+}
+<style>
+
+    .screen {
+        height: 8px;
+        width: 80%;
+        max-width: 700px;
+        background: linear-gradient(to bottom, #333, #666);
+        border-radius: 100px / 15px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+
+    .seat-row {
+        margin-bottom: 0.5rem;
+    }
+
+    .row-label {
+        font-size: 1.2rem;
+        user-select: none;
+    }
+
+
+    .seat {
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 13px;
+        transition: all 0.2s ease;
+        border: 3px solid;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        user-select: none;
+        flex-shrink: 0;
+    }
+
+
+    .seat-standard {
+        border-color: #27ae60;
+        background: #fff;
+        color: #27ae60;
+    }
+
+    .seat-available.seat-standard:hover {
+        background: #27ae60;
+        color: white;
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 8px 15px rgba(39, 174, 96, 0.4);
+    }
+
+
+    .seat-vip {
+        border-color: #f59e0b;
+        background: #fff;
+        color: #f59e0b;
+    }
+
+    .seat-available.seat-vip:hover {
+        background: #f59e0b;
+        color: white;
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 8px 15px rgba(245, 158, 11, 0.4);
+    }
+
+
+    .seat-sweetbox {
+        border-color: #e91e63;
+        background: #fff;
+        color: #e91e63;
+    }
+
+    .seat-available.seat-sweetbox:hover {
+        background: #e91e63;
+        color: white;
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 8px 15px rgba(233, 30, 99, 0.4);
+    }
+
+
+    .seat-selected {
+        background: #dc3545 !important;
+        color: white !important;
+        border-color: #dc3545 !important;
+        transform: translateY(-5px) scale(1.05) !important;
+        box-shadow: 0 8px 20px rgba(220, 53, 69, 0.6) !important;
+    }
+
+
+    .seat-unavailable {
+        background: #95a5a6 !important;
+        border-color: #7f8c8d !important;
+        color: #bdc3c7 !important;
+        opacity: 0.6;
+        cursor: not-allowed !important;
+    }
+
+    .seat-unavailable:hover {
+        transform: none !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+    }
+
+
+    .legend-seat {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 3px solid;
+        display: inline-block;
+    }
+
+    .legend-seat.seat-standard {
+        border-color: #27ae60;
+        background: #fff;
+    }
+
+    .legend-seat.seat-vip {
+        border-color: #f59e0b;
+        background: #fff;
+    }
+
+    .legend-seat.seat-sweetbox {
+        border-color: #e91e63;
+        background: #fff;
+    }
+
+    .legend-seat.seat-selected {
+        background: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .legend-seat.seat-unavailable {
+        background: #95a5a6;
+        border-color: #7f8c8d;
+        opacity: 0.6;
+    }
+
+
+    @@media (max-width: 768px) {
+        .seat {
+            width: 38px !important;
+            height: 38px;
+            font-size: 11px;
+        }
+
+        .seat-sweetbox {
+            width: 72px !important;
+        }
+
+        .row-label {
+            font-size: 1rem !important;
+            min-width: 30px !important;
+        }
+
+        .legend-seat {
+            width: 35px;
+            height: 35px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .seat {
+            width: 32px !important;
+            height: 32px;
+            font-size: 10px;
+            border: 2px solid;
+        }
+
+        .seat-sweetbox {
+            width: 62px !important;
+        }
+
+        .row-label {
+            font-size: 0.9rem !important;
+            min-width: 25px !important;
+        }
+
+        .screen {
+            height: 6px;
+        }
+
+        .legend-seat {
+            width: 30px;
+            height: 30px;
+            border: 2px solid;
+        }
+    }
+</style>

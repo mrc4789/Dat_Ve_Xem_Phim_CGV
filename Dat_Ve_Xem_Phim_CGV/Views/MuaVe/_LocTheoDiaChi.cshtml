@@ -1,0 +1,20 @@
+﻿@model IEnumerable<string>
+
+<div class="btn-group flex-wrap" role="group">
+    @foreach (var diaChi in Model)
+    {
+        var isActive = diaChi == ViewBag.DiaChiDuocChon ? "btn-primary" : "btn-outline-primary";
+
+        <a href="@Url.Action("Index", "MuaVe", new {
+                diaChi = diaChi,
+                ngayChieu = ViewBag.NgayChieu,
+                maLoai = ViewBag.LoaiMHChon
+            })"
+           class="btn @isActive m-1 btn-diachi"
+           data-diachi="@diaChi"
+           data-ngaychieu="@ViewBag.NgayChieu"
+           data-maloai="@ViewBag.LoaiMHChon">
+            <i class="fas fa-map-marker-alt"></i> @diaChi
+        </a>
+    }
+</div>

@@ -1,0 +1,394 @@
+﻿@model Dat_Ve_Xem_Phim_CGV.Models.KHACHHANG
+
+@{
+    ViewBag.Title = "Chỉnh sửa thông tin";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    .cgv-breadcrumb {
+        border-bottom: 1px solid #ccc;
+        padding: 15px 0;
+        margin-bottom: 30px;
+        font-size: 13px;
+        color: #666;
+    }
+
+        .cgv-breadcrumb span {
+            margin: 0 5px;
+            color: #ccc;
+        }
+
+    /* --- LAYOUT --- */
+    .profile-container {
+        display: flex;
+        gap: 30px;
+        min-height: 600px;
+    }
+
+    /* --- SIDEBAR --- */
+    .sidebar {
+        width: 250px;
+        flex-shrink: 0;
+        background: #231f20;
+        height: fit-content;
+    }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            border-bottom: 1px solid #333;
+        }
+
+            .sidebar li a {
+                display: block;
+                padding: 15px 20px;
+                color: #b0b0b0;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 13px;
+                text-transform: uppercase;
+            }
+
+                .sidebar li a:hover, .sidebar li a.active {
+                    background: #e71a0f;
+                    color: #fff;
+                }
+
+    .main-content {
+        flex: 1;
+    }
+
+    .page-heading {
+        font-size: 22px;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-bottom: 2px solid #222;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .dashboard-box {
+        display: flex;
+        background: #fff;
+        border: 1px solid #e1e1e1;
+        padding: 25px;
+        margin-bottom: 30px;
+        align-items: center;
+    }
+
+    .user-avatar {
+        width: 80px;
+        height: 80px;
+        background: #f2f2f2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: #ccc;
+        margin-right: 20px;
+    }
+
+    .user-info {
+        flex: 1;
+    }
+
+        .user-info .welcome {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .user-info .name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #222;
+            margin: 5px 0;
+        }
+
+        .user-info .level {
+            font-size: 13px;
+            color: #777;
+        }
+
+    .user-stats {
+        border-left: 1px solid #eee;
+        padding-left: 30px;
+        text-align: right;
+        min-width: 150px;
+    }
+
+    .stat-item {
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 3px;
+    }
+
+    .stat-value {
+        font-size: 18px;
+        color: #e71a0f;
+        font-weight: bold;
+    }
+
+    /* --- FORM CHỈNH SỬA --- */
+    .form-container {
+        background: #fff;
+        border: 1px solid #e1e1e1;
+        padding: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
+        }
+
+    .input-text {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ccc;
+        outline: none;
+        font-size: 14px;
+        border-radius: 3px;
+    }
+
+        .input-text:focus {
+            border-color: #e71a0f;
+        }
+
+    .required {
+        color: #e71a0f;
+        margin-left: 3px;
+    }
+
+    /* --- CHECKBOX & PASSWORD SECTION --- */
+    .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        margin: 25px 0;
+        font-size: 14px;
+        background: #f9f9f9;
+        padding: 12px;
+        border-radius: 3px;
+    }
+
+        .checkbox-wrapper input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+    #password-section {
+        display: none;
+        padding: 20px;
+        border: 1px dashed #ccc;
+        margin-bottom: 25px;
+        background: #fafafa;
+        border-radius: 4px;
+    }
+
+    /* --- BUTTONS --- */
+    .btn-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn-save {
+        background: #e71a0f;
+        color: #fff;
+        border: none;
+        padding: 12px 30px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 3px;
+        text-transform: uppercase;
+    }
+
+    .btn-back {
+        background: #555;
+        color: #fff;
+        padding: 12px 30px;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 3px;
+        text-transform: uppercase;
+    }
+
+    .btn-save:hover {
+        background: #c4160b;
+        color: #fff;
+    }
+
+    .btn-back:hover {
+        background: #333;
+        color: #fff;
+    }
+
+    .alert-error {
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 3px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container" style="background-color: #fff; padding-bottom: 50px;">
+
+    <div class="cgv-breadcrumb">
+        <a href="@Url.Action("Index", "Home")" style="color:#666;">Trang chủ</a>
+        <span>/</span> Thành viên
+        <span>/</span> Chỉnh sửa thông tin
+    </div>
+
+    <div class="profile-container">
+
+        <div class="sidebar">
+            <ul>
+                <li><a href="@Url.Action("Profile", "User")">Thông tin chung</a></li>
+                <li><a href="@Url.Action("EditProFile", "User")" class="active">Chi tiết tài khoản</a></li>
+                <li><a href="/User/LichSuGiaoDich/">Lịch sử giao dịch</a></li>
+                <li><a href="@Url.Action("Logout", "User")">Thoát</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <h2 class="page-heading">THAY ĐỔI THÔNG TIN TÀI KHOẢN</h2>
+
+            <div class="dashboard-box">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <div class="welcome">Xin chào,</div>
+                    <div class="name">@Model.HOTEN</div>
+                    <div class="level">
+                        Cấp độ thẻ: <span style="color: #e71a0f; font-weight:bold">@Model.HANGTHANHVIEN</span>
+                    </div>
+                </div>
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Tổng chi tiêu</div>
+                        <div class="stat-value">
+                            @string.Format("{0:0,0}", ViewBag.TongChiTieu) đ
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label" style="margin-top:10px;">Điểm CGV</div>
+                        <div class="stat-value">
+                            @(Model.DIEMTICHLUY ?? 0) P
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container">
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert-error">
+                        <i class="fas fa-exclamation-triangle"></i> @ViewBag.Error
+                    </div>
+                }
+
+                <form action="/User/EditProFile" method="post">
+                    <input type="hidden" name="MAKH" value="@Model.MAKH" />
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Họ và Tên <span class="required">*</span></label>
+                            <input type="text" name="HOTEN" class="input-text" value="@Model.HOTEN" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Số điện thoại <span class="required">*</span></label>
+                            <input type="text" name="SDT" class="input-text" value="@Model.SDT" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" name="EMAIL" class="input-text" value="@Model.EMAIL" required>
+                    </div>
+
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="chkChangePass" name="ktDoiMK" value="true" onchange="togglePassword()">
+                        <label for="chkChangePass" style="cursor:pointer; font-weight:bold;">Thay đổi mật khẩu</label>
+                    </div>
+
+                    <div id="password-section">
+                        <div class="form-group">
+                            <label>Mật khẩu hiện tại <span class="required">*</span></label>
+                            <input type="password" name="mkCu" class="input-text">
+                        </div>
+                        <div class="form-group">
+                            <label>Mật khẩu mới <span class="required">*</span></label>
+                            <input type="password" name="mkMoi" class="input-text">
+                        </div>
+                        <div class="form-group">
+                            <label>Nhập lại mật khẩu mới <span class="required">*</span></label>
+                            <input type="password" name="confirmMK" class="input-text">
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="@Url.Action("Profile", "User")" class="btn-back">QUAY LẠI</a>
+                        <button type="submit" class="btn-save">LƯU LẠI</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        var checkBox = document.getElementById("chkChangePass");
+        var passSection = document.getElementById("password-section");
+
+        // Lấy các thẻ input theo name
+        var mkCu = document.getElementsByName("mkCu")[0];
+        var mkMoi = document.getElementsByName("mkMoi")[0];
+        var confirmMK = document.getElementsByName("confirmMK")[0];
+
+        if (checkBox.checked) {
+            passSection.style.display = "block"; // Hiện
+
+            // Bắt buộc nhập khi tích chọn
+            mkCu.required = true;
+            mkMoi.required = true;
+            confirmMK.required = true;
+        } else {
+            passSection.style.display = "none"; // Ẩn
+
+            // Bỏ bắt buộc nhập
+            mkCu.required = false;
+            mkMoi.required = false;
+            confirmMK.required = false;
+
+            // Xóa dữ liệu rác nếu lỡ nhập
+            mkCu.value = "";
+            mkMoi.value = "";
+            confirmMK.value = "";
+        }
+    }
+</script>

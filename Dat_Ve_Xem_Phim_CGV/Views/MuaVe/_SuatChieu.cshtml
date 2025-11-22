@@ -1,0 +1,37 @@
+﻿@model List<Dat_Ve_Xem_Phim_CGV.Models.LaySuatChieu>
+@{
+    Layout = null;
+    var listPhim = Model.GroupBy(x => x.DiaChi).ToList();  
+}
+<div class="container">
+    @if (!Model.Any())
+    {
+        <p class="text-danger text-center">Không tìm thấy suất chiếu phù hợp.</p>
+    }
+    else
+    {
+        foreach (var phimGroup in listPhim)
+        {
+            var phimInfo = phimGroup.First();
+            <div class="row mb-4">
+                @foreach (var subGroup in phimGroup.GroupBy(x => new { x.TenRap, x.DiaChi, x.DinhDang }))  
+                {
+                    var subInfo = subGroup.First();
+                    <div class="col-12 mb-3 border-bottom pb-2">
+                        <h5 class="fw-bold">@subInfo.TenRap - @subInfo.DiaChi</h5>
+                        <p class="text-muted mb-1">@subInfo.DinhDang</p>
+                        <div class="d-flex flex-wrap">
+                            @foreach (var item in subGroup)
+                            {
+                                <a href="@Url.Action("Index", "ChonGhe", new { maSuatChieu = item.MaSuatChieu?.Trim() })"
+                                   class="btn btn-outline-dark btn-sm m-1">
+                                    @item.GioChieu.ToString(@"hh\:mm")
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,28 @@
+﻿@model List<Dat_Ve_Xem_Phim_CGV.Models.LOAIMANHINH>
+@{
+    Layout = null;
+    string dangChon = ViewBag.LoaiMHChon as string;
+}
+<div class="d-flex justify-content-center flex-wrap mb-3 gap-2">
+    <a href="@Url.Action("Index", "MuaVe", new {
+                diaChi = ViewBag.DiaChiDuocChon,
+                ngayChieu = ViewBag.NgayChieu,
+                maLoai = ""
+            })"
+       class="btn @(string.IsNullOrEmpty(dangChon) ? "btn-danger" : "btn-outline-secondary")">
+        Tất cả
+    </a>
+    @foreach (var item in Model)
+    {
+        bool isActive = item.MALOAI == dangChon;
+        string btnClass = isActive ? "btn-danger" : "btn-outline-secondary";
+        <a href="@Url.Action("Index", "MuaVe", new {
+                    diaChi = ViewBag.DiaChiDuocChon,
+                    ngayChieu = ViewBag.NgayChieu,
+                    maLoai = item.MALOAI
+                })"
+           class="btn @btnClass">
+            @item.DINHDANG
+        </a>
+    }
+</div>

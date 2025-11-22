@@ -1,0 +1,223 @@
+﻿@model Dat_Ve_Xem_Phim_CGV.Models.KHACHHANG
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    string mode = ViewBag.Mode as string; 
+    string activeLogin = (mode == "login") ? "active" : "";
+    string activeRegister = (mode == "register") ? "active" : "";
+}
+
+<style>
+    .login-wrapper {
+        background: #fff;
+        width: 100%;
+        max-width: 600px;
+        padding: 40px;
+        border: 1px solid #dcdcdc;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border-radius: 4px;
+        margin: 40px auto; 
+    }
+
+    .auth-tabs {
+        display: flex;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #ebebeb;
+    }
+
+    .auth-tab {
+        flex: 1;
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+        .auth-tab a {
+            display: block;
+            padding: 12px;
+            color: #777;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .auth-tab.active a {
+            color: #e71a0f;
+            border-bottom: 2px solid #e71a0f;
+            margin-bottom: -2px;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .input-control {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 14px;
+        outline: none;
+    }
+
+        .input-control:focus {
+            border-color: #e71a0f;
+            box-shadow: 0 0 5px rgba(231, 26, 15, 0.2);
+        }
+
+    .btn-login {
+        width: 100%;
+        background-color: #e71a0f;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 3px;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        text-transform: uppercase;
+        margin-top: 10px;
+    }
+
+        .btn-login:hover {
+            background-color: #c4160b;
+        }
+
+    /* Policy Style */
+    .policy-group {
+        margin-top: 15px;
+        text-align: left;
+        font-size: 13px;
+        color: #333;
+    }
+
+    .policy-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+        .policy-item input {
+            margin-right: 10px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+    .red-text {
+        color: #e71a0f;
+        font-weight: bold;
+    }
+
+    /* Notification */
+    .notification {
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+        .notification.error {
+            background-color: #ffe6e6;
+            color: #d63031;
+            border: 1px solid #ffcccc;
+        }
+
+        .notification.success {
+            background-color: #e6fffa;
+            color: #00b894;
+            border: 1px solid #ccf7e8;
+        }
+</style>
+
+<div class="container">
+    <div class="login-wrapper">
+
+        <div class="auth-tabs">
+            <div class="auth-tab @activeLogin">
+                <a href="@Url.Action("Index", new { mode = "login" })">ĐĂNG NHẬP</a>
+            </div>
+            <div class="auth-tab @activeRegister">
+                <a href="@Url.Action("Index", new { mode = "register" })">ĐĂNG KÝ</a>
+            </div>
+        </div>
+
+        @if (ViewBag.ErrorLogin != null)
+        {<div class="notification error">@ViewBag.ErrorLogin</div>}
+        @if (ViewBag.ErrorRegister != null)
+        {<div class="notification error">@ViewBag.ErrorRegister</div>}
+        @if (ViewBag.ThongBao != null)
+        {<div class="notification success">@ViewBag.ThongBao</div>}
+        @if (TempData["ThongBao"] != null)
+        {<div class="notification success">@TempData["ThongBao"]</div>}
+
+        @if (mode == "login")
+        {
+            using (Html.BeginForm("Login", "User", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <input type="text" name="tk" class="input-control" placeholder="Email hoặc số điện thoại" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" name="mk" class="input-control" placeholder="Mật khẩu" required>
+                </div>
+
+                <button type="submit" class="btn-login">Đăng nhập</button>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="@Url.Action("ForgotPassword", "User")" style="color:#666; text-decoration: underline; font-size: 13px;">Bạn muốn tìm lại mật khẩu?</a>
+                </div>
+            }
+        }
+
+        @if (mode == "register")
+        {
+            using (Html.BeginForm("Register", "User", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <input type="text" name="HOTEN" class="input-control" placeholder="Họ và tên" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="SDT" class="input-control" placeholder="Số điện thoại" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="EMAIL" class="input-control" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="MATKHAU" class="input-control" placeholder="Mật khẩu" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="confirmMK" class="input-control" placeholder="Nhập lại mật khẩu" required>
+                </div>
+
+                <div class="policy-group">
+                    <label class="policy-item">
+                        <input type="checkbox" required>
+                        <span>Bằng việc bấm nút “Đăng Ký” bên dưới, tôi đồng ý cho phép CGV Việt Nam thực hiện xử lý dữ liệu cá nhân...</span>
+                    </label>
+                    <label class="policy-item">
+                        <input type="checkbox" required>
+                        <span>Thông tin cá nhân cung cấp tại đây là chính xác và trùng khớp với giấy tờ tùy thân.</span>
+                    </label>
+                    <label class="policy-item">
+                        <input type="checkbox" required>
+                        <span>Xác nhận email chính xác và ngày sinh để hưởng <span class="red-text">Quyền lợi thành viên</span>.</span>
+                    </label>
+                    <label class="policy-item">
+                        <input type="checkbox" required>
+                        <span>Tôi đồng ý với <span class="red-text">Điều Khoản Sử Dụng Của CGV</span>.</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-login">Đăng ký ngay</button>
+            }
+        }
+
+    </div>
+</div>

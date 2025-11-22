@@ -1,0 +1,24 @@
+﻿﻿
+@{
+    Layout = null;
+    DateTime today = DateTime.Now;
+    DateTime soNgayTrongThang = today;
+    soNgayTrongThang = soNgayTrongThang.AddMonths(1);
+    soNgayTrongThang = soNgayTrongThang.AddDays(-(soNgayTrongThang.Day));
+
+}
+
+<div class="d-flex justify-content-center flex-wrap mb-3">
+    @for (int i = 0; i < soNgayTrongThang.Day; i++)
+    {
+        DateTime thoiGian = today.AddDays(i);
+        string ngay = thoiGian.Day.ToString("00");
+        string thang = thoiGian.Month.ToString("00");
+        string thu = thoiGian.ToString("ddd");
+
+        <div class="day" onclick="getSelectDay(25023800, '@thoiGian.ToString("yyyyMMdd")');">
+
+            <a href="@Url.Action("Index","MuaVe", new {diaChi = ViewBag.DiaChiDuocChon, ngayChieu = @thoiGian.ToString("yyyy-MM-dd"), maLoai = ViewBag.LoaiMHChon})" class="btn btn-outline-secondary m-1">@ngay <small>@thu </small><span>@thang</span></a>
+        </div>
+    }
+</div>

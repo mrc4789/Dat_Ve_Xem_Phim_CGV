@@ -1,0 +1,340 @@
+﻿@model Dat_Ve_Xem_Phim_CGV.Models.KHACHHANG
+
+@{
+    ViewBag.Title = "ProFilen";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+
+    .cgv-breadcrumb {
+        border-bottom: 1px solid #ccc;
+        padding: 15px 0;
+        margin-bottom: 30px;
+        font-size: 13px;
+        color: #666;
+    }
+
+        .cgv-breadcrumb span {
+            margin: 0 5px;
+            color: #ccc;
+        }
+
+    .profile-container {
+        display: flex;
+        gap: 30px;
+        min-height: 600px;
+    }
+
+    .sidebar {
+        width: 250px;
+        flex-shrink: 0;
+        background: #231f20;
+        height: fit-content;
+    }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            border-bottom: 1px solid #333;
+        }
+
+            .sidebar li a {
+                display: block;
+                padding: 15px 20px;
+                color: #b0b0b0;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 13px;
+                text-transform: uppercase;
+            }
+
+                .sidebar li a:hover, .sidebar li a.active {
+                    background: #e71a0f;
+                    color: #fff;
+                }
+
+    .main-content {
+        flex: 1;
+    }
+
+    .page-heading {
+        font-size: 22px;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-bottom: 2px solid #222;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .dashboard-box {
+        display: flex;
+        background: #fff;
+        border: 1px solid #e1e1e1;
+        padding: 25px;
+        margin-bottom: 30px;
+        align-items: center;
+    }
+
+    .user-avatar {
+        width: 80px;
+        height: 80px;
+        background: #f2f2f2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: #ccc;
+        margin-right: 20px;
+    }
+
+    .user-info {
+        flex: 1;
+    }
+
+        .user-info .welcome {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .user-info .name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #222;
+            margin: 5px 0;
+        }
+
+        .user-info .level {
+            font-size: 13px;
+            color: #777;
+        }
+
+    .user-stats {
+        border-left: 1px solid #eee;
+        padding-left: 30px;
+        text-align: right;
+        min-width: 150px;
+    }
+
+    .stat-item {
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 3px;
+    }
+
+    .stat-value {
+        font-size: 18px;
+        color: #e71a0f;
+        font-weight: bold;
+    }
+
+    .info-section {
+        background: #fff;
+        border: 1px solid #e1e1e1;
+        padding: 20px;
+    }
+
+    .section-header {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #333;
+    }
+
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+        .info-table tr {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-table td {
+            padding: 15px 10px;
+            font-size: 14px;
+        }
+
+    .label-col {
+        width: 180px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .value-col {
+        color: #222;
+        font-weight: 500;
+    }
+
+    /* --- KHU VỰC NÚT BẤM --- */
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Nút Thay đổi */
+    .btn-edit {
+        background: #555;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 6px 15px;
+        border-radius: 3px;
+        text-decoration: none;
+        transition: 0.3s;
+        border: 1px solid #555;
+    }
+
+        .btn-edit:hover {
+            background: #e71a0f;
+            color: #fff;
+            border-color: #e71a0f;
+        }
+
+    /* Nút Đăng xuất (MỚI) */
+    .btn-logout {
+        background: #fff;
+        color: #333;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 6px 15px;
+        border-radius: 3px;
+        text-decoration: none;
+        transition: 0.3s;
+        border: 1px solid #ccc;
+    }
+
+        .btn-logout:hover {
+            background: #f8f8f8;
+            color: #000;
+            border-color: #999;
+        }
+
+    /* Thông báo thành công */
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #c3e6cb;
+        border-radius: 3px;
+    }
+</style>
+
+<div class="container" style="background-color: #fff; padding-bottom: 50px;">
+
+    <div class="cgv-breadcrumb">
+        <a href="@Url.Action("Index", "Home")" style="color:#666;">Trang chủ</a>
+        <span>/</span> Thành viên
+        <span>/</span> Hồ sơ cá nhân
+    </div>
+
+    <div class="profile-container">
+
+        <div class="sidebar">
+            <ul>
+                <li><a href="/User/ProFile" class="active">Thông tin chung</a></li>
+                <li><a href="@Url.Action("EditProFile", "User")">Chi tiết tài khoản</a></li>
+                <li><a href="/User/LichSuGiaoDich/">Lịch sử giao dịch</a></li>
+                <li><a href="@Url.Action("Logout", "User")">Thoát</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <h2 class="page-heading">THÔNG TIN CHUNG</h2>
+
+            @if (TempData["ThongBao"] != null)
+            {
+                <div class="alert-success">
+                    <i class="fas fa-check-circle"></i> @TempData["ThongBao"]
+                </div>
+            }
+
+            <div class="dashboard-box">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <div class="welcome">Xin chào,</div>
+                    <div class="name">@Model.HOTEN</div>
+                    <div class="level">
+                        Cấp độ thẻ: <span style="color: #e71a0f; font-weight:bold">@Model.HANGTHANHVIEN</span>
+                    </div>
+                </div>
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Tổng chi tiêu</div>
+                        <div class="stat-value">
+                            @string.Format("{0:0,0}", ViewBag.TongChiTieu) đ
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label" style="margin-top:10px;">Điểm CGV</div>
+                        <div class="stat-value">
+                            @(Model.DIEMTICHLUY ?? 0) P
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="section-header">
+                    <span class="section-title">THÔNG TIN TÀI KHOẢN</span>
+
+                    <div class="action-buttons">
+                        <a href="/User" class="btn-logout">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </a>
+                        <a href="@Url.Action("EditProFile", "User")" class="btn-edit">
+                            <i class="fas fa-pencil-alt"></i> Thay đổi
+                        </a>
+                    </div>
+                </div>
+
+                <table class="info-table">
+                    <tr>
+                        <td class="label-col">Họ và Tên</td>
+                        <td class="value-col">@Model.HOTEN</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">Mã thẻ</td>
+                        <td class="value-col">@Model.MAKH</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">Điện thoại</td>
+                        <td class="value-col">@Model.SDT</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">Email</td>
+                        <td class="value-col">@Model.EMAIL</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">Mật khẩu</td>
+                        <td class="value-col">********</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,237 @@
+﻿@model List<Dat_Ve_Xem_Phim_CGV.Models.SUATCHIEU>
+
+@{
+    ViewBag.Title = "Chọn ghế - " + ViewBag.TenPhim;
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="container mt-4">
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Lỗi!</strong> @TempData["Error"]
+            @if (TempData["ChiTiet"] != null)
+            {
+                <hr />
+                <div>@Html.Raw(TempData["ChiTiet"])</div>
+            }
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Thành công!</strong> @TempData["Success"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <!-- Thông tin suất chiếu -->
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-film"></i> @ViewBag.TenPhim
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-2">
+                        <i class="fas fa-map-marker-alt text-danger"></i>
+                        <strong>Rạp:</strong> @ViewBag.TenRap
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-location-arrow"></i>
+                        <strong>Địa chỉ:</strong> @ViewBag.DiaChiRap
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-2">
+                        <i class="fas fa-calendar-alt text-danger"></i>
+                        <strong>Ngày chiếu:</strong> @ViewBag.NgayChieu
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-clock text-danger"></i>
+                        <strong>Giờ chiếu:</strong> @ViewBag.GioChieu
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Danh sách ghế  -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex flex-column">
+                @Html.Action("_DanhSachGhe", "ChonGhe", new { maSuatChieu = ViewBag.MaSuatChieu })
+            </div>
+        </div>
+    </div>
+
+    <!-- Thông tin đặt ghế -->
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Thông tin đặt vé</h5>
+        </div>
+        <div class="card-body">
+
+            <div class="mb-3 pb-3 border-bottom">
+                <h6 class="fw-bold mb-2" id="movie-title">@ViewBag.TenPhim</h6>
+                <p class="mb-1 small">
+                    <strong>Rạp:</strong> <span id="cinema-name">@ViewBag.TenRap</span>
+                </p>
+                <p class="mb-1 small">
+                    <strong>Ngày:</strong> <span id="show-date">@ViewBag.NgayChieu</span>
+                </p>
+                <p class="mb-0 small">
+                    <strong>Giờ:</strong> <span id="show-time">@ViewBag.GioChieu</span>
+                </p>
+                <p id="selected-seats-list" class="mb-0 small mt-2">
+                    <strong>Ghế đã chọn:</strong> <span class="text-muted">Chưa chọn ghế nào</span>
+                </p>
+            </div>
+
+
+            <div class="mb-3">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="small">Tiền ghế:</span>
+                    <span class="small fw-bold" id="seat-price">0đ</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="small">Tiền combo:</span>
+                    <span class="small fw-bold" id="combo-price">0đ</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span class="fw-bold">Tổng cộng:</span>
+                    <span class="fw-bold text-danger fs-5" id="total-price">0đ</span>
+                </div>
+            </div>
+
+            <!-- FORM ĐẶT GHẾ -->
+            <form id="frmDatGhe" method="post" action="@Url.Action("DatGhe", "ChonGhe")">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="maSuatChieu" value="@ViewBag.MaSuatChieu" />
+                <input type="hidden" name="seatIds" id="seatIdsInput" value="" />
+
+                <button type="submit" class="btn btn-danger w-100" id="btn-continue" disabled>
+                    <i class="fas fa-arrow-right"></i> Tiếp tục
+                </button>
+            </form>
+
+            <small class="text-muted d-block mt-2 text-center" id="seat-status">
+                Vui lòng chọn ghế để tiếp tục
+            </small>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const seats = document.querySelectorAll('.seat.seat-available');
+            const selectedSeatsList = document.getElementById('selected-seats-list');
+            const seatPriceEl = document.getElementById('seat-price');
+            const totalPriceEl = document.getElementById('total-price');
+            const btnContinue = document.getElementById('btn-continue');
+            const seatStatus = document.getElementById('seat-status');
+            const seatIdsInput = document.getElementById('seatIdsInput');
+
+
+            const prices = {
+                'standard': 90000,
+                'vip': 120000,
+                'sweetbox': 150000
+            };
+
+            let selectedSeats = [];
+
+            seats.forEach(seat => {
+                seat.addEventListener('click', function () {
+    
+                    if (this.classList.contains('seat-unavailable')) {
+                        return;
+                    }
+
+     
+                    this.classList.toggle('seat-selected');
+                    updateSelectedSeats();
+                });
+            });
+
+            function getSeatType(seat) {
+                if (seat.classList.contains('seat-sweetbox')) return 'sweetbox';
+                if (seat.classList.contains('seat-vip')) return 'vip';
+                return 'standard';
+            }
+
+            function updateSelectedSeats() {
+
+                selectedSeats = Array.from(document.querySelectorAll('.seat.seat-selected'));
+
+                if (selectedSeats.length === 0) {
+                    selectedSeatsList.innerHTML = '<strong>Ghế đã chọn:</strong> <span class="text-muted">Chưa chọn ghế nào</span>';
+                    seatPriceEl.textContent = '0đ';
+                    totalPriceEl.textContent = '0đ';
+                    btnContinue.disabled = true;
+                    seatStatus.textContent = 'Vui lòng chọn ghế để tiếp tục';
+                    seatIdsInput.value = '';
+                    return;
+                }
+
+
+                let totalPrice = 0;
+                let seatList = [];
+                let seatIds = [];
+
+                selectedSeats.forEach(seat => {
+                    const seatType = getSeatType(seat);
+                    const price = prices[seatType];
+                    totalPrice += price;
+
+                    const seatName = seat.textContent.trim();
+                    const maGhe = seat.getAttribute('data-maghe');
+                    seatIds.push(maGhe);
+
+                    const seatTypeName = seatType === 'standard' ? 'Thường' :
+                        seatType === 'vip' ? 'VIP' : 'Sweetbox';
+
+                    seatList.push(`<div class="d-flex justify-content-between mb-1">
+                                <span>${seatName} (${seatTypeName})</span>
+                                <span class="text-danger">${price.toLocaleString('vi-VN')}đ</span>
+                            </div>`);
+                });
+
+
+                selectedSeatsList.innerHTML = '<strong>Ghế đã chọn:</strong><br>' + seatList.join('');
+                seatPriceEl.textContent = totalPrice.toLocaleString('vi-VN') + 'đ';
+                totalPriceEl.textContent = totalPrice.toLocaleString('vi-VN') + 'đ';
+                seatIdsInput.value = seatIds.join(',');
+
+
+                btnContinue.disabled = false;
+                seatStatus.textContent = `Đã chọn ${selectedSeats.length} ghế`;
+            }
+
+
+            document.getElementById('frmDatGhe').addEventListener('submit', function (e) {
+                if (selectedSeats.length === 0) {
+                    e.preventDefault();
+                    alert('Vui lòng chọn ít nhất 1 ghế!');
+                    return false;
+                }
+
+                console.log('Đang đặt ghế:', seatIdsInput.value);
+                console.log('Mã suất chiếu:', document.querySelector('input[name="maSuatChieu"]').value);
+
+                return true;
+            });
+        });
+    </script>
+}

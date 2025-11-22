@@ -1,0 +1,186 @@
+﻿    @model List<Dat_Ve_Xem_Phim_CGV.Models.HOADON>
+
+    @{
+        ViewBag.Title = "LichSuGiaoDich";
+        Layout = "~/Views/Shared/_Layout1.cshtml";
+    }
+
+    <style>
+        /* --- LAYOUT --- */
+        .container-profile {
+            display: flex;
+            gap: 30px;
+            padding: 30px 0;
+            min-height: 600px;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background: #231f20;
+            height: fit-content;
+        }
+
+            .sidebar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .sidebar li {
+                border-bottom: 1px solid #333;
+            }
+
+                .sidebar li a {
+                    display: block;
+                    padding: 15px 20px;
+                    color: #b0b0b0;
+                    text-decoration: none;
+                    font-weight: bold;
+                    font-size: 13px;
+                    text-transform: uppercase;
+                }
+
+                    .sidebar li a:hover, .sidebar li a.active {
+                        background: #e71a0f;
+                        color: #fff;
+                    }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex: 1;
+        }
+
+        .page-heading {
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 2px solid #222;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* --- TABLE HISTORY --- */
+        .table-history {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border: 1px solid #ddd;
+        }
+
+            .table-history th {
+                background: #f8f8f8;
+                color: #333;
+                font-weight: bold;
+                padding: 12px;
+                text-align: left;
+                border-bottom: 2px solid #ddd;
+                font-size: 13px;
+            }
+
+            .table-history td {
+                padding: 12px;
+                border-bottom: 1px solid #eee;
+                font-size: 13px;
+                color: #555;
+            }
+
+            .table-history tr:hover {
+                background: #f9f9f9;
+            }
+
+        /* --- TRẠNG THÁI --- */
+        .status-paid {
+            color: #28a745;
+            font-weight: bold;
+        }
+        /* Xanh lá */
+        .status-pending {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        /* Vàng */
+        .status-cancel {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        /* Đỏ */
+    </style>
+
+    <div class="container" style="background-color: #fff; padding-bottom: 50px;">
+
+        <div style="border-bottom: 1px solid #ccc; padding: 15px 0; margin-bottom: 30px; font-size: 13px; color: #666;">
+            <a href="@Url.Action("Index", "Home")" style="color:#666;">Trang chủ</a>
+            <span>/</span> Thành viên
+            <span>/</span> Lịch sử giao dịch
+        </div>
+
+        <div class="container-profile">
+
+            <div class="sidebar">
+                <ul>
+                    <li><a href="@Url.Action("Profile", "User")">Thông tin chung</a></li>
+                    <li><a href="@Url.Action("EditProFile", "User")">Chi tiết tài khoản</a></li>
+                    @*<li><a href="#">Thẻ thành viên</a></li>
+                    <li><a href="#">Điểm thưởng</a></li>*@
+                    <li><a href="@Url.Action("History", "User")" class="active">Lịch sử giao dịch</a></li>
+                    <li><a href="@Url.Action("Logout", "User")">Thoát</a></li>
+                </ul>
+            </div>
+
+            <div class="main-content">
+                <h2 class="page-heading">LỊCH SỬ GIAO DỊCH</h2>
+
+                @if (Model.Count > 0)
+                {
+                    <table class="table-history">
+                        <thead>
+                            <tr>
+                                <th>Mã HĐ</th>
+                                <th>Ngày Giao Dịch</th>
+                                <th>Tổng Tiền</th>
+                                <th>Trạng Thái</th>
+                                <th>Chi Tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td><strong>@item.MAHD</strong></td>
+                                    <td>@string.Format("{0:dd/MM/yyyy}", item.NGAYGD)</td>
+                                    <td style="font-weight:bold; color:#333;">@string.Format("{0:0,0}", item.THANHTIEN) đ</td>
+                                    <td>
+                                        @if (item.TRANGTHAI == "Đã thanh toán")
+                                        {
+                                            <span class="status-paid"><i class="fas fa-check-circle"></i> Đã thanh toán</span>
+                                        }
+                                        else if (item.TRANGTHAI == "Đã hủy")
+                                        {
+                                            <span class="status-cancel"><i class="fas fa-times-circle"></i> Đã hủy</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="status-pending"><i class="fas fa-clock"></i> @item.TRANGTHAI</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("HistoryDetail", "User", new { id = item.MAHD })" style="color: #e71a0f; text-decoration: underline;">Xem</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div style="text-align: center; padding: 30px; color: #777; background: #f9f9f9; border: 1px solid #eee;">
+                        <i class="fas fa-receipt" style="font-size: 40px; margin-bottom: 10px;"></i>
+                        <p>Bạn chưa có giao dịch nào!</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>

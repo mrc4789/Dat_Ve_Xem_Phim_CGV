@@ -1,0 +1,309 @@
+﻿@model Dat_Ve_Xem_Phim_CGV.Controllers.ChiTietGiaoDichViewModel
+
+@{
+    ViewBag.Title = "HistoryDetail";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    .container-profile {
+        display: flex;
+        gap: 30px;
+        padding: 30px 0;
+        min-height: 600px;
+    }
+
+    .sidebar {
+        width: 250px;
+        flex-shrink: 0;
+        background: #231f20;
+    }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            border-bottom: 1px solid #333;
+        }
+
+            .sidebar li a {
+                display: block;
+                padding: 15px 20px;
+                color: #b0b0b0;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 13px;
+                text-transform: uppercase;
+            }
+
+                .sidebar li a:hover, .sidebar li a.active {
+                    background: #e71a0f;
+                    color: #fff;
+                }
+
+
+    .main-content {
+        flex: 1;
+    }
+
+    .invoice-box {
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 30px;
+        border-radius: 4px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .invoice-header {
+        border-bottom: 2px dashed #e71a0f;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .invoice-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        text-transform: uppercase;
+    }
+
+    .invoice-date {
+        font-size: 13px;
+        color: #777;
+        margin-top: 5px;
+    }
+
+    /* Badge */
+    .status-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .bg-success {
+        background-color: #28a745;
+    }
+
+    .bg-danger {
+        background-color: #dc3545;
+    }
+
+    .bg-warning {
+        background-color: #ffc107;
+        color: #333;
+    }
+
+    .ticket-item {
+        display: flex;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .ticket-poster {
+        width: 60px;
+        height: 90px;
+        background: #eee;
+        object-fit: cover;
+        border-radius: 3px;
+    }
+
+    .ticket-info {
+        flex: 1;
+    }
+
+    .movie-name {
+        font-size: 16px;
+        font-weight: bold;
+        color: #e71a0f;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .ticket-detail {
+        font-size: 13px;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .ticket-price {
+        font-weight: bold;
+        font-size: 15px;
+        color: #333;
+        text-align: right;
+        min-width: 100px;
+    }
+
+    .seat-tag {
+        background: #333;
+        color: #fff;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+
+    .payment-summary {
+        background: #f9f9f9;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+    }
+
+    .pay-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .pay-total {
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+        margin-top: 10px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #e71a0f;
+    }
+
+    .btn-back {
+        display: inline-block;
+        margin-top: 20px;
+        color: #555;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 13px;
+    }
+
+        .btn-back:hover {
+            color: #e71a0f;
+        }
+</style>
+
+<div class="container" style="background-color: #fff; padding-bottom: 50px;">
+
+    <div style="border-bottom: 1px solid #ccc; padding: 15px 0; margin-bottom: 30px; font-size: 13px; color: #666;">
+        <a href="@Url.Action("Index", "Home")" style="color:#666;">Trang chủ</a>
+        <span>/</span> Thành viên
+        <span>/</span> <a href="@Url.Action("LichSuGiaoDich", "User")" style="color:#666;">Lịch sử</a>
+        <span>/</span> Chi tiết hóa đơn
+    </div>
+
+    <div class="container-profile">
+
+        <div class="sidebar">
+            <ul>
+                <li><a href="@Url.Action("Profile", "User")">Thông tin chung</a></li>
+                <li><a href="@Url.Action("EditProFile", "User")">Chi tiết tài khoản</a></li>
+                @*<li><a href="#">Thẻ thành viên</a></li>
+                <li><a href="#">Điểm thưởng</a></li>*@
+                <li><a href="@Url.Action("LichSuGiaoDich", "User")" class="active">Lịch sử giao dịch</a></li>
+                <li><a href="@Url.Action("Logout", "User")">Thoát</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="invoice-box">
+
+                <div class="invoice-header">
+                    <div>
+                        <div class="invoice-title">HÓA ĐƠN #@Model.MaHD</div>
+                        <div class="invoice-date">Ngày mua: @Model.NgayMua.ToString("dd/MM/yyyy HH:mm")</div>
+                    </div>
+                    <div>
+                        @if (Model.TrangThai == "Đã thanh toán")
+                        {<span class="status-badge bg-success">Đã thanh toán</span> }
+                        else if (Model.TrangThai == "Đã hủy")
+                        { <span class="status-badge bg-danger">Đã hủy</span> }
+                        else
+                        { <span class="status-badge bg-warning">Chờ thanh toán</span>}
+                    </div>
+                </div>
+
+                @if (Model.DanhSachVe.Count > 0)
+                {
+                    <h4 style="font-size:14px; font-weight:bold; margin-bottom:15px; color:#333;">VÉ ĐÃ MUA</h4>
+                    foreach (var ve in Model.DanhSachVe)
+                    {
+                        <div class="ticket-item">
+                            @if (!string.IsNullOrEmpty(ve.Poster))
+                            {
+                                <img src="@ve.Poster" class="ticket-poster" alt="Poster">
+                            }
+                            else
+                            {
+                                <div class="ticket-poster" style="display:flex; align-items:center; justify-content:center; color:#ccc;"><i class="fas fa-film"></i></div>
+                            }
+
+                            <div class="ticket-info">
+                                <div class="movie-name">@ve.TenPhim</div>
+                                <div class="ticket-detail">
+                                    <i class="fas fa-clock"></i> <strong>@ve.ThoiGianChieu</strong><br>
+                                    <i class="fas fa-map-marker-alt"></i> @ve.TenRap - Phòng @ve.TenPhong<br>
+                                    <span class="seat-tag">Ghế @ve.GheNgoi</span> <span style="color:#666;">(@ve.LoaiGhe)</span>
+                                </div>
+                            </div>
+                            <div class="ticket-price">
+                                @string.Format("{0:0,0}", ve.GiaVe) đ
+                            </div>
+                        </div>
+                    }
+                }
+
+                @if (Model.DanhSachBapNuoc.Count > 0)
+                {
+                    <h4 style="font-size:14px; font-weight:bold; margin:20px 0 10px; color:#333;">BẮP NƯỚC & COMBO</h4>
+                    foreach (var item in Model.DanhSachBapNuoc)
+                    {
+                        <div class="ticket-item" style="align-items:center;">
+                            <div style="width:60px; text-align:center; color:#e71a0f;"><i class="fas fa-popcorn fa-2x"></i></div>
+                            <div class="ticket-info">
+                                <div style="font-weight:bold; color:#333;">@item.TenDichVu</div>
+                                <div style="font-size:13px; color:#666;">Số lượng: x @item.SoLuong</div>
+                            </div>
+                            <div class="ticket-price">
+                                @string.Format("{0:0,0}", item.ThanhTien) đ
+                            </div>
+                        </div>
+                    }
+                }
+
+                <div class="payment-summary">
+                    <div class="pay-row">
+                        <span>Tổng tiền hàng:</span>
+                        <strong>@string.Format("{0:0,0}", Model.TongTienHD) đ</strong>
+                    </div>
+                    @if (Model.DiemDaDung > 0)
+                    {
+                        <div class="pay-row">
+                            <span>Điểm thưởng đã dùng:</span>
+                            <span style="color:#e71a0f;">- @Model.DiemDaDung điểm</span>
+                        </div>
+                    }
+                    <div class="pay-row">
+                        <span>Phương thức thanh toán:</span>
+                        <span>@Model.PhuongThucThanhToan</span>
+                    </div>
+                    <div class="pay-row pay-total">
+                        <span>THỰC TRẢ:</span>
+                        <span>@string.Format("{0:0,0}", Model.SoTienThucTra > 0 ? Model.SoTienThucTra : Model.TongTienHD) đ</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <a href="@Url.Action("LichSuGiaoDich", "User")" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Quay lại danh sách
+            </a>
+        </div>
+    </div>
+</div>

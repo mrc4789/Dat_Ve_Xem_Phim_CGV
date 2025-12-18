@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.ThongKeViewModel>
+@{ Layout = "~/Views/Shared/_Layout1.cshtml"; }
+
+<h2 style="text-align:center; margin:30px 0; font-weight:bold;">THỐNG KÊ DOANH THU</h2>
+<table class="table table-bordered table-striped" style="width:80%; margin:0 auto;">
+    <thead style="background:#333; color:white;">
+        <tr>
+            <th>Tên Phim</th>
+            <th class="text-center">Số Vé Bán</th>
+            <th class="text-right">Doanh Thu</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TenPhim</td>
+                <td class="text-center">@item.SoVeBan</td>
+                <td class="text-right">@string.Format("{0:N0}", item.DoanhThu) đ</td>
+            </tr>
+        }
+        <tr style="background:#eee; font-weight:bold;">
+            <td colspan="2" class="text-right">TỔNG CỘNG:</td>
+            <td class="text-right" style="color:red; font-size:18px;">
+                @string.Format("{0:N0}", Model.Sum(x => x.DoanhThu)) đ
+            </td>
+        </tr>
+    </tbody>
+</table>

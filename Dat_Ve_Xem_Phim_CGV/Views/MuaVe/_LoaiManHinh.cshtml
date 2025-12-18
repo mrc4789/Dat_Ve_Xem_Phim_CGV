@@ -5,9 +5,9 @@
 }
 <div class="d-flex justify-content-center flex-wrap mb-3 gap-2">
     <a href="@Url.Action("Index", "MuaVe", new {
+                maPhim = ViewBag.MaPhim,
                 diaChi = ViewBag.DiaChiDuocChon,
-                ngayChieu = ViewBag.NgayChieu,
-                maLoai = ""
+                ngayChieu = ViewBag.NgayChieu
             })"
        class="btn @(string.IsNullOrEmpty(dangChon) ? "btn-danger" : "btn-outline-secondary")">
         Tất cả
@@ -17,6 +17,7 @@
         bool isActive = item.MALOAI == dangChon;
         string btnClass = isActive ? "btn-danger" : "btn-outline-secondary";
         <a href="@Url.Action("Index", "MuaVe", new {
+                    maPhim = ViewBag.MaPhim,
                     diaChi = ViewBag.DiaChiDuocChon,
                     ngayChieu = ViewBag.NgayChieu,
                     maLoai = item.MALOAI

@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.DICHVU>
+
+<style>
+    .combo-box {
+        background: #fff;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+    .combo-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px dashed #ccc;
+    }
+
+    .combo-img {
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+        margin-right: 15px;
+    }
+
+    .qty-group {
+        display: flex;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .btn-qty {
+        border: none;
+        background: #eee;
+        width: 25px;
+        height: 25px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .input-qty {
+        width: 30px;
+        text-align: center;
+        border: none;
+        font-weight: bold;
+        outline: none;
+    }
+
+    .price-text {
+        color: #e71a0f;
+        font-weight: bold;
+    }
+</style>
+
+<div class="combo-box">
+    <h4 style="border-left: 4px solid #e71a0f; padding-left: 10px; text-transform: uppercase; font-weight: bold;">
+        Combo & Bắp Nước
+    </h4>
+
+    @foreach (var item in Model)
+    {
+        // === LOGIC CHỌN HÌNH TỪ FOLDER Imgs ===
+        string imgFileName = "combo.jpg"; // Mặc định là hình Combo
+        string ten = (item.TENDV ?? "").ToLower();
+
+        if (ten.Contains("bắp"))
+        {
+            imgFileName = "bap.jpg";
+        }
+        else if (ten.Contains("nước") || ten.Contains("coca") || ten.Contains("pepsi"))
+        {
+            imgFileName = "nuoc.jpg";
+        }
+        // ======================================
+
+        <div class="combo-item">
+            <img src="@Url.Content("~/Imgs/" + imgFileName)" class="combo-img" alt="@item.TENDV" />
+
+            <div style="flex:1">
+                <div style="font-weight:bold;">@item.TENDV</div>
+                <div style="font-size:12px; color:#777;">@item.MOTA</div>
+                <div class="price-text">@string.Format("{0:N0}", item.GIADV) đ</div>
+            </div>
+
+            <div class="qty-group">
+                <button type="button" class="btn-qty" onclick="changeQty('@item.MADV', -1)">-</button>
+                <input type="text" id="qty_@item.MADV" value="0" readonly class="input-qty" />
+                <button type="button" class="btn-qty" onclick="changeQty('@item.MADV', 1)">+</button>
+            </div>
+            <input type="hidden" id="price_@item.MADV" value="@item.GIADV" />
+        </div>
+    }
+</div>
+
+<script>
+    function changeQty(id, delta) {
+        var input = $('#qty_' + id);
+        var val = parseInt(input.val()) + delta;
+        if (val >= 0) {
+            input.val(val);
+            // Gọi hàm tính tiền ở trang cha nếu có
+            if (typeof updateTotalMoney === 'function') {
+                updateTotalMoney();
+            }
+        }
+    }
+</script>

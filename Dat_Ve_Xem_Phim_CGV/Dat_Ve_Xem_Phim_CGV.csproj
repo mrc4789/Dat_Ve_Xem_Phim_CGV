@@ -126,8 +126,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ChonGheController.cs" />
+    <Compile Include="Controllers\DichVuController.cs" />
+    <Compile Include="Controllers\KhuyenMaiController.cs" />
     <Compile Include="Controllers\MuaVeController.cs" />
+    <Compile Include="Controllers\QLPhimController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -200,6 +204,7 @@
     <Compile Include="Models\SUATCHIEU.cs">
       <DependentUpon>QLDatVe.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ThongKeViewModel.cs" />
     <Compile Include="Models\TINHTRANGGHE.cs">
       <DependentUpon>QLDatVe.tt</DependentUpon>
     </Compile>
@@ -225,6 +230,17 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Img\AvengersEndgame.jpg" />
+    <Content Include="Content\Img\backgroundfordetails.jpg" />
+    <Content Include="Content\Img\ConNhotMotChong.jpg" />
+    <Content Include="Content\Img\DoraemonNobitavaVungDatMoi.jpg" />
+    <Content Include="Content\Img\EmVaTrinh.jpg" />
+    <Content Include="Content\Img\FastAndFuriosX.jpg" />
+    <Content Include="Content\Img\InsideOut2.jpg" />
+    <Content Include="Content\Img\JoinWick4.jpg" />
+    <Content Include="Content\Img\KungfuPanda5.jpg" />
+    <Content Include="Content\Img\Mai.jpg" />
+    <Content Include="Content\Img\TheBatman.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -287,9 +303,21 @@
     <Content Include="Views\User\ProFile.cshtml" />
     <Content Include="Views\Shared\_Layout1.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\QLPhim\Create.cshtml" />
+    <Content Include="Views\QLPhim\DanhSach.cshtml" />
+    <Content Include="Views\QLPhim\DanhSachPhanTrang.cshtml" />
+    <Content Include="Views\QLPhim\Delete.cshtml" />
+    <Content Include="Views\QLPhim\Details.cshtml" />
+    <Content Include="Views\QLPhim\Edit.cshtml" />
+    <Content Include="Views\QLPhim\Index.cshtml" />
+    <Content Include="Views\Admin\ThongKeDoanhThu.cshtml" />
+    <Content Include="Views\DichVu\Index.cshtml" />
+    <Content Include="Views\DichVu\_DanhSachCombo.cshtml" />
+    <Content Include="Views\KhuyenMai\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ThongKeViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

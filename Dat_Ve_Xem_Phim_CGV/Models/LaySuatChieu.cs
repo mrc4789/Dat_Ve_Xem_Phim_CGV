@@ -7,17 +7,16 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
 {
     public class LaySuatChieu
     {
-        string maSuatChieu;
-        TimeSpan gioChieu; 
-        string tenRap; 
-        string dinhDang;
-        string diaChi;
-        public string MaSuatChieu { get => maSuatChieu; set => maSuatChieu = value; }
-        public TimeSpan GioChieu { get => gioChieu; set => gioChieu = value; }
-        public string TenRap { get => tenRap; set => tenRap = value; }
-        public string DinhDang { get => dinhDang; set => dinhDang = value; }
-        public string DiaChi { get => diaChi; set => diaChi = value; }
-
-        public LaySuatChieu() { }
+        public string MaPhim { get; set; }
+        public string TenPhim { get; set; }
+        public string MaLoai { get; set; }
+        public string DinhDang { get; set; }
+        public string MaRap { get; set; }
+        public string TenRap { get; set; }
+        public string DiaChi { get; set; }     
+        public DateTime NgayChieu { get; set; }
+        public TimeSpan GioChieu { get; set; }
+        public double GiaCoban { get; set; }
+        public string MaSuatChieu { get; set; }
     }
 }

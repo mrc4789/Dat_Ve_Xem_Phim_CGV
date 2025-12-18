@@ -6,6 +6,7 @@
         var isActive = diaChi == ViewBag.DiaChiDuocChon ? "btn-primary" : "btn-outline-primary";
 
         <a href="@Url.Action("Index", "MuaVe", new {
+                maPhim = ViewBag.MaPhim,
                 diaChi = diaChi,
                 ngayChieu = ViewBag.NgayChieu,
                 maLoai = ViewBag.LoaiMHChon

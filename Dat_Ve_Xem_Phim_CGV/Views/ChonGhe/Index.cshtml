@@ -65,6 +65,41 @@
         </div>
     </div>
 
+    <!-- THÊM PHẦN THỐNG KÊ GHẾ -->
+    <div class="card mb-3">
+        <div class="card-body py-2">
+            <div class="row align-items-center text-center">
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-couch text-secondary me-2"></i>
+                        <div class="text-start">
+                            <small class="text-muted d-block" style="font-size: 0.75rem;">Tổng số ghế</small>
+                            <strong id="total-seats-count" class="text-dark">0</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 border-start border-end">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <div class="text-start">
+                            <small class="text-muted d-block" style="font-size: 0.75rem;">Ghế trống</small>
+                            <strong id="available-seats-count" class="text-success">0</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-times-circle text-danger me-2"></i>
+                        <div class="text-start">
+                            <small class="text-muted d-block" style="font-size: 0.75rem;">Đã đặt</small>
+                            <strong id="booked-seats-count" class="text-danger">0</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Danh sách ghế  -->
     <div class="card mb-4">
         <div class="card-body">
@@ -143,6 +178,10 @@
             const seatStatus = document.getElementById('seat-status');
             const seatIdsInput = document.getElementById('seatIdsInput');
 
+            // THÊM: Elements cho thống kê
+            const totalSeatsEl = document.getElementById('total-seats-count');
+            const availableSeatsEl = document.getElementById('available-seats-count');
+            const bookedSeatsEl = document.getElementById('booked-seats-count');
 
             const prices = {
                 'standard': 90000,
@@ -152,16 +191,30 @@
 
             let selectedSeats = [];
 
+            // THÊM: Hàm cập nhật thống kê ghế
+            function updateSeatStatistics() {
+                const allSeats = document.querySelectorAll('.seat');
+                const availableSeats = document.querySelectorAll('.seat.seat-available:not(.seat-selected)');
+                const bookedSeats = document.querySelectorAll('.seat.seat-unavailable');
+
+                totalSeatsEl.textContent = allSeats.length;
+                availableSeatsEl.textContent = availableSeats.length;
+                bookedSeatsEl.textContent = bookedSeats.length;
+            }
+
+            // Gọi hàm thống kê khi load trang
+            updateSeatStatistics();
+
             seats.forEach(seat => {
                 seat.addEventListener('click', function () {
-    
+
                     if (this.classList.contains('seat-unavailable')) {
                         return;
                     }
 
-     
                     this.classList.toggle('seat-selected');
                     updateSelectedSeats();
+                    updateSeatStatistics(); // THÊM: Cập nhật thống kê khi chọn ghế
                 });
             });
 
@@ -185,7 +238,6 @@
                     return;
                 }
 
-
                 let totalPrice = 0;
                 let seatList = [];
                 let seatIds = [];
@@ -203,22 +255,19 @@
                         seatType === 'vip' ? 'VIP' : 'Sweetbox';
 
                     seatList.push(`<div class="d-flex justify-content-between mb-1">
-                                <span>${seatName} (${seatTypeName})</span>
-                                <span class="text-danger">${price.toLocaleString('vi-VN')}đ</span>
-                            </div>`);
+                                    <span>${seatName} (${seatTypeName})</span>
+                                    <span class="text-danger">${price.toLocaleString('vi-VN')}đ</span>
+                                </div>`);
                 });
-
 
                 selectedSeatsList.innerHTML = '<strong>Ghế đã chọn:</strong><br>' + seatList.join('');
                 seatPriceEl.textContent = totalPrice.toLocaleString('vi-VN') + 'đ';
                 totalPriceEl.textContent = totalPrice.toLocaleString('vi-VN') + 'đ';
                 seatIdsInput.value = seatIds.join(',');
 
-
                 btnContinue.disabled = false;
                 seatStatus.textContent = `Đã chọn ${selectedSeats.length} ghế`;
             }
-
 
             document.getElementById('frmDatGhe').addEventListener('submit', function (e) {
                 if (selectedSeats.length === 0) {

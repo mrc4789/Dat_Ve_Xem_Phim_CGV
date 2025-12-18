@@ -94,9 +94,10 @@ namespace Dat_Ve_Xem_Phim_CGV.Controllers
                 Session["MaSuatChieu"] = maSuatChieu;
                 Session["SelectedSeats"] = seatIds;
                 Session["SoGheDat"] = maGheList.Count;
-                Session["TongTien"] = maGheList.Count * 90000; 
+                Session["TongTien"] = maGheList.Count * 90000;
 
-                return RedirectToAction("ThanhToan", new {maSuatChieu});
+                return RedirectToAction("Index", "DichVu");
+                //return RedirectToAction("ThanhToan", new {maSuatChieu});
             }
             else
             {

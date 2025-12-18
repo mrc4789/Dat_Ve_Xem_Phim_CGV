@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.KHUYENMAI>
+@{
+    ViewBag.Title = "Ưu Đãi";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    .promo-section {
+        padding: 40px 0;
+        background-color: #fdfcf0;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .cgv-title {
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+        .cgv-title h2 {
+            display: inline-block;
+            background: #fdfcf0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+            font-weight: 900;
+            font-size: 35px;
+            text-transform: uppercase;
+            color: #222;
+            text-shadow: 3px 3px 0px #ddd;
+            border-bottom: 3px double #444;
+        }
+
+        .cgv-title::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #444;
+            z-index: 1;
+        }
+
+    .btn-cgv-red {
+        background: #e71a0f;
+        color: white;
+        padding: 10px 30px;
+        font-weight: bold;
+        border: none;
+        text-transform: uppercase;
+        clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+        margin: 0 auto;
+        display: table;
+        margin-bottom: 30px;
+    }
+
+    .promo-card {
+        margin-bottom: 30px;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+        .promo-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .promo-img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border: 2px solid #333;
+    }
+
+    .promo-date {
+        margin-top: 5px;
+        font-weight: bold;
+        color: #333;
+        font-size: 13px;
+    }
+
+        .promo-date i {
+            color: #e71a0f;
+            margin-right: 5px;
+        }
+</style>
+
+<div class="promo-section">
+    <div class="container">
+        <div class="cgv-title">
+            <h2>Tin Mới Và Ưu Đãi</h2>
+        </div>
+
+        <button class="btn-cgv-red">Xem tất cả | Chọn Rạp</button>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 col-sm-6 promo-card">
+                    <a href="@Url.Action("Details", "KhuyenMai", new { id = item.MAKM })">
+                        <img src="@Url.Content("~/Imgs/khuyenmai.jpg")" class="promo-img" alt="Khuyen Mai" />
+                    </a>
+                    <div class="promo-date">
+                        <i class="fa fa-calendar-alt"></i>
+                        @(item.NGAYBD.HasValue ? item.NGAYBD.Value.ToString("dd/MM/yyyy") : "") -
+                        @(item.NGAYKT.HasValue ? item.NGAYKT.Value.ToString("dd/MM/yyyy") : "")
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

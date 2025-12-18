@@ -2,27 +2,26 @@
 
 @*-----------Hiển thị ngày chiếu ------------------------*@
 
-@Html.Action("_NgayChieu", "MuaVe", new { diaChi = ViewBag.DiaChiDuocChon, ngayChieu = ViewBag.NgayChieu, maLoai = ViewBag.LoaiMHChon })
+@Html.Action("_NgayChieu", "MuaVe", new { maPhim = ViewBag.MaPhim, diaChi = ViewBag.DiaChiDuocChon, ngayChieu = ViewBag.NgayChieu, maLoai = ViewBag.LoaiMHChon })
 
 <hr class="border border-dark border-opacity-25 my-3" />
 
 @*-----------Hiển thị địa chỉ rạp ------------------------*@
 
 <div class="d-flex justify-content-center flex-wrap mb-3">
-    @Html.Action("_LocTheoDiaChi", "MuaVe", new { diaChi = ViewBag.DiaChiDuocChon, ngayChieu = ViewBag.NgayChieu, maLoai = ViewBag.LoaiMHChon })
+    @Html.Action("_LocTheoDiaChi", "MuaVe", new { maPhim = ViewBag.MaPhim, diaChi = ViewBag.DiaChiDuocChon, ngayChieu = ViewBag.NgayChieu, maLoai = ViewBag.LoaiMHChon })
 </div>
 
 <hr class="border border-dark border-opacity-25 my-3" />
 
 @*-----------Hiển thị loại màn hình ------------------------*@
 
-@Html.Action("_LoaiManHinh", "MuaVe", new { ngayChieu = ViewBag.NgayChieu, diaChi = ViewBag.DiaChiDuocChon, maLoai = ViewBag.LoaiMHChon })
+@Html.Action("_LoaiManHinh", "MuaVe", new { maPhim = ViewBag.MaPhim, ngayChieu = ViewBag.NgayChieu, diaChi = ViewBag.DiaChiDuocChon, maLoai = ViewBag.LoaiMHChon })
 
 <hr class="border border-dark border-opacity-25 my-3" />
 
 @*-----------Hiển thị suất chiếu ------------------------*@
 
-@Html.Action("_SuatChieu", "MuaVe", new { ngayChieu = ViewBag.NgayChieu, diaChi = ViewBag.DiaChiDuocChon, maLoai = ViewBag.LoaiMHChon , maSuatChieu = ViewBag.MaSuatChieu})
+@Html.Action("_SuatChieu", "MuaVe", new { maPhim = ViewBag.MaPhim, ngayChieu = ViewBag.NgayChieu, diaChi = ViewBag.DiaChiDuocChon, maLoai = ViewBag.LoaiMHChon, maSuatChieu = ViewBag.MaSuatChieu })
 
 <hr class="border border-dark border-opacity-25 my-3" />
-

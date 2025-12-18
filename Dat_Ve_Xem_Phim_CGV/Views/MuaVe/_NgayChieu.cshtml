@@ -18,7 +18,7 @@
 
         <div class="day" onclick="getSelectDay(25023800, '@thoiGian.ToString("yyyyMMdd")');">
 
-            <a href="@Url.Action("Index","MuaVe", new {diaChi = ViewBag.DiaChiDuocChon, ngayChieu = @thoiGian.ToString("yyyy-MM-dd"), maLoai = ViewBag.LoaiMHChon})" class="btn btn-outline-secondary m-1">@ngay <small>@thu </small><span>@thang</span></a>
+            <a href="@Url.Action("Index","MuaVe", new {maPhim = ViewBag.MaPhim, diaChi = ViewBag.DiaChiDuocChon, ngayChieu = @thoiGian.ToString("yyyy-MM-dd"), maLoai = ViewBag.LoaiMHChon})" class="btn btn-outline-secondary m-1">@ngay <small>@thu </small><span>@thang</span></a>
         </div>
     }
 </div>

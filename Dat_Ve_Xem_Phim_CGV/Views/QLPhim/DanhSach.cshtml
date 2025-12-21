@@ -1,0 +1,134 @@
+﻿@model IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.PHIM>
+
+@{
+    ViewBag.Title = ViewBag.Title ?? "Danh Sách Phim";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    string loai = ViewBag.Loai ?? "tatca";
+    string search = ViewBag.Search ?? "";
+    string gia = ViewBag.Gia ?? "tatca";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- SIDEBAR BÊN TRÁI -->
+        <div class="col-lg-3 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-cgv-red mb-4">Bộ lọc</h5>
+
+                    <!-- Lọc theo loại phim -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Loại phim</label>
+                        <div class="d-grid gap-2">
+                            <a href="@Url.Action("DanhSach", new { loai = "tatca", search, gia, page = 1 })"
+                               class="btn @(loai == "tatca" ? "btn-cgv-red text-white" : "btn-outline-secondary") btn-sm text-start">
+                                Tất cả
+                            </a>
+                            <a href="@Url.Action("DanhSach", new { loai = "dangchieu", search, gia, page = 1 })"
+                               class="btn @(loai == "dangchieu" ? "btn-cgv-red text-white" : "btn-outline-secondary") btn-sm text-start">
+                                Phim Đang Chiếu
+                            </a>
+                            <a href="@Url.Action("DanhSach", new { loai = "sapchieu", search, gia, page = 1 })"
+                               class="btn @(loai == "sapchieu" ? "btn-cgv-red text-white" : "btn-outline-secondary") btn-sm text-start">
+                                Phim Sắp Chiếu
+                            </a>
+                            <a href="@Url.Action("DanhSach", new { loai = "ngungchieu", search, gia, page = 1 })"
+                               class="btn @(loai == "ngungchieu" ? "btn-cgv-red text-white" : "btn-outline-secondary") btn-sm text-start">
+                                Phim Ngưng Chiếu
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Thể loại phim -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Thể loại phim</label>
+                        <select id="theloaiFilter" class="form-select form-select-sm">
+                            <option value="tatca" @(ViewBag.TheLoai == "tatca" ? "selected" : "")>Tất cả</option>
+                            <option value="Hành động" @(ViewBag.TheLoai == "Hành động" ? "selected" : "")>Hành động</option>
+                            <option value="Tình cảm" @(ViewBag.TheLoai == "Tình cảm" ? "selected" : "")>Tình cảm</option>
+                            <option value="Hoạt hình" @(ViewBag.TheLoai == "Hoạt hình" ? "selected" : "")>Hoạt hình</option>
+                            <option value="Hài" @(ViewBag.TheLoai == "Hài" ? "selected" : "")>Hài</option>
+                        </select>
+                    </div>
+
+                    <!-- TÌM KIẾM + LỌC THỂ LOẠI -->
+                    <form id="searchForm" method="get" action="@Url.Action("DanhSach")" class="mt-3">
+                        @* Ẩn các tham số để giữ trạng thái khi lọc *@
+                        <input type="hidden" name="loai" value="@(ViewBag.Loai ?? "tatca")" />
+                        <input type="hidden" name="theloai" id="hiddenTheLoai" value="@(ViewBag.TheLoai ?? "tatca")" />
+                        <input type="hidden" name="page" value="@(ViewBag.CurrentPage ?? 1)" />
+
+                        <!-- Ô tìm kiếm -->
+                        <div class="mb-3">
+                            <label for="searchInput" class="form-label fw-semibold text-dark">Tìm kiếm</label>
+                            <input type="text"
+                                   id="searchInput"
+                                   name="search"
+                                   value="@(ViewBag.Search ?? "")"
+                                   class="form-control form-control-sm rounded-pill"
+                                   placeholder="Nhập tên phim..."
+                                   autocomplete="off" />
+                        </div>
+
+                        <!-- Nút tìm kiếm -->
+                        <button type="submit" class="btn btn-cgv-red text-white w-100 rounded-pill shadow-sm fw-semibold">
+                            Tìm kiếm
+                        </button>
+
+                        <!-- Hiển thị trạng thái lọc hiện tại -->
+                        @if (!string.IsNullOrEmpty(ViewBag.Search as string) ||
+                             (ViewBag.TheLoai != null && ViewBag.TheLoai.ToString() != "tatca"))
+                        {
+                            <div class="text-center mt-3">
+                                <small class="text-muted bg-light px-3 py-1 rounded-pill d-inline-block">
+                                    @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                                    {
+                                        <span>Từ khóa: <strong>"@(ViewBag.Search)"</strong></span>
+                                    }
+                                    @if (ViewBag.TheLoai != null && ViewBag.TheLoai.ToString() != "tatca")
+                                    {
+                                        <span class="ms-2">Thể loại: <strong>@ViewBag.TheLoai</strong></span>
+                                    }
+                                </small>
+                            </div>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- DANH SÁCH PHIM -->
+        <div class="col-lg-9">
+            <h2 class="text-cgv-red fw-bold mb-4">@ViewBag.Title</h2>
+
+            @if (!Model.Any())
+            {
+                <p class="text-muted">Hiện chưa có phim nào phù hợp với bộ lọc.</p>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var phim in Model)
+                    {
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <div class="card hover-shadow h-100 border-0">
+                                <a href="@Url.Action("Details", "QLPhim", new {id = phim.MAPHIM})"><img src="/Img/@phim.POSTER" class="card-img-top" alt="@phim.TENPHIM" style="height: 280px; object-fit: cover; border-radius: 12px 12px 0 0;"></a>
+                                <div class="card-body d-flex flex-column p-3">
+                                    <h6 class="card-title text-truncate fw-bold">@phim.TENPHIM</h6>
+                                    <p class="text-muted small mb-1">
+                                        <strong class="text-cgv-red">@phim.TRANGTHAI</strong>
+                                    </p>
+                                    <a href="#" class="btn btn-cgv-red btn-sm mt-auto">Đặt Vé</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Phân trang -->
+                @Html.Partial("DanhSachPhanTrang")
+            }
+        </div>
+    </div>
+</div>

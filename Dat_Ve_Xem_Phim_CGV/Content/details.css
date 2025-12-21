@@ -1,0 +1,38 @@
+﻿body {
+    background-color: #111;
+    color: #fff;
+}
+
+.movie-banner {
+    background-size: cover;
+    background-position: center;
+    height: 420px;
+    position: relative;
+}
+
+    .movie-banner::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.2));
+    }
+
+.movie-poster {
+    width: 220px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+
+.badge-age {
+    background: #e50914;
+    font-size: 14px;
+}
+
+.showtime-btn {
+    border: 1px solid #dc3545;
+    color: #fff;
+}
+
+    .showtime-btn:hover {
+        background: #dc3545;
+    }

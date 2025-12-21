@@ -1,0 +1,317 @@
+﻿@model Dat_Ve_Xem_Phim_CGV.Models.AdminChiTietHoaDon
+@{
+    ViewBag.Title = "Chi Tiết Hóa Đơn";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Chi Tiết Hóa Đơn</title>
+    <style>
+        /* Reset cơ bản */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- WRAPPER --- */
+        .main-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* --- TICKET CARD --- */
+        .ticket-container {
+            background-color: #1a2238; /* Màu nền xanh đậm */
+            color: #ffffff;
+            width: 100%;
+            max-width: 380px; /* Kích thước giống Mobile */
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        /* --- STYLE MỚI CHO NÚT QUAY LẠI (Nằm dưới cùng) --- */
+        .btn-back-container {
+            margin-top: 25px;
+            text-align: center; /* Căn giữa nút */
+            border-top: 1px solid #3a4b6b; /* Đường kẻ mờ ngăn cách */
+            padding-top: 20px;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background-color: transparent;
+            color: #a0a3a8;
+            padding: 10px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid #3a4b6b;
+            transition: all 0.3s ease;
+        }
+
+            .btn-back:hover {
+                background-color: #ffffff;
+                color: #1a2238;
+                border-color: #ffffff;
+                text-decoration: none;
+            }
+
+        /* --- CÁC THÀNH PHẦN KHÁC GIỮ NGUYÊN --- */
+        .movie-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .movie-info-row {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: #a0a3a8;
+            margin-bottom: 25px;
+        }
+
+        .age-badge {
+            background-color: #ff9800;
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 11px;
+            margin-right: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .label {
+            font-size: 11px;
+            color: #8da0bc;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff;
+            word-break: break-word;
+        }
+
+        .cinema-info {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .cinema-name {
+            font-size: 12px;
+            color: #8da0bc;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .cinema-address {
+            font-size: 14px;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .divider {
+            border-top: 2px dashed #3a4b6b;
+            margin: 25px -24px;
+            position: relative;
+        }
+
+            .divider::before, .divider::after {
+                content: "";
+                position: absolute;
+                top: -12px;
+                width: 24px;
+                height: 24px;
+                background-color: #f0f0f0;
+                border-radius: 50%;
+            }
+
+            .divider::before {
+                left: -12px;
+            }
+
+            .divider::after {
+                right: -12px;
+            }
+
+        .ticket-code-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ticket-code-label {
+            font-size: 13px;
+            color: #fff;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .ticket-code-box {
+            background-color: #0d1424;
+            border: 1px solid #2a3b55;
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-value {
+            color: #00e676;
+            font-weight: 700;
+            font-size: 16px;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        .copy-icon {
+            color: #00e676;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid #3a4b6b;
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+
+        .price-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .trans-id {
+            font-size: 13px;
+            color: #fff;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <div class="ticket-container">
+
+            <div class="movie-title">@Model.TenPhim</div>
+
+            <div class="movie-info-row">
+                <span class="age-badge">@Model.DoTuoi</span>
+                <span>@Model.ThoiLuongHienThi • @Model.DinhDang</span>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Ngày</span>
+                    <span class="value">
+                        @(Model.NgayChieu.HasValue ? Model.NgayChieu.Value.ToString("dd/MM/yyyy") : "--")
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Giờ</span>
+                    <span class="value">
+                        @(Model.GioChieu.HasValue ? DateTime.Today.Add(Model.GioChieu.Value).ToString("HH:mm") : "--")
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Rạp</span>
+                    <span class="value">@Model.MaRapLabel</span>
+                </div>
+            </div>
+
+            <div class="info-grid" style="grid-template-columns: 2fr 1fr;">
+                <div class="info-item">
+                    <span class="label">Vị trí ghế</span>
+                    <span class="value">@Model.DanhSachGhe</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Combo</span>
+                    <span class="value">@Model.SoLuongCombo</span>
+                </div>
+            </div>
+
+            <div class="cinema-info">
+                <div class="cinema-name">@Model.TenRap</div>
+                <div class="cinema-address">@Model.DiaChiRap</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="ticket-code-section">
+                <span class="ticket-code-label">Đưa mã vé cho nhân viên soát vé</span>
+                <span class="label" style="margin-bottom: 5px; display:block;">Mã vé</span>
+                <div class="ticket-code-box">
+                    <span class="code-value">@Model.MaVe</span>
+                    <span class="copy-icon">❐</span>
+                </div>
+            </div>
+
+            <div class="footer-row">
+                <div class="footer-left">
+                    <span class="label">Tổng tiền thanh toán</span><br />
+                    <span class="price-value">@string.Format("{0:0,0}đ", Model.TongTien)</span>
+                </div>
+                <div class="footer-right" style="text-align: right;">
+                    <span class="label">Mã giao dịch</span><br />
+                    <span class="trans-id">@Model.MaGiaoDich</span>
+                </div>
+            </div>
+
+            <div class="btn-back-container">
+                @if (!string.IsNullOrEmpty(Model.MaKH))
+                {
+                    <a href="@Url.Action("ChiTietKhachHang", "Admin", new { id = Model.MaKH })" class="btn-back">
+                        &#8592; Quay lại Khách hàng
+                    </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("QuanLyKhachHang", "Admin")" class="btn-back">
+                        &#8592; Quay lại DS Khách hàng
+                    </a>
+                }
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

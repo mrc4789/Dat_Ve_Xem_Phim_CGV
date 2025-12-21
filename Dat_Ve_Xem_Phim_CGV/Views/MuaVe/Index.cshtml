@@ -1,28 +1,112 @@
 ﻿@model List<Dat_Ve_Xem_Phim_CGV.Models.RAP>
 
-@*-----------Hiển thị ngày chiếu ------------------------*@
+<style>
+    /* Container chọn lịch chiếu */
+    .booking-selection-container {
+        background: #fdfcf0; /* Màu nền hơi kem đặc trưng của CGV */
+        border: 1px solid #d4d3c9;
+        border-radius: 4px;
+    }
 
-@Html.Action("_NgayChieu", "MuaVe", new { diaChi = ViewBag.DiaChiDuocChon, ngayChieu = ViewBag.NgayChieu, maLoai = ViewBag.LoaiMHChon })
+    /* Style cho danh sách ngày */
+    .date-item {
+        cursor: pointer;
+        padding: 10px;
+        min-width: 80px;
+        text-align: center;
+        border: 1px solid #d4d3c9;
+        background: white;
+        transition: all 0.2s;
+    }
 
-<hr class="border border-dark border-opacity-25 my-3" />
+        .date-item.active {
+            background: #e71a0f;
+            color: white;
+            border-color: #e71a0f;
+        }
 
-@*-----------Hiển thị địa chỉ rạp ------------------------*@
+        .date-item:hover:not(.active) {
+            background: #f4f4f4;
+        }
 
-<div class="d-flex justify-content-center flex-wrap mb-3">
-    @Html.Action("_LocTheoDiaChi", "MuaVe", new { diaChi = ViewBag.DiaChiDuocChon, ngayChieu = ViewBag.NgayChieu, maLoai = ViewBag.LoaiMHChon })
+    /* Style cho suất chiếu (giờ) */
+    .time-slot {
+        display: inline-block;
+        padding: 8px 20px;
+        border: 1px solid #d4d3c9;
+        color: #333;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 3px;
+        background: #fff;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        transition: all 0.2s;
+    }
+
+        .time-slot:hover {
+            border-color: #e71a0f;
+            color: #e71a0f;
+        }
+
+        .time-slot.active {
+            background: #e71a0f;
+            color: white !important;
+            border-color: #e71a0f;
+        }
+
+    .section-label {
+        font-weight: bold;
+        text-transform: uppercase;
+        border-left: 4px solid #e71a0f;
+        padding-left: 10px;
+        margin-bottom: 15px;
+        color: #333;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="booking-selection-container p-4 shadow-sm">
+
+        <div class="mb-4">
+            <h5 class="section-label">Lịch Chiếu</h5>
+            <div class="d-flex overflow-auto gap-2 pb-2 custom-scrollbar">
+                @Html.Action("_NgayChieu", "MuaVe", new { diaChi = ViewBag.DiaChiDuocChon, ngayChieu = ViewBag.NgayChieu, maLoai = ViewBag.LoaiMHChon })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h5 class="section-label">Rạp Theo Khu Vực</h5>
+                <div class="bg-white p-3 border">
+                    @Html.Action("_LocTheoDiaChi", "MuaVe", new { diaChi = ViewBag.DiaChiDuocChon, ngayChieu = ViewBag.NgayChieu, maLoai = ViewBag.LoaiMHChon })
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <h5 class="section-label">Suất Chiếu Hiện Có</h5>
+
+                <div class="bg-white p-4 border h-100">
+                    <div class="mb-3 border-bottom pb-3">
+                        <span class="text-secondary small d-block mb-2">Định dạng phim:</span>
+                        @Html.Action("_LoaiManHinh", "MuaVe", new { ngayChieu = ViewBag.NgayChieu, diaChi = ViewBag.DiaChiDuocChon, maLoai = ViewBag.LoaiMHChon })
+                    </div>
+
+                    <div class="mt-4">
+                        @Html.Action("_SuatChieu", "MuaVe", new { ngayChieu = ViewBag.NgayChieu, diaChi = ViewBag.DiaChiDuocChon, maLoai = ViewBag.LoaiMHChon, maSuatChieu = ViewBag.MaSuatChieu })
+                    </div>
+
+                    @if (ViewBag.MaSuatChieu != null)
+                    {
+                        <div class="mt-4 text-end">
+                            <a href="@Url.Action("ChonGhe", "MuaVe", new { maSuat = ViewBag.MaSuatChieu })"
+                               class="btn btn-cgv-red px-5 py-2 fw-bold text-uppercase">
+                                Tiếp tục chọn ghế <i class="ms-2">→</i>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<hr class="border border-dark border-opacity-25 my-3" />
-
-@*-----------Hiển thị loại màn hình ------------------------*@
-
-@Html.Action("_LoaiManHinh", "MuaVe", new { ngayChieu = ViewBag.NgayChieu, diaChi = ViewBag.DiaChiDuocChon, maLoai = ViewBag.LoaiMHChon })
-
-<hr class="border border-dark border-opacity-25 my-3" />
-
-@*-----------Hiển thị suất chiếu ------------------------*@
-
-@Html.Action("_SuatChieu", "MuaVe", new { ngayChieu = ViewBag.NgayChieu, diaChi = ViewBag.DiaChiDuocChon, maLoai = ViewBag.LoaiMHChon , maSuatChieu = ViewBag.MaSuatChieu})
-
-<hr class="border border-dark border-opacity-25 my-3" />
-

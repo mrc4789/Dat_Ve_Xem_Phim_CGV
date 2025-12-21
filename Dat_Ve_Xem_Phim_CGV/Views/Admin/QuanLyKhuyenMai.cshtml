@@ -1,0 +1,145 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<Dat_Ve_Xem_Phim_CGV.Models.KHUYENMAI>
+
+@{
+    ViewBag.Title = "QuanLyKhuyenMai";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .pagination-container .pagination {
+        display: flex;
+        gap: 5px;
+        list-style: none;
+        padding: 0;
+    }
+
+        .pagination-container .pagination li a {
+            background-color: #1f2937;
+            color: #d1d5db;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #4b5563;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: block;
+        }
+
+            .pagination-container .pagination li a:hover {
+                background-color: #374151;
+                color: white;
+            }
+
+        .pagination-container .pagination li.active a {
+            background-color: #2563eb;
+            color: white;
+            border-color: #2563eb;
+            font-weight: bold;
+        }
+
+        .pagination-container .pagination li.disabled a {
+            color: #6b7280;
+            cursor: not-allowed;
+            background-color: #111827;
+        }
+</style>
+
+<div class="flex justify-between mb-6 m-3">
+    <a href="@Url.Action("ThemKhuyenMai")" class="bg-green-600 text-white px-5 py-2.5 rounded-lg hover:bg-green-500 font-semibold shadow-lg transition duration-200 flex items-center gap-2">
+        <i class="fas fa-plus"></i> Thêm Mới
+    </a>
+
+    <form method="get" class="flex gap-3">
+        <input type="text" name="TimKM" placeholder="Tìm tên hoặc mã KM..." class="bg-gray-800 text-gray-200 border border-gray-600 p-2.5 rounded-lg w-72 focus:outline-none focus:border-blue-500 transition-colors" value="@Request.QueryString["TimKM"]" />
+        <button type="submit" class="bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-500 transition duration-200 font-semibold shadow-lg">
+            <i class="fas fa-search"></i> Tìm kiếm
+        </button>
+    </form>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="bg-green-900/30 border border-green-500/50 text-green-400 px-4 py-3 rounded-lg mb-6 shadow-sm flex items-center gap-2">
+        <i class="fas fa-check-circle"></i> @TempData["Success"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="bg-red-900/30 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg mb-6 shadow-sm flex items-center gap-2">
+        <i class="fas fa-exclamation-triangle"></i> @TempData["Error"]
+    </div>
+}
+
+<div class="overflow-x-auto bg-gray-800 rounded-xl border border-gray-700 shadow-2xl m-3">
+    <table class="w-full text-left text-sm text-gray-300">
+        <thead class="bg-gray-900/50 uppercase font-bold text-xs text-gray-400 border-b border-gray-700">
+            <tr>
+                <th class="px-6 py-4">Mã KM</th>
+                <th class="px-6 py-4">Tên Khuyến Mãi</th>
+                <th class="px-6 py-4">Loại</th>
+                <th class="px-6 py-4">Thời Gian</th>
+                <th class="px-6 py-4">Điều Kiện</th>
+                <th class="px-6 py-4 text-center">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-700">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr class="hover:bg-gray-700/50 transition duration-150">
+                        <td class="px-6 py-4 font-mono text-blue-400 font-bold">@item.MAKM</td>
+                        <td class="px-6 py-4 font-semibold text-white">@item.TENKM</td>
+                        <td class="px-6 py-4">
+                            <span class="bg-purple-900/40 text-purple-300 px-3 py-1 rounded-full text-xs border border-purple-500/30 font-medium">
+                                @item.LOAIKM
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-gray-400 text-xs">
+                            <div class="flex flex-col gap-1">
+                                <span><i class="fas fa-calendar-alt w-4"></i> @string.Format("{0:dd/MM/yyyy}", item.NGAYBD)</span>
+                                <span><i class="fas fa-flag-checkered w-4"></i> @string.Format("{0:dd/MM/yyyy}", item.NGAYKT)</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-gray-400 italic max-w-xs truncate" title="@item.DIEUKIEN">@item.DIEUKIEN</td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex justify-center gap-3">
+                                <a href="@Url.Action("SuaKhuyenMai", new { id = item.MAKM })" class="px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-200 flex items-center gap-1" title="Sửa">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </a>
+                                <a href="@Url.Action("XoaKhuyenMai", new { id = item.MAKM })" onclick="return confirm('Bạn có chắc chắn muốn xóa khuyến mãi này?');" class="px-3 py-1.5 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-600 hover:text-white transition-all duration-200 flex items-center gap-1" title="Xóa">
+                                    <i class="fas fa-trash-alt"></i> Xóa
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="px-6 py-8 text-center text-gray-500 italic">
+                        Không tìm thấy dữ liệu khuyến mãi nào.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-6 flex justify-center pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("QuanLyKhuyenMai", new { page, TimKM = Request.QueryString["TimKM"] }),
+        new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+            DisplayLinkToLastPage = PagedListDisplayMode.Never,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToIndividualPages = true,
+            MaximumPageNumbersToDisplay = 5,
+            LinkToPreviousPageFormat = "‹ Trước",
+            LinkToNextPageFormat = "Tiếp ›",
+            LinkToIndividualPageFormat = "{0}"
+        })
+</div>

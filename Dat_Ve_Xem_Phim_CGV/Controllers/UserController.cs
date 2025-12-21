@@ -23,15 +23,21 @@ namespace Dat_Ve_Xem_Phim_CGV.Controllers
         public ActionResult Login(string tk, string mk)
         {
             var user = ql.KHACHHANGs.FirstOrDefault(t => (t.SDT == tk || t.EMAIL == tk) && t.MATKHAU == mk);
-
             if (user != null)
             {
-                Session["TaiKhoan"] = user;
-                Session["HoTen"] = user.HOTEN;
-
-                return RedirectToAction("ProFile", "User");
-            }
-
+                if (user.MACV == 1)
+                {
+                    Session["TaiKhoan"] = user;
+                    Session["HoTen"] = user.HOTEN;
+                    return RedirectToAction("Dashboard", "Admin");
+                }
+                else
+                {
+                    Session["TaiKhoan"] = user;
+                    Session["HoTen"] = user.HOTEN;
+                    return RedirectToAction("ProFile", "User");
+                }
+            }   
             ViewBag.ErrorLogin = "Tài khoản hoặc mật khẩu không đúng!";
             ViewBag.Mode = "login";
             return View("Index");
@@ -43,7 +49,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Controllers
             int soHienTai = int.Parse(laySo);
             int soMoi = soHienTai + 1;
             string maMoi = "KH" + soMoi.ToString("D3"); // D3 nghĩa là: số 9 -> "009"
-            return maMoi;   
+            return maMoi;
         }
         // Đăng ký
         [HttpPost]
@@ -131,7 +137,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Controllers
                 .Where(h => h.MAKH == user.MAKH && h.TRANGTHAI == "Đã thanh toán")
                 .Sum(h => (double?)h.THANHTIEN) ?? 0;
 
-           decimal tongChiTieu = (decimal)tongTienTam;
+            decimal tongChiTieu = (decimal)tongTienTam;
             ViewBag.TongChiTieu = tongChiTieu;
             return View(user);
         }
@@ -289,7 +295,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Controllers
         public string MaHD { get; set; }
         public DateTime NgayMua { get; set; }
         public decimal TongTienHD { get; set; }
-        public string TrangThai { get; set; } 
+        public string TrangThai { get; set; }
         // Thông tin thanh toán
         public string PhuongThucThanhToan { get; set; }
         public int DiemDaDung { get; set; }
@@ -300,7 +306,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Controllers
 
     public class TicketInfo
     {
-        public string TenPhim { get; set; } 
+        public string TenPhim { get; set; }
         public string Poster { get; set; }
         public string TenRap { get; set; }
         public string TenPhong { get; set; }

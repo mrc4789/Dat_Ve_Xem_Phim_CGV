@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -45,10 +46,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -126,12 +136,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ChonGheController.cs" />
     <Compile Include="Controllers\MuaVeController.cs" />
+    <Compile Include="Controllers\QLPhimController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminChiTietHoaDon.cs" />
     <Compile Include="Models\CHITIETDATVE.cs">
       <DependentUpon>QLDatVe.tt</DependentUpon>
     </Compile>
@@ -142,6 +155,9 @@
       <DependentUpon>QLDatVe.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CHITIETKHUYENMAI.cs">
+      <DependentUpon>QLDatVe.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CHUCVU.cs">
       <DependentUpon>QLDatVe.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DICHVU.cs">
@@ -163,7 +179,13 @@
       <DependentUpon>QLDatVe.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LayDanhSachGheResult.cs" />
+    <Compile Include="Models\LayDanhSachGhe_Result.cs">
+      <DependentUpon>QLDatVe.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LaySuatChieu.cs" />
+    <Compile Include="Models\LayThongTinGhe_Result.cs">
+      <DependentUpon>QLDatVe.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LOAIMANHINH.cs">
       <DependentUpon>QLDatVe.tt</DependentUpon>
     </Compile>
@@ -200,7 +222,14 @@
     <Compile Include="Models\SUATCHIEU.cs">
       <DependentUpon>QLDatVe.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ThanhToan_Result.cs">
+      <DependentUpon>QLDatVe.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ThongKePhimViewModel.cs" />
     <Compile Include="Models\TINHTRANGGHE.cs">
+      <DependentUpon>QLDatVe.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TraCuuLichChieu_Result.cs">
       <DependentUpon>QLDatVe.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VE.cs">
@@ -225,13 +254,26 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\details.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Img\AvengersEndgame.jpg" />
+    <Content Include="Img\backgroundfordetails.jpg" />
+    <Content Include="Img\ConNhotMotChong.jpg" />
+    <Content Include="Img\DoraemonNobitavaVungDatMoi.jpg" />
+    <Content Include="Img\EmVaTrinh.jpg" />
+    <Content Include="Img\FastAndFuriosX.jpg" />
+    <Content Include="Img\InsideOut2.jpg" />
+    <Content Include="Img\JoinWick4.jpg" />
+    <Content Include="Img\KungfuPanda5.jpg" />
+    <Content Include="Img\Mai.jpg" />
+    <Content Include="Img\TheBatman.jpg" />
     <Content Include="Models\QLDatVe.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>QLDatVe.Context.cs</LastGenOutput>
       <DependentUpon>QLDatVe.edmx</DependentUpon>
+      <LastGenOutput>QLDatVe.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\QLDatVe.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -287,6 +329,25 @@
     <Content Include="Views\User\ProFile.cshtml" />
     <Content Include="Views\Shared\_Layout1.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\QLPhim\DanhSach.cshtml" />
+    <Content Include="Views\QLPhim\DanhSachPhanTrang.cshtml" />
+    <Content Include="Views\QLPhim\Details.cshtml" />
+    <Content Include="Views\QLPhim\Index.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Admin\QuanLyPhim.cshtml" />
+    <Content Include="Views\Admin\Create.cshtml" />
+    <Content Include="Views\Admin\Dashboard.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\QuanLySuatChieu.cshtml" />
+    <Content Include="Views\Admin\QuanLyVe.cshtml" />
+    <Content Include="Views\Admin\ThongKe.cshtml" />
+    <Content Include="Views\Admin\QuanLyKhachHang.cshtml" />
+    <Content Include="Views\Admin\QuanLyKhuyenMai.cshtml" />
+    <Content Include="Views\Admin\SuaKhuyenMai.cshtml" />
+    <Content Include="Views\Admin\ThemKhuyenMai.cshtml" />
+    <Content Include="Views\Admin\ChiTietHoaDon.cshtml" />
+    <Content Include="Views\Admin\ChiTietKhachHang.cshtml" />
+    <Content Include="Views\Admin\ThemPhong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -354,7 +415,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

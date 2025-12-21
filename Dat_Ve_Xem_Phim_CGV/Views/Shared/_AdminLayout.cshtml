@@ -1,0 +1,260 @@
+﻿@{
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>CGV Admin Dashboard</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#E71A0F", // CGV Red
+                        "primary-hover": "#c4150b",
+                        "background-light": "#f5f5f5",
+                        "background-dark": "#121212",
+                        "surface-dark": "#1E1E1E",
+                        "surface-highlight": "#2C2C2C",
+                        "text-secondary": "#A0A0A0"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "Noto Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+        }
+
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden">
+    <div class="flex h-screen w-full overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 flex-shrink-0 flex flex-col justify-between bg-surface-dark border-r border-surface-highlight overflow-y-auto">
+            <div class="p-6">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="bg-white rounded-lg p-1 size-10 flex items-center justify-center flex-shrink-0">
+                        <!-- Simulated CGV Logo using text/shapes for simplicity -->
+                        <span class="text-primary font-black text-xs leading-none tracking-tighter text-center">CGV<br />CINEMA</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="text-white text-lg font-bold leading-none">CGV Admin</h1>
+                        <p class="text-text-secondary text-xs mt-1">Management Portal</p>
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <nav class="flex flex-col gap-2">
+                    @{ var isDash = currentAction == "Dashboard" && currentController == "Admin"; }
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all @(isDash ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-text-secondary hover:bg-surface-highlight hover:text-white")"
+                       href="@Url.Action("Dashboard", "Admin")">
+                        <span class="material-symbols-outlined @(isDash ? "icon-fill" : "")">dashboard</span>
+                        <span class="text-sm font-medium">Dashboard</span>
+                    </a>
+
+                    <div class="pt-4 pb-2">
+                        <p class="px-4 text-xs font-bold text-text-secondary uppercase tracking-wider">Quản lý rạp</p>
+                    </div>
+
+                    @{ var isPhim = (currentAction == "QuanLyPhim" || currentAction == "Edit" || currentAction == "Create") && currentController == "Admin"; }
+                    <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors @(isPhim ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-text-secondary hover:bg-surface-highlight hover:text-white")"
+                       href="@Url.Action("QuanLyPhim", "Admin")">
+                        <span class="material-symbols-outlined @(isPhim ? "icon-fill" : "")">movie</span>
+                        <span class="text-sm font-medium">Quản lý phim</span>
+                    </a>
+
+                    @{ var isSuatChieu = currentAction == "QuanLySuatChieu" && currentController == "Admin"; }
+                    <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors @(isSuatChieu ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-text-secondary hover:bg-surface-highlight hover:text-white")"
+                       href="@Url.Action("QuanLySuatChieu", "Admin")">
+                        <span class="material-symbols-outlined @(isSuatChieu ? "icon-fill" : "")">calendar_month</span>
+                        <span class="text-sm font-medium">Quản lý suất chiếu</span>
+                    </a>
+
+                    <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-text-secondary hover:bg-surface-highlight hover:text-white transition-colors" href="/Admin/ThemPhong">
+                        <span class="material-symbols-outlined">chair</span>
+                        <span class="text-sm font-medium">Phòng & Ghế</span>
+                    </a>
+
+                    <div class="pt-4 pb-2">
+                        <p class="px-4 text-xs font-bold text-text-secondary uppercase tracking-wider">Kinh doanh</p>
+                    </div>
+
+                    @{ var isVe = currentAction == "QuanLyVe" && currentController == "Admin"; }
+                    <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors @(isVe ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-text-secondary hover:bg-surface-highlight hover:text-white")"
+                       href="@Url.Action("QuanLyVe", "Admin")">
+                        <span class="material-symbols-outlined @(isVe ? "icon-fill" : "")">confirmation_number</span>
+                        <span class="text-sm font-medium">Quản lý đặt vé</span>
+                    </a>
+
+                    @{ var isKH = currentAction == "QuanLyKhachHang" && currentController == "Admin"; }
+                    <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors @(isKH ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-text-secondary hover:bg-surface-highlight hover:text-white")"
+                       href="@Url.Action("QuanLyKhachHang", "Admin")">
+                        <span class="material-symbols-outlined @(isKH ? "icon-fill" : "")">group</span>
+                        <span class="text-sm font-medium">Khách hàng</span>
+                    </a>
+
+                    @{ var isKM = currentAction == "QuanLyKhuyenMai" && currentController == "Admin"; }
+                    <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors @(isKM ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-text-secondary hover:bg-surface-highlight hover:text-white")"
+                       href="@Url.Action("QuanLyKhuyenMai", "Admin")">
+                        <span class="material-symbols-outlined @(isKM ? "icon-fill" : "")">local_activity</span>
+                        <span class="text-sm font-medium">Khuyến mãi</span>
+                    </a>
+
+                    <div class="pt-4 pb-2">
+                        <p class="px-4 text-xs font-bold text-text-secondary uppercase tracking-wider">Hệ thống</p>
+                    </div>
+
+                    @*<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-text-secondary hover:bg-surface-highlight hover:text-white transition-colors" href="#">
+                        <span class="material-symbols-outlined">badge</span>
+                        <span class="text-sm font-medium">Nhân viên</span>
+                    </a>*@
+
+                    @{ var isTK = currentAction == "ThongKe" && currentController == "Admin"; }
+                    <a class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors @(isTK ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-text-secondary hover:bg-surface-highlight hover:text-white")"
+                       href="@Url.Action("ThongKe", "Admin")">
+                        <span class="material-symbols-outlined @(isTK ? "icon-fill" : "")">bar_chart</span>
+                        <span class="text-sm font-medium">Thống kê & Báo cáo</span>
+                    </a>
+
+                    @*<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-text-secondary hover:bg-surface-highlight hover:text-white transition-colors" href="#">
+                        <span class="material-symbols-outlined">admin_panel_settings</span>
+                        <span class="text-sm font-medium">Phân quyền</span>
+                    </a>*@
+                </nav>
+            </div>
+            <div class="p-6 border-t border-surface-highlight">
+                <a class="flex items-center gap-3 px-4 py-2 rounded-lg text-red-400 hover:bg-surface-highlight hover:text-red-500 transition-colors"
+                   href="@Url.Action("Logout", "User")">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="text-sm font-medium">Đăng xuất</span>
+                </a>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden relative">
+            <!-- Header -->
+            <header class="flex items-center justify-between px-8 py-5 border-b border-surface-highlight bg-background-dark z-10">
+                <div class="flex flex-col">
+                    <h2 class="text-2xl font-bold text-white tracking-tight">@ViewBag.PageTitle</h2>
+                    <p class="text-text-secondary text-sm">@DateTime.Now</p>
+                </div>
+                <div class="flex items-center gap-6">
+                    <!-- Search -->
+                    <div class="relative w-80">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary material-symbols-outlined text-[20px]">search</span>
+                        <input class="w-full bg-surface-dark border-none rounded-full py-2.5 pl-10 pr-4 text-sm text-white focus:ring-2 focus:ring-primary placeholder-text-secondary" placeholder="Tìm kiếm phim, mã vé, khách hàng..." type="text" />
+                    </div>
+                    <!-- Notifications -->
+                    <button class="relative p-2 text-text-secondary hover:text-white transition-colors rounded-full hover:bg-surface-highlight">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="absolute top-2 right-2 size-2 bg-primary rounded-full border border-background-dark"></span>
+                    </button>
+                    <!-- Profile -->
+                    <div class="flex items-center gap-3 pl-4 border-l border-surface-highlight">
+                        <div class="text-right hidden md:block">
+                            <p class="text-sm font-bold text-white leading-none">Admin Manager</p>
+                            <p class="text-xs text-text-secondary mt-1">Super Admin</p>
+                        </div>
+                        <div class="size-10 rounded-full bg-surface-highlight border border-surface-highlight bg-cover bg-center cursor-pointer" data-alt="Admin avatar placeholder" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA6mT7ap2mGLOoYR3VXMNrNZCbXPjics2ufQk-SWQN_GLKtyW9LxkD5VF_Vbb7g3VD16WPCwBoSE_G2IamsT77kUXq9-JXBzmSm_hVp8NYL2mle0kjjGC4Xk4gNX2fO79aMRF17mqYb66dJg4kNGeNlPP1vJgCmV-tdBEJRm326pd5Zq1j19gok1_RD0Ps4IwacDKhUTenGdnJIdmajHuxyN1sWzEEdhnxYVdc0PGjoUr2rivk6ulgHZLjfY3AJ9v9gqNt5VvkoyhTQ');"></div>
+                    </div>
+                </div>
+            </header>
+            @RenderBody()
+            @functions {
+                // Hàm kiểm tra xem link có đang active không
+                public string IsActive(string action, string controller)
+                {
+                    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+                    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+
+                    return (string.Equals(action, currentAction, StringComparison.OrdinalIgnoreCase) &&
+                            string.Equals(controller, currentController, StringComparison.OrdinalIgnoreCase))
+                            ? "bg-primary text-white shadow-lg shadow-primary/20" // Class khi Active
+                            : "text-text-secondary hover:bg-surface-highlight hover:text-white"; // Class khi Bình thường
+                }
+
+                // Hàm để đổi icon sang dạng Fill khi active
+                public string IconClass(string action, string controller)
+                {
+                    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+                    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+
+                    return (string.Equals(action, currentAction, StringComparison.OrdinalIgnoreCase) &&
+                            string.Equals(controller, currentController, StringComparison.OrdinalIgnoreCase))
+                            ? "icon-fill" : "";
+                }
+            }
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Tìm tất cả các div thông báo thành công hoặc lỗi
+            const alerts = document.querySelectorAll('.alert-message');
+
+            alerts.forEach(function (alert) {
+                // Sau 5 giây (5000ms) sẽ bắt đầu hiệu ứng biến mất
+                setTimeout(function () {
+                    alert.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+                    alert.style.opacity = "0";
+                    alert.style.transform = "translateY(-20px)";
+
+                    // Sau khi hiệu ứng kết thúc thì xóa hẳn khỏi HTML
+                    setTimeout(function () {
+                        alert.remove();
+                    }, 600);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

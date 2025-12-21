@@ -1,0 +1,242 @@
+﻿@model IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.ThongKePhimViewModel>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    // Lấy doanh thu cao nhất để tính % cho thanh Progress Bar
+    var maxRevenue = Model.Any() ? Model.Max(x => x.DoanhThu) : 0;
+}
+
+<style>
+    .chart-box {
+        background-color: #1e293b; /* surface-dark */
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chart-container {
+        position: relative;
+        flex-grow: 1;
+        min-height: 300px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 20px; /* Chừa chỗ cho nhãn trên đỉnh */
+    }
+</style>
+
+<div class="h-full overflow-y-auto p-6 custom-scrollbar bg-[#0f172a]">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-surface-dark border border-white/5 p-6 rounded-2xl shadow-xl">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-slate-400 text-sm font-medium">Tổng doanh thu</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">@ViewBag.TongDoanhThu.ToString("N0") đ</h3>
+                </div>
+                <div class="p-3 bg-emerald-500/10 rounded-lg text-emerald-500">
+                    <span class="material-symbols-outlined">payments</span>
+                </div>
+            </div>
+        </div>
+        <div class="bg-surface-dark border border-white/5 p-6 rounded-2xl shadow-xl">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-slate-400 text-sm font-medium">Vé đã bán</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">@ViewBag.TongVe.ToString("N0")</h3>
+                </div>
+                <div class="p-3 bg-blue-500/10 rounded-lg text-blue-500">
+                    <span class="material-symbols-outlined">confirmation_number</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <div class="lg:col-span-2 chart-box">
+            <h3 class="text-white font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">analytics</span>
+                Tăng trưởng doanh thu (7 ngày gần nhất)
+            </h3>
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-box">
+            <h3 class="text-white font-bold mb-6">Top 5 Phim ăn khách</h3>
+            <div class="space-y-6">
+                @foreach (var movie in Model)
+                {
+                    var percentage = maxRevenue > 0 ? (movie.DoanhThu * 100 / maxRevenue) : 0;
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-slate-300 font-medium truncate w-32">@movie.TenPhim</span>
+                            <span class="text-white font-bold">@movie.DoanhThu.ToString("N0") đ</span>
+                        </div>
+                        <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-primary h-full transition-all duration-700"
+                                 style="width: @(percentage)%"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="chart-box">
+            <h3 class="text-white font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500">calendar_month</span>
+                Doanh thu theo Tháng (Năm @DateTime.Now.Year)
+            </h3>
+            <div class="chart-container">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-box">
+            <h3 class="text-white font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-orange-500">history_toggle_off</span>
+                Tăng trưởng theo Năm
+            </h3>
+            <div class="chart-container">
+                <canvas id="yearlyChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Cấu hình chung cho nhãn dữ liệu (datalabels)
+        const commonDataLabels = {
+            anchor: 'end',
+            align: 'top',
+            offset: 5,
+            color: '#fff',
+            font: { weight: 'bold', size: 10 },
+            formatter: (value) => value > 0 ? value.toLocaleString() + ' đ' : ''
+        };
+
+        // 1. BIỂU ĐỒ NGÀY (Mốc: 3Tr - Bước: 500k)
+        new Chart(document.getElementById('revenueChart'), {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RevenueLabels)),
+                datasets: [{
+                    label: 'Doanh thu ngày', // Xóa lỗi undefined
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RevenueValues)),
+                    borderColor: '#ff0000',
+                    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#ff0000'
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 3000000,
+                        ticks: {
+                            stepSize: 500000,
+                            color: '#94a3b8',
+                            callback: (v) => v.toLocaleString() + ' đ'
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+                },
+                plugins: {
+                    legend: { display: false }, // Ẩn legend để không bị hiện chữ 'undefined'
+                    datalabels: commonDataLabels
+                }
+            }
+        });
+
+        // 2. BIỂU ĐỒ THÁNG (Mốc: 10Tr - Bước: 2Tr)
+        new Chart(document.getElementById('monthlyChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.MonthlyLabels)),
+                datasets: [{
+                    label: 'Doanh thu tháng', // Xóa lỗi undefined
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.MonthlyValues)),
+                    backgroundColor: '#10b981',
+                    borderRadius: 4
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 10000000,
+                        ticks: {
+                            stepSize: 2000000,
+                            color: '#94a3b8',
+                            callback: (v) => v.toLocaleString() + ' đ'
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    datalabels: { ...commonDataLabels, color: '#10b981' }
+                }
+            }
+        });
+
+        // 3. BIỂU ĐỒ NĂM (Mốc: 100Tr - Bước: 20Tr)
+        new Chart(document.getElementById('yearlyChart'), {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.YearlyLabels)),
+                datasets: [{
+                    label: 'Doanh thu năm', // Xóa lỗi undefined
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.YearlyValues)),
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    borderWidth: 4
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100000000,
+                        ticks: {
+                            stepSize: 20000000,
+                            color: '#94a3b8',
+                            callback: (v) => v.toLocaleString() + ' đ'
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    datalabels: { ...commonDataLabels, color: '#f59e0b' }
+                }
+            }
+        });
+    });
+</script>

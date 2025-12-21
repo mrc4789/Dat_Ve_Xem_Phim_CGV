@@ -6,8 +6,9 @@
     <title>CGV Cinemas Vietnam - Movie Ticket Booking</title>
 
     <!-- Bootstrap 5 CSS -->
+    <link href="/Content/details.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">*@
     <!-- Minimal Custom CSS (only for CGV branding) -->
     <style>
         :root {
@@ -72,26 +73,75 @@
         .brand-link:hover {
             color: var(--cgv-red) !important;
         }
+
+        .dropdown-menu {
+            z-index: 9999 !important;
+        }
     </style>
 </head>
 <body class="bg-light">
     <!-- Header Language Bar -->
     <div class="bg-cgv-dark text-white py-2">
         <div class="container">
-            <div class="d-flex justify-content-end gap-4 small">
+            <div class="d-flex justify-content-end gap-4 small align-items-center">
+
                 <div>Tin mới & Ưu đãi</div>
-                <div>Vé Của Tôi</div>
                 <div>EN | VN</div>
-                <div>Đăng nhập/ Đăng ký</div>
+
+                @if (Session["TaiKhoan"] == null)
+                {
+                    <div>
+                        <a href="@Url.Action("Index", "User")"
+                           class="text-white text-decoration-none">
+                            Đăng nhập / Đăng ký
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="dropdown">
+                        <a class="text-white text-decoration-none dropdown-toggle"
+                           href="#"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Xin chào, @Session["HoTen"]
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item"
+                                   href="@Url.Action("ProFile", "User")">
+                                    👤 Trang cá nhân
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="@Url.Action("LichSuGiaoDich", "User")">
+                                    🧾 Vé của tôi
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger"
+                                   href="@Url.Action("Logout", "User")">
+                                    🚪 Đăng xuất
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+
             </div>
         </div>
     </div>
+
 
     <!-- Main Header -->
     <header class="bg-white shadow-sm sticky-top">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light py-3">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="@Url.Action("Index", "QLPhim")">
                     <img src="https://www.cgv.vn/skin/frontend/cgv/default/images/cgvlogo.png" alt="CGV Cinemas" height="50">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -100,7 +150,7 @@
                 <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                     <ul class="navbar-nav gap-4">
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold text-uppercase text-dark" href="#">Phim</a>
+                            <a class="nav-link fw-semibold text-uppercase text-dark" href="@Url.Action("DanhSach", "QLPhim")">Phim</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link fw-semibold text-uppercase text-dark" href="#">Rạp CGV</a>
@@ -117,200 +167,7 @@
         </div>
     </header>
     @RenderBody()
-    <!-- Banner Slideshow -->
-    <!--<div class="container my-4">
-        <div class="ratio ratio-21x9 rounded overflow-hidden">
-            <img src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/r/o/rolling-banner_1_-min.png" alt="Movie Banner" class="img-fluid object-fit-cover">
-        </div>
-    </div>-->
-    <!-- Movie Selection -->
-    <!--<div class="container my-5">
-        <div class="text-center mb-5">
-            <h2 class="text-uppercase text-cgv-red fw-bold fs-1 position-relative d-inline-block pb-3 section-title">
-                Movie Selection
-            </h2>
-        </div>-->
-    <!--<div class="row g-4">-->
-    <!-- Movie Card 1 -->
-    <!--<div class="col-6 col-md-4 col-lg-2">
-        <div class="card h-100 border-0 shadow-sm hover-shadow">
-            <div class="position-relative">
-                <span class="badge bg-cgv-red position-absolute top-0 start-0 m-2 fs-6 fw-semibold">T16</span>
-                <img src="https://www.cgv.vn/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/c/g/cgv_pd_up.jpg"
-                     class="card-img-top" alt="Movie" style="height: 300px; object-fit: cover;">
-            </div>
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title small mb-3" style="height: 48px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                    QUÁI THÚ VÔ HÌNH: VÙNG ĐẤT CHẾT CHÓC
-                </h5>
-                <button class="btn btn-cgv-red w-100 mt-auto fw-semibold">Mua vé</button>
-            </div>
-        </div>
-    </div>-->
-    <!-- Movie Card 2 -->
-    <!--<div class="col-6 col-md-4 col-lg-2">
-        <div class="card h-100 border-0 shadow-sm hover-shadow">
-            <div class="position-relative">
-                <span class="badge bg-cgv-red position-absolute top-0 start-0 m-2 fs-6 fw-semibold">T13</span>
-                <img src="https://www.cgv.vn/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/_/o/_option_1_g-1_full_poster_outline_up.jpg"
-                     class="card-img-top" alt="Movie" style="height: 300px; object-fit: cover;">
-            </div>
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title small mb-3" style="height: 48px; overflow: hidden;">
-                    GODZILLA MINUS ONE
-                </h5>
-                <button class="btn btn-cgv-red w-100 mt-auto fw-semibold">Mua vé</button>
-            </div>
-        </div>
-    </div>-->
-    <!-- Movie Card 3 -->
-    <!--<div class="col-6 col-md-4 col-lg-2">
-        <div class="card h-100 border-0 shadow-sm hover-shadow">
-            <div class="position-relative">
-                <span class="badge bg-cgv-red position-absolute top-0 start-0 m-2 fs-6 fw-semibold">T13</span>
-                <img src="https://www.cgv.vn/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/7/0/700x1000-peemak.jpg"
-                     class="card-img-top" alt="Movie" style="height: 300px; object-fit: cover;">
-            </div>
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title small mb-3" style="height: 48px; overflow: hidden;">
-                    TÌNH NGƯỜI DUYÊN MA 2025
-                </h5>
-                <button class="btn btn-cgv-red w-100 mt-auto fw-semibold">Mua vé</button>
-            </div>
-        </div>
-    </div>-->
-    <!-- Movie Card 4 -->
-    <!--<div class="col-6 col-md-4 col-lg-2">
-        <div class="card h-100 border-0 shadow-sm hover-shadow">
-            <div class="position-relative">
-                <span class="badge bg-cgv-red position-absolute top-0 start-0 m-2 fs-6 fw-semibold">K</span>
-                <img src="https://www.cgv.vn/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/m/o/mo-dom-dom.jpg"
-                     class="card-img-top" alt="Movie" style="height: 300px; object-fit: cover;">
-            </div>
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title small mb-3" style="height: 48px; overflow: hidden;">
-                    MỘ ĐOM ĐÓM (CHIẾU LẠI)
-                </h5>
-                <button class="btn btn-cgv-red w-100 mt-auto fw-semibold">Mua vé</button>
-            </div>
-        </div>
-    </div>-->
-    <!-- Movie Card 5 -->
-    <!--<div class="col-6 col-md-4 col-lg-2">
-        <div class="card h-100 border-0 shadow-sm hover-shadow">
-            <div class="position-relative">
-                <span class="badge bg-cgv-red position-absolute top-0 start-0 m-2 fs-6 fw-semibold">T16</span>
-                <img src="https://www.cgv.vn/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/6/7/675wx1000h_1.jpg"
-                     class="card-img-top" alt="Movie" style="height: 300px; object-fit: cover;">
-            </div>
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title small mb-3" style="height: 48px; overflow: hidden;">
-                    CẢI MẢ
-                </h5>
-                <button class="btn btn-cgv-red w-100 mt-auto fw-semibold">Mua vé</button>
-            </div>
-        </div>
-    </div>-->
-    <!-- Movie Card 6 -->
-    <!--<div class="col-6 col-md-4 col-lg-2">
-                <div class="card h-100 border-0 shadow-sm hover-shadow">
-                    <div class="position-relative">
-                        <span class="badge bg-cgv-red position-absolute top-0 start-0 m-2 fs-6 fw-semibold">T18</span>
-                        <img src="https://www.cgv.vn/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/4/7/470x700-tbp2.jpg"
-                             class="card-img-top" alt="Movie" style="height: 300px; object-fit: cover;">
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title small mb-3" style="height: 48px; overflow: hidden;">
-                            ĐIỆN THOẠI ĐEN 2
-                        </h5>
-                        <button class="btn btn-cgv-red w-100 mt-auto fw-semibold">Mua vé</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
-    <!-- Event Section -->
-    <!--<div class="container my-5">
-        <div class="text-center mb-5">
-            <h2 class="text-uppercase text-cgv-red fw-bold fs-1 position-relative d-inline-block pb-3 section-title">
-                Event
-            </h2>
-        </div>
-
-        <ul class="nav nav-tabs border-bottom mb-4" role="tablist">
-            <li class="nav-item">
-                <button class="nav-link active fw-semibold text-dark border-0"
-                        data-bs-toggle="tab" data-bs-target="#member">
-                    Thành Viên CGV
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link fw-semibold text-dark border-0"
-                        data-bs-toggle="tab" data-bs-target="#promo">
-                    Tin Mới & Ưu Đãi
-                </button>
-            </li>
-        </ul>
-
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="member">
-                <div class="row g-4">
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="card border-0 shadow-sm hover-shadow">
-                            <img src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/2/4/240x201_14_.png"
-                                 class="card-img-top" alt="Event" style="height: 180px; object-fit: cover;">
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="card border-0 shadow-sm hover-shadow">
-                            <img src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/2/4/240x201_11_79.jpg"
-                                 class="card-img-top" alt="Event" style="height: 180px; object-fit: cover;">
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="card border-0 shadow-sm hover-shadow">
-                            <img src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/2/4/240x201_6_.png"
-                                 class="card-img-top" alt="Event" style="height: 180px; object-fit: cover;">
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="card border-0 shadow-sm hover-shadow">
-                            <img src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/2/4/240x201_2_.jpg"
-                                 class="card-img-top" alt="Event" style="height: 180px; object-fit: cover;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="promo">
-                <div class="row g-4">
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="card border-0 shadow-sm hover-shadow">
-                            <img src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/c/g/cgv_-_ncb_2025_banner_app_copy_240x201_1.png"
-                                 class="card-img-top" alt="Event" style="height: 180px; object-fit: cover;">
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="card border-0 shadow-sm hover-shadow">
-                            <img src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/2/4/240x201_7__1.png"
-                                 class="card-img-top" alt="Event" style="height: 180px; object-fit: cover;">
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="card border-0 shadow-sm hover-shadow">
-                            <img src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/n/a/napas_240x201_9__1.png"
-                                 class="card-img-top" alt="Event" style="height: 180px; object-fit: cover;">
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="card border-0 shadow-sm hover-shadow">
-                            <img src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/2/4/240x201_8_gapthu.jpg"
-                                 class="card-img-top" alt="Event" style="height: 180px; object-fit: cover;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
+    
     @RenderSection("Scripts", required: false)
     <!-- Footer -->
     <footer class="bg-cgv-dark text-white mt-5">
@@ -387,8 +244,6 @@
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    Hover Effects
     <style>
         .hover-shadow {
             transition: all 0.3s ease;

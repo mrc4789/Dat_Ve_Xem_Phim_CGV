@@ -4,16 +4,19 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QLDATVEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="QLDATVEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CHITIETDATVE">
           <Key>
             <PropertyRef Name="MAGHE" />
             <PropertyRef Name="MAVE" />
+            <PropertyRef Name="MAPHONG" />
+            <PropertyRef Name="MASUATCHIEU" />
           </Key>
           <Property Name="MAGHE" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="MAVE" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="MAPHONG" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="MASUATCHIEU" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="NGAYDAT" Type="datetime" />
-          <Property Name="TRANGTHAI" Type="nvarchar" MaxLength="30" />
         </EntityType>
         <EntityType Name="CHITIETHOADONDICHVU">
           <Key>
@@ -24,7 +27,7 @@
           <Property Name="MADV" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="SOLUONG" Type="int" />
           <Property Name="DONGIA" Type="float" />
-          <Property Name="THANHTIEN" Type="float" />
+          <Property Name="THANHTIEN" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="CHITIETHUYVE">
           <Key>
@@ -34,7 +37,7 @@
           <Property Name="MAHD" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="MAYEUCAU" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="NGAYHUY" Type="datetime" />
-          <Property Name="SOTIENHOANLAI" Type="float" />
+          <Property Name="SOTIENHOANLAI" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="CHITIETKHUYENMAI">
           <Key>
@@ -43,8 +46,15 @@
           </Key>
           <Property Name="MAKM" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="MAHD" Type="char" MaxLength="5" Nullable="false" />
-          <Property Name="SOTIENGIAM" Type="float" />
-          <Property Name="THANHTIEN" Type="float" />
+          <Property Name="SOTIENGIAM" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="THANHTIEN" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="CHUCVU">
+          <Key>
+            <PropertyRef Name="MACV" />
+          </Key>
+          <Property Name="MACV" Type="int" Nullable="false" />
+          <Property Name="TENCHUCVU" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="DICHVU">
           <Key>
@@ -55,17 +65,18 @@
           <Property Name="LOAIDV" Type="nvarchar" MaxLength="255" />
           <Property Name="MOTA" Type="nvarchar" MaxLength="255" />
           <Property Name="TRANGTHAI" Type="nvarchar" MaxLength="255" />
-          <Property Name="GIADV" Type="float" />
+          <Property Name="GIADV" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="GHE">
           <Key>
             <PropertyRef Name="MAGHE" />
+            <PropertyRef Name="MAPHONG" />
           </Key>
           <Property Name="MAGHE" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="MAPHONG" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="LOAIGHE" Type="nvarchar" MaxLength="255" />
-          <Property Name="DAYGHE" Type="char" MaxLength="256" />
-          <Property Name="PHUPHI" Type="float" />
+          <Property Name="DAYGHE" Type="char" MaxLength="5" />
+          <Property Name="PHUPHI" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="HOADON">
           <Key>
@@ -75,8 +86,8 @@
           <Property Name="MAKH" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="NGAYGD" Type="date" />
           <Property Name="MAQR" Type="nvarchar" MaxLength="255" />
-          <Property Name="VAT" Type="float" />
-          <Property Name="THANHTIEN" Type="float" />
+          <Property Name="VAT" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="THANHTIEN" Type="decimal" Precision="18" Scale="0" />
           <Property Name="TRANGTHAI" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="HUYDOIVE">
@@ -100,6 +111,7 @@
           <Property Name="HANGTHANHVIEN" Type="nvarchar" MaxLength="30" />
           <Property Name="DIEMTICHLUY" Type="int" />
           <Property Name="MATKHAU" Type="nvarchar" MaxLength="255" />
+          <Property Name="MACV" Type="int" />
         </EntityType>
         <EntityType Name="KHUYENMAI">
           <Key>
@@ -126,7 +138,7 @@
           </Key>
           <Property Name="MAHD" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="MAPT" Type="char" MaxLength="5" Nullable="false" />
-          <Property Name="SOTIENTHANHTOAN" Type="float" />
+          <Property Name="SOTIENTHANHTOAN" Type="decimal" Precision="18" Scale="0" />
           <Property Name="DIEMSUDUNG" Type="int" />
           <Property Name="NGAYGD" Type="date" />
         </EntityType>
@@ -183,16 +195,21 @@
           <Property Name="MAPHONG" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="NGAYCHIEU" Type="date" />
           <Property Name="GIOCHIEU" Type="time" Precision="7" />
-          <Property Name="GIACOBAN" Type="float" />
+          <Property Name="GIACOBAN" Type="decimal" Precision="18" Scale="0" />
           <Property Name="TRANGTHAI" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="TINHTRANGGHE">
           <Key>
             <PropertyRef Name="MAGHE" />
             <PropertyRef Name="MASUATCHIEU" />
+            <PropertyRef Name="MAPHONG" />
           </Key>
           <Property Name="MAGHE" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="MASUATCHIEU" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="MAPHONG" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="THOIGIANDAT" Type="datetime" />
+          <Property Name="MAGIUGHE" Type="char" MaxLength="50" />
+          <Property Name="MAKH" Type="char" MaxLength="5" />
           <Property Name="TINHTRANG" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="VE">
@@ -201,24 +218,14 @@
           </Key>
           <Property Name="MAVE" Type="char" MaxLength="5" Nullable="false" />
           <Property Name="MAHD" Type="char" MaxLength="5" Nullable="false" />
-          <Property Name="GIAVE" Type="float" />
+          <Property Name="MASUATCHIEU" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="MAGHE" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="MAPHONG" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="GIAVE" Type="decimal" Precision="18" Scale="0" />
           <Property Name="TRANGTHAI" Type="nvarchar" MaxLength="255" />
           <Property Name="NGAYDATVE" Type="datetime" />
           <Property Name="CHECKIN" Type="datetime" />
-          <Property Name="MAQR" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <Association Name="FK_CHITIETD_CHITIETDA_GHE">
-          <End Role="GHE" Type="Self.GHE" Multiplicity="1" />
-          <End Role="CHITIETDATVE" Type="Self.CHITIETDATVE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GHE">
-              <PropertyRef Name="MAGHE" />
-            </Principal>
-            <Dependent Role="CHITIETDATVE">
-              <PropertyRef Name="MAGHE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CHITIETD_CHITIETDA_VE">
           <End Role="VE" Type="Self.VE" Multiplicity="1" />
           <End Role="CHITIETDATVE" Type="Self.CHITIETDATVE" Multiplicity="*" />
@@ -228,6 +235,32 @@
             </Principal>
             <Dependent Role="CHITIETDATVE">
               <PropertyRef Name="MAVE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CHITIETDATVE_GHE">
+          <End Role="GHE" Type="Self.GHE" Multiplicity="1" />
+          <End Role="CHITIETDATVE" Type="Self.CHITIETDATVE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GHE">
+              <PropertyRef Name="MAPHONG" />
+              <PropertyRef Name="MAGHE" />
+            </Principal>
+            <Dependent Role="CHITIETDATVE">
+              <PropertyRef Name="MAPHONG" />
+              <PropertyRef Name="MAGHE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CHITIETDATVE_SUATCHIEU">
+          <End Role="SUATCHIEU" Type="Self.SUATCHIEU" Multiplicity="1" />
+          <End Role="CHITIETDATVE" Type="Self.CHITIETDATVE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUATCHIEU">
+              <PropertyRef Name="MASUATCHIEU" />
+            </Principal>
+            <Dependent Role="CHITIETDATVE">
+              <PropertyRef Name="MASUATCHIEU" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -327,6 +360,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_KHACHHANG_MACV">
+          <End Role="CHUCVU" Type="Self.CHUCVU" Multiplicity="0..1" />
+          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCVU">
+              <PropertyRef Name="MACV" />
+            </Principal>
+            <Dependent Role="KHACHHANG">
+              <PropertyRef Name="MACV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PHIEUTHA_PHIEUTHAN_HOADON">
           <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
           <End Role="PHIEUTHANHTOAN" Type="Self.PHIEUTHANHTOAN" Multiplicity="*" />
@@ -411,30 +456,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TINHTRANGGHE_GHE">
-          <End Role="GHE" Type="Self.GHE" Multiplicity="1" />
-          <End Role="TINHTRANGGHE" Type="Self.TINHTRANGGHE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GHE">
-              <PropertyRef Name="MAGHE" />
-            </Principal>
-            <Dependent Role="TINHTRANGGHE">
-              <PropertyRef Name="MAGHE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TINHTRANGGHE_SUATCHIEU">
-          <End Role="SUATCHIEU" Type="Self.SUATCHIEU" Multiplicity="1" />
-          <End Role="TINHTRANGGHE" Type="Self.TINHTRANGGHE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SUATCHIEU">
-              <PropertyRef Name="MASUATCHIEU" />
-            </Principal>
-            <Dependent Role="TINHTRANGGHE">
-              <PropertyRef Name="MASUATCHIEU" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_VE_RELATIONS_HOADON">
           <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
           <End Role="VE" Type="Self.VE" Multiplicity="*" />
@@ -447,11 +468,70 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_VE_RELATIONS_SUATCHIEU">
+          <End Role="SUATCHIEU" Type="Self.SUATCHIEU" Multiplicity="1" />
+          <End Role="VE" Type="Self.VE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUATCHIEU">
+              <PropertyRef Name="MASUATCHIEU" />
+            </Principal>
+            <Dependent Role="VE">
+              <PropertyRef Name="MASUATCHIEU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GiuGheTamThoi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DanhSachMaGhe" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="MaSuatChieu" Type="char" Mode="In" />
+          <Parameter Name="MAKH" Type="varchar" Mode="In" />
+          <Parameter Name="MaGiuGhe" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="HuyGheHetHan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaSuatChieu" Type="char" Mode="In" />
+        </Function>
+        <Function Name="HuyGiuGhe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaGiuGhe" Type="varchar" Mode="In" />
+          <Parameter Name="MAKH" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="KiemTraTrangThaiGhe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DanhSachMaGhe" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="MaSuatChieu" Type="char" Mode="In" />
+        </Function>
+        <Function Name="LayDanhSachGhe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaSuatChieu" Type="char" Mode="In" />
+        </Function>
+        <Function Name="LayThongTinGhe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DanhSachMaGhe" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SinhGheChoPhong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaPhong" Type="char" Mode="In" />
+        </Function>
+        <Function Name="SinhTinhTrangGhe_All" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaSuatChieu" Type="char" Mode="In" />
+        </Function>
+        <Function Name="sp_UpdateNgayChieuTheoKhoang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Tu" Type="int" Mode="In" />
+          <Parameter Name="Den" Type="int" Mode="In" />
+          <Parameter Name="NgayChieu" Type="date" Mode="In" />
+        </Function>
+        <Function Name="ThanhToan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaGiuGhe" Type="varchar" Mode="In" />
+          <Parameter Name="MaKhachHang" Type="char" Mode="In" />
+          <Parameter Name="MaSuatChieu" Type="char" Mode="In" />
+          <Parameter Name="TongTien" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="TraCuuLichChieu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NgayChieu" Type="date" Mode="In" />
+          <Parameter Name="MaLoai" Type="char" Mode="In" />
+          <Parameter Name="DiaChi" Type="nvarchar" Mode="In" />
+          <Parameter Name="MaPhim" Type="char" Mode="In" />
+        </Function>
         <EntityContainer Name="QLDATVEModelStoreContainer">
           <EntitySet Name="CHITIETDATVE" EntityType="Self.CHITIETDATVE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CHITIETHOADONDICHVU" EntityType="Self.CHITIETHOADONDICHVU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CHITIETHUYVE" EntityType="Self.CHITIETHUYVE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CHITIETKHUYENMAI" EntityType="Self.CHITIETKHUYENMAI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CHUCVU" EntityType="Self.CHUCVU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DICHVU" EntityType="Self.DICHVU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GHE" EntityType="Self.GHE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HOADON" EntityType="Self.HOADON" Schema="dbo" store:Type="Tables" />
@@ -467,12 +547,16 @@
           <EntitySet Name="SUATCHIEU" EntityType="Self.SUATCHIEU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TINHTRANGGHE" EntityType="Self.TINHTRANGGHE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VE" EntityType="Self.VE" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_CHITIETD_CHITIETDA_GHE" Association="Self.FK_CHITIETD_CHITIETDA_GHE">
+          <AssociationSet Name="FK_CHITIETD_CHITIETDA_VE" Association="Self.FK_CHITIETD_CHITIETDA_VE">
+            <End Role="VE" EntitySet="VE" />
+            <End Role="CHITIETDATVE" EntitySet="CHITIETDATVE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CHITIETDATVE_GHE" Association="Self.FK_CHITIETDATVE_GHE">
             <End Role="GHE" EntitySet="GHE" />
             <End Role="CHITIETDATVE" EntitySet="CHITIETDATVE" />
           </AssociationSet>
-          <AssociationSet Name="FK_CHITIETD_CHITIETDA_VE" Association="Self.FK_CHITIETD_CHITIETDA_VE">
-            <End Role="VE" EntitySet="VE" />
+          <AssociationSet Name="FK_CHITIETDATVE_SUATCHIEU" Association="Self.FK_CHITIETDATVE_SUATCHIEU">
+            <End Role="SUATCHIEU" EntitySet="SUATCHIEU" />
             <End Role="CHITIETDATVE" EntitySet="CHITIETDATVE" />
           </AssociationSet>
           <AssociationSet Name="FK_CHITIETH_CHITIETHO_DICHVU" Association="Self.FK_CHITIETH_CHITIETHO_DICHVU">
@@ -507,6 +591,10 @@
             <End Role="KHACHHANG" EntitySet="KHACHHANG" />
             <End Role="HOADON" EntitySet="HOADON" />
           </AssociationSet>
+          <AssociationSet Name="FK_KHACHHANG_MACV" Association="Self.FK_KHACHHANG_MACV">
+            <End Role="CHUCVU" EntitySet="CHUCVU" />
+            <End Role="KHACHHANG" EntitySet="KHACHHANG" />
+          </AssociationSet>
           <AssociationSet Name="FK_PHIEUTHA_PHIEUTHAN_HOADON" Association="Self.FK_PHIEUTHA_PHIEUTHAN_HOADON">
             <End Role="HOADON" EntitySet="HOADON" />
             <End Role="PHIEUTHANHTOAN" EntitySet="PHIEUTHANHTOAN" />
@@ -535,16 +623,12 @@
             <End Role="PHONGCHIEU" EntitySet="PHONGCHIEU" />
             <End Role="SUATCHIEU" EntitySet="SUATCHIEU" />
           </AssociationSet>
-          <AssociationSet Name="FK_TINHTRANGGHE_GHE" Association="Self.FK_TINHTRANGGHE_GHE">
-            <End Role="GHE" EntitySet="GHE" />
-            <End Role="TINHTRANGGHE" EntitySet="TINHTRANGGHE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TINHTRANGGHE_SUATCHIEU" Association="Self.FK_TINHTRANGGHE_SUATCHIEU">
-            <End Role="SUATCHIEU" EntitySet="SUATCHIEU" />
-            <End Role="TINHTRANGGHE" EntitySet="TINHTRANGGHE" />
-          </AssociationSet>
           <AssociationSet Name="FK_VE_RELATIONS_HOADON" Association="Self.FK_VE_RELATIONS_HOADON">
             <End Role="HOADON" EntitySet="HOADON" />
+            <End Role="VE" EntitySet="VE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VE_RELATIONS_SUATCHIEU" Association="Self.FK_VE_RELATIONS_SUATCHIEU">
+            <End Role="SUATCHIEU" EntitySet="SUATCHIEU" />
             <End Role="VE" EntitySet="VE" />
           </AssociationSet>
         </EntityContainer>
@@ -557,13 +641,17 @@
           <Key>
             <PropertyRef Name="MAGHE" />
             <PropertyRef Name="MAVE" />
+            <PropertyRef Name="MAPHONG" />
+            <PropertyRef Name="MASUATCHIEU" />
           </Key>
           <Property Name="MAGHE" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="MAVE" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="MAPHONG" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="MASUATCHIEU" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="NGAYDAT" Type="DateTime" Precision="3" />
-          <Property Name="TRANGTHAI" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="GHE" Relationship="Self.FK_CHITIETD_CHITIETDA_GHE" FromRole="CHITIETDATVE" ToRole="GHE" />
           <NavigationProperty Name="VE" Relationship="Self.FK_CHITIETD_CHITIETDA_VE" FromRole="CHITIETDATVE" ToRole="VE" />
+          <NavigationProperty Name="GHE" Relationship="Self.FK_CHITIETDATVE_GHE" FromRole="CHITIETDATVE" ToRole="GHE" />
+          <NavigationProperty Name="SUATCHIEU" Relationship="Self.FK_CHITIETDATVE_SUATCHIEU" FromRole="CHITIETDATVE" ToRole="SUATCHIEU" />
         </EntityType>
         <EntityType Name="CHITIETHOADONDICHVU">
           <Key>
@@ -574,7 +662,7 @@
           <Property Name="MADV" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="SOLUONG" Type="Int32" />
           <Property Name="DONGIA" Type="Double" />
-          <Property Name="THANHTIEN" Type="Double" />
+          <Property Name="THANHTIEN" Type="Decimal" Precision="18" Scale="0" />
           <NavigationProperty Name="DICHVU" Relationship="Self.FK_CHITIETH_CHITIETHO_DICHVU" FromRole="CHITIETHOADONDICHVU" ToRole="DICHVU" />
           <NavigationProperty Name="HOADON" Relationship="Self.FK_CHITIETH_CHITIETHO_HOADON" FromRole="CHITIETHOADONDICHVU" ToRole="HOADON" />
         </EntityType>
@@ -586,7 +674,7 @@
           <Property Name="MAHD" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="MAYEUCAU" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="NGAYHUY" Type="DateTime" Precision="3" />
-          <Property Name="SOTIENHOANLAI" Type="Double" />
+          <Property Name="SOTIENHOANLAI" Type="Decimal" Precision="18" Scale="0" />
           <NavigationProperty Name="HOADON" Relationship="Self.FK_CHITIETH_CHITIETHU_HOADON" FromRole="CHITIETHUYVE" ToRole="HOADON" />
           <NavigationProperty Name="HUYDOIVE" Relationship="Self.FK_CHITIETH_CHITIETHU_HUYDOIVE" FromRole="CHITIETHUYVE" ToRole="HUYDOIVE" />
         </EntityType>
@@ -597,10 +685,18 @@
           </Key>
           <Property Name="MAKM" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="MAHD" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="SOTIENGIAM" Type="Double" />
-          <Property Name="THANHTIEN" Type="Double" />
+          <Property Name="SOTIENGIAM" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="THANHTIEN" Type="Decimal" Precision="18" Scale="0" />
           <NavigationProperty Name="HOADON" Relationship="Self.FK_CHITIETK_CHITIETKH_HOADON" FromRole="CHITIETKHUYENMAI" ToRole="HOADON" />
           <NavigationProperty Name="KHUYENMAI" Relationship="Self.FK_CHITIETK_CHITIETKH_KHUYENMA" FromRole="CHITIETKHUYENMAI" ToRole="KHUYENMAI" />
+        </EntityType>
+        <EntityType Name="CHUCVU">
+          <Key>
+            <PropertyRef Name="MACV" />
+          </Key>
+          <Property Name="MACV" Type="Int32" Nullable="false" />
+          <Property Name="TENCHUCVU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="KHACHHANGs" Relationship="Self.FK_KHACHHANG_MACV" FromRole="CHUCVU" ToRole="KHACHHANG" />
         </EntityType>
         <EntityType Name="DICHVU">
           <Key>
@@ -611,21 +707,21 @@
           <Property Name="LOAIDV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MOTA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="TRANGTHAI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="GIADV" Type="Double" />
+          <Property Name="GIADV" Type="Decimal" Precision="18" Scale="0" />
           <NavigationProperty Name="CHITIETHOADONDICHVUs" Relationship="Self.FK_CHITIETH_CHITIETHO_DICHVU" FromRole="DICHVU" ToRole="CHITIETHOADONDICHVU" />
         </EntityType>
         <EntityType Name="GHE">
           <Key>
             <PropertyRef Name="MAGHE" />
+            <PropertyRef Name="MAPHONG" />
           </Key>
           <Property Name="MAGHE" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="MAPHONG" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="LOAIGHE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DAYGHE" Type="String" MaxLength="256" FixedLength="true" Unicode="false" />
-          <Property Name="PHUPHI" Type="Double" />
-          <NavigationProperty Name="CHITIETDATVEs" Relationship="Self.FK_CHITIETD_CHITIETDA_GHE" FromRole="GHE" ToRole="CHITIETDATVE" />
+          <Property Name="DAYGHE" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="PHUPHI" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="CHITIETDATVEs" Relationship="Self.FK_CHITIETDATVE_GHE" FromRole="GHE" ToRole="CHITIETDATVE" />
           <NavigationProperty Name="PHONGCHIEU" Relationship="Self.FK_GHE_RELATIONS_PHONGCHI" FromRole="GHE" ToRole="PHONGCHIEU" />
-          <NavigationProperty Name="TINHTRANGGHEs" Relationship="Self.FK_TINHTRANGGHE_GHE" FromRole="GHE" ToRole="TINHTRANGGHE" />
         </EntityType>
         <EntityType Name="HOADON">
           <Key>
@@ -635,8 +731,8 @@
           <Property Name="MAKH" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="NGAYGD" Type="DateTime" Precision="0" />
           <Property Name="MAQR" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="VAT" Type="Double" />
-          <Property Name="THANHTIEN" Type="Double" />
+          <Property Name="VAT" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="THANHTIEN" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="TRANGTHAI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CHITIETHOADONDICHVUs" Relationship="Self.FK_CHITIETH_CHITIETHO_HOADON" FromRole="HOADON" ToRole="CHITIETHOADONDICHVU" />
           <NavigationProperty Name="CHITIETHUYVEs" Relationship="Self.FK_CHITIETH_CHITIETHU_HOADON" FromRole="HOADON" ToRole="CHITIETHUYVE" />
@@ -667,6 +763,8 @@
           <Property Name="HANGTHANHVIEN" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="DIEMTICHLUY" Type="Int32" />
           <Property Name="MATKHAU" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MACV" Type="Int32" />
+          <NavigationProperty Name="CHUCVU" Relationship="Self.FK_KHACHHANG_MACV" FromRole="KHACHHANG" ToRole="CHUCVU" />
           <NavigationProperty Name="HOADONs" Relationship="Self.FK_HOADON_RELATIONS_KHACHHAN" FromRole="KHACHHANG" ToRole="HOADON" />
         </EntityType>
         <EntityType Name="KHUYENMAI">
@@ -696,7 +794,7 @@
           </Key>
           <Property Name="MAHD" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="MAPT" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="SOTIENTHANHTOAN" Type="Double" />
+          <Property Name="SOTIENTHANHTOAN" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="DIEMSUDUNG" Type="Int32" />
           <Property Name="NGAYGD" Type="DateTime" Precision="0" />
           <NavigationProperty Name="HOADON" Relationship="Self.FK_PHIEUTHA_PHIEUTHAN_HOADON" FromRole="PHIEUTHANHTOAN" ToRole="HOADON" />
@@ -763,23 +861,27 @@
           <Property Name="MAPHONG" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="NGAYCHIEU" Type="DateTime" Precision="0" />
           <Property Name="GIOCHIEU" Type="Time" Precision="7" />
-          <Property Name="GIACOBAN" Type="Double" />
+          <Property Name="GIACOBAN" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="TRANGTHAI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CHITIETDATVEs" Relationship="Self.FK_CHITIETDATVE_SUATCHIEU" FromRole="SUATCHIEU" ToRole="CHITIETDATVE" />
           <NavigationProperty Name="PHIM" Relationship="Self.FK_SUATCHIE_RELATIONS_PHIM" FromRole="SUATCHIEU" ToRole="PHIM" />
           <NavigationProperty Name="PHONGCHIEU" Relationship="Self.FK_SUATCHIEU_PHONGCHIEU" FromRole="SUATCHIEU" ToRole="PHONGCHIEU" />
           <NavigationProperty Name="RAP" Relationship="Self.FK_SUATCHIE_RELATIONS_RAP" FromRole="SUATCHIEU" ToRole="RAP" />
-          <NavigationProperty Name="TINHTRANGGHEs" Relationship="Self.FK_TINHTRANGGHE_SUATCHIEU" FromRole="SUATCHIEU" ToRole="TINHTRANGGHE" />
+          <NavigationProperty Name="VEs" Relationship="Self.FK_VE_RELATIONS_SUATCHIEU" FromRole="SUATCHIEU" ToRole="VE" />
         </EntityType>
         <EntityType Name="TINHTRANGGHE">
           <Key>
             <PropertyRef Name="MAGHE" />
             <PropertyRef Name="MASUATCHIEU" />
+            <PropertyRef Name="MAPHONG" />
           </Key>
           <Property Name="MAGHE" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="MASUATCHIEU" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="MAPHONG" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="THOIGIANDAT" Type="DateTime" Precision="3" />
+          <Property Name="MAGIUGHE" Type="String" MaxLength="50" FixedLength="true" Unicode="false" />
+          <Property Name="MAKH" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
           <Property Name="TINHTRANG" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="GHE" Relationship="Self.FK_TINHTRANGGHE_GHE" FromRole="TINHTRANGGHE" ToRole="GHE" />
-          <NavigationProperty Name="SUATCHIEU" Relationship="Self.FK_TINHTRANGGHE_SUATCHIEU" FromRole="TINHTRANGGHE" ToRole="SUATCHIEU" />
         </EntityType>
         <EntityType Name="VE">
           <Key>
@@ -787,26 +889,17 @@
           </Key>
           <Property Name="MAVE" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="MAHD" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="GIAVE" Type="Double" />
+          <Property Name="MASUATCHIEU" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="MAGHE" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="MAPHONG" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="GIAVE" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="TRANGTHAI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="NGAYDATVE" Type="DateTime" Precision="3" />
           <Property Name="CHECKIN" Type="DateTime" Precision="3" />
-          <Property Name="MAQR" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CHITIETDATVEs" Relationship="Self.FK_CHITIETD_CHITIETDA_VE" FromRole="VE" ToRole="CHITIETDATVE" />
           <NavigationProperty Name="HOADON" Relationship="Self.FK_VE_RELATIONS_HOADON" FromRole="VE" ToRole="HOADON" />
+          <NavigationProperty Name="SUATCHIEU" Relationship="Self.FK_VE_RELATIONS_SUATCHIEU" FromRole="VE" ToRole="SUATCHIEU" />
         </EntityType>
-        <Association Name="FK_CHITIETD_CHITIETDA_GHE">
-          <End Role="GHE" Type="Self.GHE" Multiplicity="1" />
-          <End Role="CHITIETDATVE" Type="Self.CHITIETDATVE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GHE">
-              <PropertyRef Name="MAGHE" />
-            </Principal>
-            <Dependent Role="CHITIETDATVE">
-              <PropertyRef Name="MAGHE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CHITIETD_CHITIETDA_VE">
           <End Role="VE" Type="Self.VE" Multiplicity="1" />
           <End Role="CHITIETDATVE" Type="Self.CHITIETDATVE" Multiplicity="*" />
@@ -816,6 +909,32 @@
             </Principal>
             <Dependent Role="CHITIETDATVE">
               <PropertyRef Name="MAVE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CHITIETDATVE_GHE">
+          <End Role="GHE" Type="Self.GHE" Multiplicity="1" />
+          <End Role="CHITIETDATVE" Type="Self.CHITIETDATVE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GHE">
+              <PropertyRef Name="MAPHONG" />
+              <PropertyRef Name="MAGHE" />
+            </Principal>
+            <Dependent Role="CHITIETDATVE">
+              <PropertyRef Name="MAPHONG" />
+              <PropertyRef Name="MAGHE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CHITIETDATVE_SUATCHIEU">
+          <End Role="SUATCHIEU" Type="Self.SUATCHIEU" Multiplicity="1" />
+          <End Role="CHITIETDATVE" Type="Self.CHITIETDATVE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUATCHIEU">
+              <PropertyRef Name="MASUATCHIEU" />
+            </Principal>
+            <Dependent Role="CHITIETDATVE">
+              <PropertyRef Name="MASUATCHIEU" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -891,6 +1010,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_KHACHHANG_MACV">
+          <End Role="CHUCVU" Type="Self.CHUCVU" Multiplicity="0..1" />
+          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCVU">
+              <PropertyRef Name="MACV" />
+            </Principal>
+            <Dependent Role="KHACHHANG">
+              <PropertyRef Name="MACV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_GHE_RELATIONS_PHONGCHI">
           <End Role="PHONGCHIEU" Type="Self.PHONGCHIEU" Multiplicity="1" />
           <End Role="GHE" Type="Self.GHE" Multiplicity="*" />
@@ -900,18 +1031,6 @@
             </Principal>
             <Dependent Role="GHE">
               <PropertyRef Name="MAPHONG" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TINHTRANGGHE_GHE">
-          <End Role="GHE" Type="Self.GHE" Multiplicity="1" />
-          <End Role="TINHTRANGGHE" Type="Self.TINHTRANGGHE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GHE">
-              <PropertyRef Name="MAGHE" />
-            </Principal>
-            <Dependent Role="TINHTRANGGHE">
-              <PropertyRef Name="MAGHE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1023,14 +1142,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TINHTRANGGHE_SUATCHIEU">
+        <Association Name="FK_VE_RELATIONS_SUATCHIEU">
           <End Role="SUATCHIEU" Type="Self.SUATCHIEU" Multiplicity="1" />
-          <End Role="TINHTRANGGHE" Type="Self.TINHTRANGGHE" Multiplicity="*" />
+          <End Role="VE" Type="Self.VE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SUATCHIEU">
               <PropertyRef Name="MASUATCHIEU" />
             </Principal>
-            <Dependent Role="TINHTRANGGHE">
+            <Dependent Role="VE">
               <PropertyRef Name="MASUATCHIEU" />
             </Dependent>
           </ReferentialConstraint>
@@ -1040,6 +1159,7 @@
           <EntitySet Name="CHITIETHOADONDICHVUs" EntityType="Self.CHITIETHOADONDICHVU" />
           <EntitySet Name="CHITIETHUYVEs" EntityType="Self.CHITIETHUYVE" />
           <EntitySet Name="CHITIETKHUYENMAIs" EntityType="Self.CHITIETKHUYENMAI" />
+          <EntitySet Name="CHUCVUs" EntityType="Self.CHUCVU" />
           <EntitySet Name="DICHVUs" EntityType="Self.DICHVU" />
           <EntitySet Name="GHEs" EntityType="Self.GHE" />
           <EntitySet Name="HOADONs" EntityType="Self.HOADON" />
@@ -1055,12 +1175,16 @@
           <EntitySet Name="SUATCHIEUx" EntityType="Self.SUATCHIEU" />
           <EntitySet Name="TINHTRANGGHEs" EntityType="Self.TINHTRANGGHE" />
           <EntitySet Name="VEs" EntityType="Self.VE" />
-          <AssociationSet Name="FK_CHITIETD_CHITIETDA_GHE" Association="Self.FK_CHITIETD_CHITIETDA_GHE">
+          <AssociationSet Name="FK_CHITIETD_CHITIETDA_VE" Association="Self.FK_CHITIETD_CHITIETDA_VE">
+            <End Role="VE" EntitySet="VEs" />
+            <End Role="CHITIETDATVE" EntitySet="CHITIETDATVEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CHITIETDATVE_GHE" Association="Self.FK_CHITIETDATVE_GHE">
             <End Role="GHE" EntitySet="GHEs" />
             <End Role="CHITIETDATVE" EntitySet="CHITIETDATVEs" />
           </AssociationSet>
-          <AssociationSet Name="FK_CHITIETD_CHITIETDA_VE" Association="Self.FK_CHITIETD_CHITIETDA_VE">
-            <End Role="VE" EntitySet="VEs" />
+          <AssociationSet Name="FK_CHITIETDATVE_SUATCHIEU" Association="Self.FK_CHITIETDATVE_SUATCHIEU">
+            <End Role="SUATCHIEU" EntitySet="SUATCHIEUx" />
             <End Role="CHITIETDATVE" EntitySet="CHITIETDATVEs" />
           </AssociationSet>
           <AssociationSet Name="FK_CHITIETH_CHITIETHO_DICHVU" Association="Self.FK_CHITIETH_CHITIETHO_DICHVU">
@@ -1087,13 +1211,13 @@
             <End Role="KHUYENMAI" EntitySet="KHUYENMAIs" />
             <End Role="CHITIETKHUYENMAI" EntitySet="CHITIETKHUYENMAIs" />
           </AssociationSet>
+          <AssociationSet Name="FK_KHACHHANG_MACV" Association="Self.FK_KHACHHANG_MACV">
+            <End Role="CHUCVU" EntitySet="CHUCVUs" />
+            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
+          </AssociationSet>
           <AssociationSet Name="FK_GHE_RELATIONS_PHONGCHI" Association="Self.FK_GHE_RELATIONS_PHONGCHI">
             <End Role="PHONGCHIEU" EntitySet="PHONGCHIEUx" />
             <End Role="GHE" EntitySet="GHEs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TINHTRANGGHE_GHE" Association="Self.FK_TINHTRANGGHE_GHE">
-            <End Role="GHE" EntitySet="GHEs" />
-            <End Role="TINHTRANGGHE" EntitySet="TINHTRANGGHEs" />
           </AssociationSet>
           <AssociationSet Name="FK_HOADON_RELATIONS_KHACHHAN" Association="Self.FK_HOADON_RELATIONS_KHACHHAN">
             <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
@@ -1131,11 +1255,87 @@
             <End Role="RAP" EntitySet="RAPs" />
             <End Role="SUATCHIEU" EntitySet="SUATCHIEUx" />
           </AssociationSet>
-          <AssociationSet Name="FK_TINHTRANGGHE_SUATCHIEU" Association="Self.FK_TINHTRANGGHE_SUATCHIEU">
+          <AssociationSet Name="FK_VE_RELATIONS_SUATCHIEU" Association="Self.FK_VE_RELATIONS_SUATCHIEU">
             <End Role="SUATCHIEU" EntitySet="SUATCHIEUx" />
-            <End Role="TINHTRANGGHE" EntitySet="TINHTRANGGHEs" />
+            <End Role="VE" EntitySet="VEs" />
           </AssociationSet>
+          <FunctionImport Name="GiuGheTamThoi" ReturnType="Collection(Int32)">
+            <Parameter Name="DanhSachMaGhe" Mode="In" Type="String" />
+            <Parameter Name="MaSuatChieu" Mode="In" Type="String" />
+            <Parameter Name="MAKH" Mode="In" Type="String" />
+            <Parameter Name="MaGiuGhe" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="HuyGheHetHan" ReturnType="Collection(Int32)">
+            <Parameter Name="MaSuatChieu" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="HuyGiuGhe" ReturnType="Collection(Int32)">
+            <Parameter Name="MaGiuGhe" Mode="In" Type="String" />
+            <Parameter Name="MAKH" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="KiemTraTrangThaiGhe" ReturnType="Collection(Int32)">
+            <Parameter Name="DanhSachMaGhe" Mode="In" Type="String" />
+            <Parameter Name="MaSuatChieu" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="LayDanhSachGhe" ReturnType="Collection(QLDATVEModel.LayDanhSachGhe_Result)">
+            <Parameter Name="MaSuatChieu" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="LayThongTinGhe" ReturnType="Collection(QLDATVEModel.LayThongTinGhe_Result)">
+            <Parameter Name="DanhSachMaGhe" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SinhGheChoPhong">
+            <Parameter Name="MaPhong" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SinhTinhTrangGhe_All">
+            <Parameter Name="MaSuatChieu" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UpdateNgayChieuTheoKhoang">
+            <Parameter Name="Tu" Mode="In" Type="Int32" />
+            <Parameter Name="Den" Mode="In" Type="Int32" />
+            <Parameter Name="NgayChieu" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="ThanhToan" ReturnType="Collection(QLDATVEModel.ThanhToan_Result)">
+            <Parameter Name="MaGiuGhe" Mode="In" Type="String" />
+            <Parameter Name="MaKhachHang" Mode="In" Type="String" />
+            <Parameter Name="MaSuatChieu" Mode="In" Type="String" />
+            <Parameter Name="TongTien" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="TraCuuLichChieu" ReturnType="Collection(QLDATVEModel.TraCuuLichChieu_Result)">
+            <Parameter Name="NgayChieu" Mode="In" Type="DateTime" />
+            <Parameter Name="MaLoai" Mode="In" Type="String" />
+            <Parameter Name="DiaChi" Mode="In" Type="String" />
+            <Parameter Name="MaPhim" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="LayDanhSachGhe_Result">
+          <Property Type="String" Name="MAGHE" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="MAPHONG" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="LOAIGHE" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="DAYGHE" Nullable="true" MaxLength="5" />
+          <Property Type="String" Name="SOGHE" Nullable="true" MaxLength="5" />
+          <Property Type="Int32" Name="COT" Nullable="true" />
+          <Property Type="Int32" Name="HANG" Nullable="true" />
+          <Property Type="Decimal" Name="PHUPHI" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="String" Name="TINHTRANG" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="LayThongTinGhe_Result">
+          <Property Type="String" Name="MAGHE" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="LOAIGHE" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="DAYGHE" Nullable="true" MaxLength="5" />
+          <Property Type="Decimal" Name="PHUPHI" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="String" Name="MAPHONG" Nullable="false" MaxLength="5" />
+        </ComplexType>
+        <ComplexType Name="ThanhToan_Result">
+          <Property Type="Int32" Name="Success" Nullable="false" />
+          <Property Type="String" Name="Message" Nullable="false" MaxLength="26" />
+        </ComplexType>
+        <ComplexType Name="TraCuuLichChieu_Result">
+          <Property Type="String" Name="TENPHIM" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="DINHDANG" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TENRAP" Nullable="true" MaxLength="255" />
+          <Property Type="Time" Name="GIOCHIEU" Nullable="true" />
+          <Property Type="Decimal" Name="GIACOBAN" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="String" Name="MASUATCHIEU" Nullable="false" MaxLength="5" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1147,8 +1347,9 @@
               <MappingFragment StoreEntitySet="CHITIETDATVE">
                 <ScalarProperty Name="MAGHE" ColumnName="MAGHE" />
                 <ScalarProperty Name="MAVE" ColumnName="MAVE" />
+                <ScalarProperty Name="MAPHONG" ColumnName="MAPHONG" />
+                <ScalarProperty Name="MASUATCHIEU" ColumnName="MASUATCHIEU" />
                 <ScalarProperty Name="NGAYDAT" ColumnName="NGAYDAT" />
-                <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1180,6 +1381,14 @@
                 <ScalarProperty Name="MAHD" ColumnName="MAHD" />
                 <ScalarProperty Name="SOTIENGIAM" ColumnName="SOTIENGIAM" />
                 <ScalarProperty Name="THANHTIEN" ColumnName="THANHTIEN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CHUCVUs">
+            <EntityTypeMapping TypeName="QLDATVEModel.CHUCVU">
+              <MappingFragment StoreEntitySet="CHUCVU">
+                <ScalarProperty Name="MACV" ColumnName="MACV" />
+                <ScalarProperty Name="TENCHUCVU" ColumnName="TENCHUCVU" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1240,6 +1449,7 @@
                 <ScalarProperty Name="HANGTHANHVIEN" ColumnName="HANGTHANHVIEN" />
                 <ScalarProperty Name="DIEMTICHLUY" ColumnName="DIEMTICHLUY" />
                 <ScalarProperty Name="MATKHAU" ColumnName="MATKHAU" />
+                <ScalarProperty Name="MACV" ColumnName="MACV" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1340,6 +1550,10 @@
               <MappingFragment StoreEntitySet="TINHTRANGGHE">
                 <ScalarProperty Name="MAGHE" ColumnName="MAGHE" />
                 <ScalarProperty Name="MASUATCHIEU" ColumnName="MASUATCHIEU" />
+                <ScalarProperty Name="MAPHONG" ColumnName="MAPHONG" />
+                <ScalarProperty Name="THOIGIANDAT" ColumnName="THOIGIANDAT" />
+                <ScalarProperty Name="MAGIUGHE" ColumnName="MAGIUGHE" />
+                <ScalarProperty Name="MAKH" ColumnName="MAKH" />
                 <ScalarProperty Name="TINHTRANG" ColumnName="TINHTRANG" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1349,14 +1563,69 @@
               <MappingFragment StoreEntitySet="VE">
                 <ScalarProperty Name="MAVE" ColumnName="MAVE" />
                 <ScalarProperty Name="MAHD" ColumnName="MAHD" />
+                <ScalarProperty Name="MASUATCHIEU" ColumnName="MASUATCHIEU" />
+                <ScalarProperty Name="MAGHE" ColumnName="MAGHE" />
+                <ScalarProperty Name="MAPHONG" ColumnName="MAPHONG" />
                 <ScalarProperty Name="GIAVE" ColumnName="GIAVE" />
                 <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
                 <ScalarProperty Name="NGAYDATVE" ColumnName="NGAYDATVE" />
                 <ScalarProperty Name="CHECKIN" ColumnName="CHECKIN" />
-                <ScalarProperty Name="MAQR" ColumnName="MAQR" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GiuGheTamThoi" FunctionName="QLDATVEModel.Store.GiuGheTamThoi" />
+          <FunctionImportMapping FunctionImportName="HuyGheHetHan" FunctionName="QLDATVEModel.Store.HuyGheHetHan" />
+          <FunctionImportMapping FunctionImportName="HuyGiuGhe" FunctionName="QLDATVEModel.Store.HuyGiuGhe" />
+          <FunctionImportMapping FunctionImportName="KiemTraTrangThaiGhe" FunctionName="QLDATVEModel.Store.KiemTraTrangThaiGhe" />
+          <FunctionImportMapping FunctionImportName="LayDanhSachGhe" FunctionName="QLDATVEModel.Store.LayDanhSachGhe">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLDATVEModel.LayDanhSachGhe_Result">
+                <ScalarProperty Name="MAGHE" ColumnName="MAGHE" />
+                <ScalarProperty Name="MAPHONG" ColumnName="MAPHONG" />
+                <ScalarProperty Name="LOAIGHE" ColumnName="LOAIGHE" />
+                <ScalarProperty Name="DAYGHE" ColumnName="DAYGHE" />
+                <ScalarProperty Name="SOGHE" ColumnName="SOGHE" />
+                <ScalarProperty Name="COT" ColumnName="COT" />
+                <ScalarProperty Name="HANG" ColumnName="HANG" />
+                <ScalarProperty Name="PHUPHI" ColumnName="PHUPHI" />
+                <ScalarProperty Name="TINHTRANG" ColumnName="TINHTRANG" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="LayThongTinGhe" FunctionName="QLDATVEModel.Store.LayThongTinGhe">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLDATVEModel.LayThongTinGhe_Result">
+                <ScalarProperty Name="MAGHE" ColumnName="MAGHE" />
+                <ScalarProperty Name="LOAIGHE" ColumnName="LOAIGHE" />
+                <ScalarProperty Name="DAYGHE" ColumnName="DAYGHE" />
+                <ScalarProperty Name="PHUPHI" ColumnName="PHUPHI" />
+                <ScalarProperty Name="MAPHONG" ColumnName="MAPHONG" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SinhGheChoPhong" FunctionName="QLDATVEModel.Store.SinhGheChoPhong" />
+          <FunctionImportMapping FunctionImportName="SinhTinhTrangGhe_All" FunctionName="QLDATVEModel.Store.SinhTinhTrangGhe_All" />
+          <FunctionImportMapping FunctionImportName="sp_UpdateNgayChieuTheoKhoang" FunctionName="QLDATVEModel.Store.sp_UpdateNgayChieuTheoKhoang" />
+          <FunctionImportMapping FunctionImportName="ThanhToan" FunctionName="QLDATVEModel.Store.ThanhToan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLDATVEModel.ThanhToan_Result">
+                <ScalarProperty Name="Success" ColumnName="Success" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="TraCuuLichChieu" FunctionName="QLDATVEModel.Store.TraCuuLichChieu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLDATVEModel.TraCuuLichChieu_Result">
+                <ScalarProperty Name="TENPHIM" ColumnName="TENPHIM" />
+                <ScalarProperty Name="DINHDANG" ColumnName="DINHDANG" />
+                <ScalarProperty Name="TENRAP" ColumnName="TENRAP" />
+                <ScalarProperty Name="GIOCHIEU" ColumnName="GIOCHIEU" />
+                <ScalarProperty Name="GIACOBAN" ColumnName="GIACOBAN" />
+                <ScalarProperty Name="MASUATCHIEU" ColumnName="MASUATCHIEU" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1373,7 +1642,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>

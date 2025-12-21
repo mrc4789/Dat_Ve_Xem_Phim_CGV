@@ -1,0 +1,28 @@
+﻿@{
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    string loai = ViewBag.Loai ?? "tatca";
+}
+
+@if (totalPages > 1)
+{
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="?loai=@loai&page=@(currentPage - 1)" @(currentPage == 1 ? "tabindex=-1" : "")>Trước</a>
+            </li>
+
+            @{ int start = Math.Max(1, currentPage - 2); int end = Math.Min(totalPages, currentPage + 2); }
+            @for (int i = start; i <= end; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="?loai=@loai&page=@i">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" href="?loai=@loai&page=@(currentPage + 1)" @(currentPage == totalPages ? "tabindex=-1" : "")>Sau</a>
+            </li>
+        </ul>
+    </nav>
+}

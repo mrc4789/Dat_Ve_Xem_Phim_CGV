@@ -1,0 +1,172 @@
+﻿@model Dat_Ve_Xem_Phim_CGV.Models.PHIM
+@{
+    ViewBag.Title = "Chỉnh sửa phim";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<style>
+    /* Xử lý màu chữ cho Dropdown Trạng thái */
+    select option {
+        background-color: #1e293b; /* surface-dark */
+        color: white; /* Màu chữ hiển thị trong danh sách */
+        padding: 10px;
+    }
+
+    /* Đảm bảo text trong input luôn trắng */
+    input, select, textarea {
+        color: white !important;
+    }
+
+        /* Tùy chỉnh thanh cuộn cho dropdown nếu danh sách dài */
+        select::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        select::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+</style>
+
+
+<div class="max-w-5xl mx-auto p-6">
+    <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-4">
+            <a href="@Url.Action("QuanLyPhim")" class="p-2 rounded-full hover:bg-surface-highlight text-slate-400 hover:text-white transition-all">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <div>
+                <h1 class="text-2xl font-bold text-white tracking-tight">Chỉnh sửa phim</h1>
+                <p class="text-slate-400 text-sm">Cập nhật thông tin cho mã phim: <span class="text-primary font-mono font-bold">@Model.MAPHIM</span></p>
+            </div>
+        </div>
+
+        <div class="hidden md:block">
+            <span class="px-3 py-1 rounded-lg bg-surface-highlight text-slate-400 text-xs uppercase tracking-widest font-bold border border-white/5">Chế độ biên tập</span>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", @class = "space-y-6" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.MAPHIM) 
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <div class="lg:col-span-4 space-y-4">
+                <div class="bg-surface-dark/50 border border-surface-highlight rounded-2xl p-6 shadow-xl">
+                    <label class="block text-slate-300 font-semibold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">image</span>
+                        Poster phim
+                    </label>
+
+                    <div class="relative group aspect-[2/3] rounded-xl overflow-hidden bg-black/40 border-2 border-dashed border-surface-highlight hover:border-primary/50 transition-all">
+                        <img id="poster-preview"
+                             src="@(!string.IsNullOrEmpty(Model.POSTER) ? Url.Content("/Img/" + Model.POSTER) : "/Content/img/no-image.jpg")"
+                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                             alt="Poster" />
+
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white p-4 text-center">
+                            <span class="material-symbols-outlined text-4xl mb-2">add_a_photo</span>
+                            <p class="text-sm font-medium">Nhấp để thay đổi ảnh</p>
+                            <p class="text-[10px] text-slate-300 mt-1 italic">JPG, PNG, WEBP</p>
+                        </div>
+
+                        <input type="file" name="posterFile" id="poster-input" class="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/*" />
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.POSTER))
+                    {
+                        <div class="mt-4 p-3 rounded-lg bg-blue-500/5 border border-blue-500/10 flex items-start gap-3">
+                            <span class="material-symbols-outlined text-blue-400 text-sm">info</span>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">
+                                Bạn đang sử dụng file: <span class="text-blue-300 font-mono italic">@Model.POSTER</span>. Tải ảnh mới lên sẽ thay thế ảnh cũ.
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="lg:col-span-8">
+                <div class="bg-surface-dark/50 border border-surface-highlight rounded-2xl p-8 shadow-2xl space-y-6">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tên bộ phim</label>
+                            @Html.TextBoxFor(m => m.TENPHIM, new { @class = "w-full bg-surface-highlight/40 border border-surface-highlight rounded-xl px-4 py-3.5 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-inner" })
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Thể loại</label>
+                            @Html.TextBoxFor(m => m.THELOAI, new { @class = "w-full bg-surface-highlight/40 border border-surface-highlight rounded-xl px-4 py-3.5 text-white focus:border-primary outline-none transition-all" })
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Trạng thái trình chiếu</label>
+                            <div class="relative">
+                                @Html.DropDownListFor(m => m.TRANGTHAI,
+                                    new SelectList(new[] { "Đang chiếu", "Sắp chiếu", "Ngưng chiếu" }),
+                                    new { @class = "w-full bg-surface-highlight/40 border border-surface-highlight rounded-xl px-4 py-3.5 text-dark focus:border-primary outline-none appearance-none cursor-pointer" })
+                                <span class="material-symbols-outlined absolute right-4 top-3.5 text-slate-500 pointer-events-none">expand_more</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Thời lượng (phút)</label>
+                            <div class="relative">
+                                @Html.TextBoxFor(m => m.THOILUONG, new { @class = "w-full bg-surface-highlight/40 border border-surface-highlight rounded-xl pl-4 pr-12 py-3.5 text-white focus:border-primary outline-none transition-all", type = "number" })
+                                <span class="absolute right-4 top-3.5 text-slate-500 text-xs font-bold">MIN</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Ngày khởi chiếu</label>
+                            @Html.TextBoxFor(m => m.NGAYPH, "{0:yyyy-MM-dd}", new { @class = "w-full bg-surface-highlight/40 border border-surface-highlight rounded-xl px-4 py-3.5 text-white focus:border-primary outline-none transition-all", type = "date" })
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-6 border-t border-surface-highlight mt-8">
+                        <button type="button" onclick="window.history.back()" class="flex items-center gap-2 text-slate-500 hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">close</span>
+                            Hủy thay đổi
+                        </button>
+
+                        <div class="flex gap-3">
+                            <button type="submit" class="bg-gradient-to-r from-primary to-rose-600 hover:from-rose-600 hover:to-primary text-white px-8 py-3.5 rounded-xl font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                                Cập nhật ngay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    // Logic preview ảnh cực nhanh
+    document.getElementById('poster-input').onchange = evt => {
+        const [file] = document.getElementById('poster-input').files;
+        if (file) {
+            document.getElementById('poster-preview').src = URL.createObjectURL(file);
+        }
+    }
+</script>
+
+<style>
+    /* CSS để làm đẹp input date và select */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1) opacity(0.5);
+        cursor: pointer;
+    }
+
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+        }
+    /* Hiệu ứng focus cho form */
+    .bg-surface-highlight\/40:focus-within {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+</style>

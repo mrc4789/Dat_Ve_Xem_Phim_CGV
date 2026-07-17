@@ -27,8 +27,8 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public string MAKH { get; set; }
         public Nullable<System.DateTime> NGAYGD { get; set; }
         public string MAQR { get; set; }
-        public Nullable<double> VAT { get; set; }
-        public Nullable<double> THANHTIEN { get; set; }
+        public Nullable<decimal> VAT { get; set; }
+        public Nullable<decimal> THANHTIEN { get; set; }
         public string TRANGTHAI { get; set; }
     
         public virtual ICollection<CHITIETHOADONDICHVU> CHITIETHOADONDICHVUs { get; set; }

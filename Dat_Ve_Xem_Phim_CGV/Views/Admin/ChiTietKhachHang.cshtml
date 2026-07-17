@@ -1,0 +1,63 @@
+﻿@model Dat_Ve_Xem_Phim_CGV.Models.KHACHHANG
+@{
+    ViewBag.Title = "ChiTietKhachHang"; Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="mb-6">
+    <a href="@Url.Action("QuanLyKhachHang")" class="text-gray-400 hover:text-white flex items-center gap-1 mb-4"><i class="fas fa-arrow-left"></i> Quay lại danh sách</a>
+    <h2 class="text-2xl font-bold text-white">Hồ Sơ Khách Hàng: <span class="text-primary">@Model.HOTEN</span></h2>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 bg-surface-dark p-6 rounded-lg border border-gray-700">
+    <div>
+        <p class="text-gray-400">Mã KH:</p> <p class="text-white font-mono font-bold text-lg">@Model.MAKH</p>
+    </div>
+    <div>
+        <p class="text-gray-400">Số điện thoại:</p> <p class="text-white text-lg">@Model.SDT</p>
+    </div>
+    <div>
+        <p class="text-gray-400">Email:</p> <p class="text-white text-lg">@Model.EMAIL</p>
+    </div>
+    <div>
+        <p class="text-gray-400">Hạng thành viên:</p>
+        <span class="text-yellow-400 font-bold text-lg">@Model.HANGTHANHVIEN</span>
+        <span class="text-sm text-gray-500 ml-2">(@Model.DIEMTICHLUY điểm)</span>
+    </div>
+</div>
+
+<h3 class="text-xl font-bold text-white mb-4 border-l-4 border-primary pl-3">Lịch Sử Giao Dịch</h3>
+
+<div class="overflow-x-auto bg-surface-dark rounded-lg border border-gray-700">
+    <table class="w-full text-left text-sm text-gray-300">
+        <thead class="bg-gray-800 uppercase font-bold text-xs text-gray-400">
+            <tr>
+                <th class="px-6 py-3">Mã HĐ</th>
+                <th class="px-6 py-3">Ngày Giao Dịch</th>
+                <th class="px-6 py-3">Tổng Tiền</th>
+                <th class="px-6 py-3">Trạng Thái</th>
+                <th class="px-6 py-3 text-center">Chi Tiết</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-700">
+            @foreach (var hd in ViewBag.ListHoaDon as List<Dat_Ve_Xem_Phim_CGV.Models.HOADON>)
+            {
+                <tr class="hover:bg-gray-700 transition">
+                    <td class="px-6 py-4 font-mono text-primary">@hd.MAHD</td>
+                    <td class="px-6 py-4">@string.Format("{0:dd/MM/yyyy HH:mm}", hd.NGAYGD)</td>
+                    <td class="px-6 py-4 font-bold text-emerald-400">@string.Format("{0:N0}", hd.THANHTIEN) đ</td>
+                    <td class="px-6 py-4">
+                        @if (hd.TRANGTHAI == "Đã thanh toán")
+                        {<span class="text-green-400">● Đã thanh toán</span> }
+                        else if (hd.TRANGTHAI == "Đã hủy")
+                        { <span class="text-red-400">● Đã hủy</span> }
+                        else
+                        { <span class="text-yellow-400">● @hd.TRANGTHAI</span>}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <a href="@Url.Action("ChiTietHoaDon", new { id = hd.MAHD })" class="bg-blue-600/20 text-blue-400 border border-blue-600/50 px-3 py-1 rounded hover:bg-blue-600 hover:text-white transition">Xem</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

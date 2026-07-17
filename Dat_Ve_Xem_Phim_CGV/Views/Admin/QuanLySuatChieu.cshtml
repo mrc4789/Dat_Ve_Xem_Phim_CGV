@@ -1,0 +1,296 @@
+﻿@model IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.SUATCHIEU>
+@{
+    ViewBag.Title = "Quản lý suất chiếu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    input[type="date"]::-webkit-calendar-picker-indicator,
+    input[type="time"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        cursor: pointer;
+    }
+</style>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert-message mb-4 p-4 bg-rose-500/20 border border-rose-500/50 rounded-xl text-rose-400 flex items-center gap-3 animate-pulse">
+        <span class="material-symbols-outlined">error</span>
+        <span class="text-sm font-medium">@TempData["Error"]</span>
+    </div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert-message mb-4 p-4 bg-emerald-500/20 border border-emerald-500/50 rounded-xl text-emerald-400 flex items-center gap-3">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span class="text-sm font-medium">@TempData["Success"]</span>
+    </div>
+}
+
+<div class="p-6 h-full overflow-y-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-4">
+            <div class="bg-surface-dark/50 border border-surface-highlight p-6 rounded-2xl sticky top-6 shadow-2xl">
+                <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">add_circle</span>
+                    Tạo suất chiếu mới
+                </h2>
+
+                @using (Html.BeginForm("CreateSuatChieu", "Admin", FormMethod.Post, new { @class = "space-y-5" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Chọn Phim</label>
+                        @Html.DropDownList("MAPHIM", null, "-- Chọn bộ phim --", new { @class = "w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-all" })
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Rạp</label>
+                            @Html.DropDownList("MARAP", null, new { @class = "w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-all" })
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Phòng</label>
+                            @Html.DropDownList("MAPHONG", null, new { @class = "w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-all" })
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Ngày chiếu</label>
+                            <input type="date" name="NGAYCHIEU" class="w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-all" required />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Giờ chiếu</label>
+                            <input type="time" name="GIOCHIEU" class="w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-all" required />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Giá vé cơ bản (VNĐ)</label>
+                        <input type="number" name="GIACOBAN" placeholder="Ví dụ: 85000" class="w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-all" required />
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 mt-4">
+                        <span class="material-symbols-outlined">confirmation_number</span>
+                        Xác nhận thêm suất
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="lg:col-span-8">
+            <div class="bg-surface-dark/40 backdrop-blur-md border border-surface-highlight rounded-2xl overflow-hidden shadow-2xl">
+                <div class="p-6 border-b border-surface-highlight flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-white">Lịch chiếu hiện tại</h2>
+                    <div class="flex gap-2">
+                        <span class="px-3 py-1 bg-green-500/10 text-green-400 text-[10px] font-bold rounded-full uppercase">Đang mở bán</span>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-surface-highlight/30 text-slate-400 text-xs uppercase">
+                            <tr>
+                                <th class="px-6 py-4">Phim / Rạp</th>
+                                <th class="px-6 py-4">Thời gian</th>
+                                <th class="px-6 py-4 text-center">Giá vé</th>
+                                <th class="px-6 py-4 text-right">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-surface-highlight">
+                            @foreach (var item in Model)
+                            {
+                                <tr class="hover:bg-white/[0.02] transition-all group">
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col">
+                                            <span class="text-white font-semibold group-hover:text-primary transition-colors">@item.PHIM.TENPHIM</span>
+                                            <span class="text-slate-500 text-xs italic">@item.RAP.TENRAP - Phòng: @item.MAPHONG</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col">
+                                            <span class="text-blue-400 font-mono">@item.NGAYCHIEU.Value.ToString("dd/MM/yyyy")</span>
+                                            <span class="text-white font-bold">@item.GIOCHIEU.Value.ToString(@"hh\:mm")</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="text-emerald-400 font-bold">@String.Format("{0:n0}", item.GIACOBAN)đ</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <div class="flex justify-end gap-2">
+                                            <button onclick="openEditModal('@item.MASUATCHIEU')" class="p-2 hover:bg-blue-500/20 text-blue-400 rounded-lg transition-colors">
+                                                <span class="material-symbols-outlined text-[20px]">edit</span>
+                                            </button>
+                                            <button onclick="openDeleteModal('@item.MASUATCHIEU', '@item.PHIM.TENPHIM')"
+                                                    class="p-2 hover:bg-rose-500/20 text-rose-400 rounded-lg transition-colors">
+                                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="bg-surface-dark border border-surface-highlight w-full max-w-md p-8 rounded-3xl shadow-2xl scale-95 transition-transform">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-400">edit_calendar</span>
+                Chỉnh sửa suất chiếu
+            </h2>
+            <button onclick="closeEditModal()" class="text-slate-400 hover:text-white transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <p class="text-slate-400 text-sm mb-6 p-3 bg-blue-500/10 rounded-lg">
+            Đang chỉnh sửa cho phim: <span id="edit_TenPhim" class="text-blue-400 font-bold"></span>
+        </p>
+
+        @using (Html.BeginForm("EditSuatChieu", "Admin", FormMethod.Post, new { id = "formEdit", @class = "space-y-4" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="MASUATCHIEU" id="edit_MaSC" />
+            <input type="hidden" name="MAPHIM" id="edit_MaPhim" />
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Rạp</label>
+                    @Html.DropDownList("MARAP", (SelectList)ViewBag.MARAP, new { id = "edit_Rap", @class = "w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500" })
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Phòng chiếu</label>
+                    @Html.DropDownList("MAPHONG", (SelectList)ViewBag.MAPHONG, new { id = "edit_Phong", @class = "w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500" })
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Ngày chiếu mới</label>
+                    <input type="date" name="NGAYCHIEU" id="edit_Ngay" class="w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none" required />
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Giờ chiếu mới</label>
+                    <input type="time" name="GIOCHIEU" id="edit_Gio" class="w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none" required />
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Giá vé cơ bản (VNĐ)</label>
+                <input type="number" name="GIACOBAN" id="edit_Gia" class="w-full bg-surface-highlight/50 border border-surface-highlight rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none" required />
+            </div>
+
+            <div class="flex gap-3 mt-6">
+                <button type="button" onclick="closeEditModal()" class="flex-1 px-4 py-3 rounded-xl border border-surface-highlight text-white hover:bg-surface-highlight transition-all">Hủy</button>
+                <button type="submit" class="flex-1 px-4 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-lg shadow-blue-500/20 transition-all">Lưu cập nhật</button>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="deleteScModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+    <div class="bg-surface-dark border border-white/10 w-full max-w-md p-8 rounded-3xl shadow-2xl scale-95 transition-all duration-300" id="deleteScContent">
+        <div class="text-center">
+            <div class="w-20 h-20 bg-rose-500/20 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-5xl">delete_forever</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">Xác nhận xóa?</h3>
+            <p class="text-slate-400 mb-8 px-4">
+                Bạn đang thực hiện xóa suất chiếu của phim <br />
+                <span id="scPhimName" class="text-white font-bold text-lg"></span>. <br />
+                Hành động này không thể khôi phục.
+            </p>
+
+            <div class="flex gap-4">
+                <button onclick="closeDeleteScModal()" class="flex-1 px-6 py-3 rounded-xl bg-surface-highlight text-white hover:bg-slate-700 transition-all font-medium">
+                    Quay lại
+                </button>
+                <a id="scDeleteConfirmBtn" href="#" class="flex-1 px-6 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold transition-all text-center">
+                    Xác nhận xóa
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openEditModal(id) {
+        fetch('/Admin/GetSuatChieu/' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data) return;
+
+                document.getElementById('edit_MaSC').value = data.MASUATCHIEU;
+                document.getElementById('edit_MaPhim').value = data.MAPHIM;
+                document.getElementById('edit_TenPhim').innerText = data.TENPHIM;
+                document.getElementById('edit_Gia').value = data.GIACOBAN;
+
+                const rapVal = data.MARAP.trim();
+                const phongVal = data.MAPHONG.trim();
+
+                document.getElementById('edit_Rap').value = rapVal;
+                document.getElementById('edit_Phong').value = phongVal;
+
+                if (data.NGAYCHIEU) {
+                    let dateVal = new Date(parseInt(data.NGAYCHIEU.replace("/Date(", "").replace(")/", "")));
+                    if (!isNaN(dateVal)) {
+                        document.getElementById('edit_Ngay').value = dateVal.toISOString().split('T')[0];
+                    }
+                }
+
+                if (data.GIOCHIEU) {
+                    document.getElementById('edit_Gio').value = data.GIOCHIEU.substring(0, 5);
+                }
+
+                const modal = document.getElementById('editModal');
+                modal.classList.remove('hidden');
+            });
+    }
+
+    function closeEditModal() {
+        const modal = document.getElementById('editModal');
+        modal.firstElementChild.classList.add('scale-95');
+        setTimeout(() => modal.classList.add('hidden'), 200);
+    }
+
+    function openDeleteModal(maSC, tenPhim) {
+        const modal = document.getElementById('deleteScModal');
+        const content = document.getElementById('deleteScContent');
+        const phimLabel = document.getElementById('scPhimName');
+        const confirmBtn = document.getElementById('scDeleteConfirmBtn');
+
+        phimLabel.innerText = tenPhim;
+        confirmBtn.href = '/Admin/DeleteSuatChieu/' + maSC;
+
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }, 10);
+    }
+
+    function closeDeleteScModal() {
+        const modal = document.getElementById('deleteScModal');
+        const content = document.getElementById('deleteScContent');
+
+        content.classList.add('scale-95');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 200);
+    }
+
+    window.onclick = function (event) {
+        const modal = document.getElementById('deleteScModal');
+        if (event.target == modal) closeDeleteScModal();
+    }
+</script>

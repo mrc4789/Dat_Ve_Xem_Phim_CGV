@@ -16,7 +16,8 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
     {
         public SUATCHIEU()
         {
-            this.TINHTRANGGHEs = new HashSet<TINHTRANGGHE>();
+            this.CHITIETDATVEs = new HashSet<CHITIETDATVE>();
+            this.VEs = new HashSet<VE>();
         }
     
         public string MASUATCHIEU { get; set; }
@@ -25,12 +26,13 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public string MAPHONG { get; set; }
         public Nullable<System.DateTime> NGAYCHIEU { get; set; }
         public Nullable<System.TimeSpan> GIOCHIEU { get; set; }
-        public Nullable<double> GIACOBAN { get; set; }
+        public Nullable<decimal> GIACOBAN { get; set; }
         public string TRANGTHAI { get; set; }
     
+        public virtual ICollection<CHITIETDATVE> CHITIETDATVEs { get; set; }
         public virtual PHIM PHIM { get; set; }
         public virtual PHONGCHIEU PHONGCHIEU { get; set; }
         public virtual RAP RAP { get; set; }
-        public virtual ICollection<TINHTRANGGHE> TINHTRANGGHEs { get; set; }
+        public virtual ICollection<VE> VEs { get; set; }
     }
 }

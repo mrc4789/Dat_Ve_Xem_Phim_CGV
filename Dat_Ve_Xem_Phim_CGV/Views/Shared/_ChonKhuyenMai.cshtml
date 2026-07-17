@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.KHUYENMAI>
+
+<style>
+    /* CSS giữ nguyên cho đẹp */
+    .promo-wrapper {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    .promo-header-title {
+        font-weight: 900;
+        color: #333;
+        text-transform: uppercase;
+        border-left: 5px solid #e71a0f;
+        padding-left: 10px;
+        margin-bottom: 15px;
+    }
+
+    .promo-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+        .promo-item:hover {
+            border-color: #e71a0f;
+            background: #fff5f5;
+        }
+
+    .promo-radio {
+        margin-right: 15px;
+        transform: scale(1.5);
+        accent-color: #e71a0f;
+    }
+
+    .promo-info div {
+        font-size: 13px;
+        color: #555;
+    }
+
+    .promo-name {
+        font-weight: bold;
+        color: #333;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+</style>
+
+<div class="promo-wrapper">
+    <div class="promo-header-title">Chọn Khuyến Mãi (Chỉ 1)</div>
+
+    <label class="promo-item">
+        <input type="radio" name="SelectedPromo" class="promo-radio" value="" data-discount="0" checked onchange="calculateTotal()" />
+        <div class="promo-info">
+            <div class="promo-name">Không áp dụng khuyến mãi</div>
+        </div>
+    </label>
+
+    @foreach (var km in Model)
+    {
+        // Logic giả định giảm giá (Sau này sửa theo cột DB thật nếu có)
+        double giamGia = 10000;
+        if (km.TENKM.Contains("10%") || km.TENKM.Contains("20%")) { giamGia = 0; }
+
+        <label class="promo-item">
+            <input type="radio" name="SelectedPromo" class="promo-radio"
+                   value="@km.MAKM"
+                   data-discount="@giamGia"
+                   data-name="@km.TENKM"
+                   onchange="calculateTotal()" />
+
+            <div class="promo-info">
+                <div class="promo-name">@km.TENKM</div>
+                <div>@km.DIEUKIEN</div>
+            </div>
+        </label>
+    }
+</div>

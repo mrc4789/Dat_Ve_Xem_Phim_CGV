@@ -12,6 +12,9 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
     
     public partial class QLDATVEEntities : DbContext
     {
@@ -29,6 +32,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public DbSet<CHITIETHOADONDICHVU> CHITIETHOADONDICHVUs { get; set; }
         public DbSet<CHITIETHUYVE> CHITIETHUYVEs { get; set; }
         public DbSet<CHITIETKHUYENMAI> CHITIETKHUYENMAIs { get; set; }
+        public DbSet<CHUCVU> CHUCVUs { get; set; }
         public DbSet<DICHVU> DICHVUs { get; set; }
         public DbSet<GHE> GHEs { get; set; }
         public DbSet<HOADON> HOADONs { get; set; }
@@ -44,5 +48,156 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public DbSet<SUATCHIEU> SUATCHIEUx { get; set; }
         public DbSet<TINHTRANGGHE> TINHTRANGGHEs { get; set; }
         public DbSet<VE> VEs { get; set; }
+    
+        public virtual ObjectResult<Nullable<int>> GiuGheTamThoi(string danhSachMaGhe, string maSuatChieu, string mAKH, string maGiuGhe)
+        {
+            var danhSachMaGheParameter = danhSachMaGhe != null ?
+                new ObjectParameter("DanhSachMaGhe", danhSachMaGhe) :
+                new ObjectParameter("DanhSachMaGhe", typeof(string));
+    
+            var maSuatChieuParameter = maSuatChieu != null ?
+                new ObjectParameter("MaSuatChieu", maSuatChieu) :
+                new ObjectParameter("MaSuatChieu", typeof(string));
+    
+            var mAKHParameter = mAKH != null ?
+                new ObjectParameter("MAKH", mAKH) :
+                new ObjectParameter("MAKH", typeof(string));
+    
+            var maGiuGheParameter = maGiuGhe != null ?
+                new ObjectParameter("MaGiuGhe", maGiuGhe) :
+                new ObjectParameter("MaGiuGhe", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("GiuGheTamThoi", danhSachMaGheParameter, maSuatChieuParameter, mAKHParameter, maGiuGheParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> HuyGheHetHan(string maSuatChieu)
+        {
+            var maSuatChieuParameter = maSuatChieu != null ?
+                new ObjectParameter("MaSuatChieu", maSuatChieu) :
+                new ObjectParameter("MaSuatChieu", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("HuyGheHetHan", maSuatChieuParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> HuyGiuGhe(string maGiuGhe, string mAKH)
+        {
+            var maGiuGheParameter = maGiuGhe != null ?
+                new ObjectParameter("MaGiuGhe", maGiuGhe) :
+                new ObjectParameter("MaGiuGhe", typeof(string));
+    
+            var mAKHParameter = mAKH != null ?
+                new ObjectParameter("MAKH", mAKH) :
+                new ObjectParameter("MAKH", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("HuyGiuGhe", maGiuGheParameter, mAKHParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> KiemTraTrangThaiGhe(string danhSachMaGhe, string maSuatChieu)
+        {
+            var danhSachMaGheParameter = danhSachMaGhe != null ?
+                new ObjectParameter("DanhSachMaGhe", danhSachMaGhe) :
+                new ObjectParameter("DanhSachMaGhe", typeof(string));
+    
+            var maSuatChieuParameter = maSuatChieu != null ?
+                new ObjectParameter("MaSuatChieu", maSuatChieu) :
+                new ObjectParameter("MaSuatChieu", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("KiemTraTrangThaiGhe", danhSachMaGheParameter, maSuatChieuParameter);
+        }
+    
+        public virtual ObjectResult<LayDanhSachGhe_Result> LayDanhSachGhe(string maSuatChieu)
+        {
+            var maSuatChieuParameter = maSuatChieu != null ?
+                new ObjectParameter("MaSuatChieu", maSuatChieu) :
+                new ObjectParameter("MaSuatChieu", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<LayDanhSachGhe_Result>("LayDanhSachGhe", maSuatChieuParameter);
+        }
+    
+        public virtual ObjectResult<LayThongTinGhe_Result> LayThongTinGhe(string danhSachMaGhe)
+        {
+            var danhSachMaGheParameter = danhSachMaGhe != null ?
+                new ObjectParameter("DanhSachMaGhe", danhSachMaGhe) :
+                new ObjectParameter("DanhSachMaGhe", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<LayThongTinGhe_Result>("LayThongTinGhe", danhSachMaGheParameter);
+        }
+    
+        public virtual int SinhGheChoPhong(string maPhong)
+        {
+            var maPhongParameter = maPhong != null ?
+                new ObjectParameter("MaPhong", maPhong) :
+                new ObjectParameter("MaPhong", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SinhGheChoPhong", maPhongParameter);
+        }
+    
+        public virtual int SinhTinhTrangGhe_All(string maSuatChieu)
+        {
+            var maSuatChieuParameter = maSuatChieu != null ?
+                new ObjectParameter("MaSuatChieu", maSuatChieu) :
+                new ObjectParameter("MaSuatChieu", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SinhTinhTrangGhe_All", maSuatChieuParameter);
+        }
+    
+        public virtual int sp_UpdateNgayChieuTheoKhoang(Nullable<int> tu, Nullable<int> den, Nullable<System.DateTime> ngayChieu)
+        {
+            var tuParameter = tu.HasValue ?
+                new ObjectParameter("Tu", tu) :
+                new ObjectParameter("Tu", typeof(int));
+    
+            var denParameter = den.HasValue ?
+                new ObjectParameter("Den", den) :
+                new ObjectParameter("Den", typeof(int));
+    
+            var ngayChieuParameter = ngayChieu.HasValue ?
+                new ObjectParameter("NgayChieu", ngayChieu) :
+                new ObjectParameter("NgayChieu", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UpdateNgayChieuTheoKhoang", tuParameter, denParameter, ngayChieuParameter);
+        }
+    
+        public virtual ObjectResult<ThanhToan_Result> ThanhToan(string maGiuGhe, string maKhachHang, string maSuatChieu, Nullable<decimal> tongTien)
+        {
+            var maGiuGheParameter = maGiuGhe != null ?
+                new ObjectParameter("MaGiuGhe", maGiuGhe) :
+                new ObjectParameter("MaGiuGhe", typeof(string));
+    
+            var maKhachHangParameter = maKhachHang != null ?
+                new ObjectParameter("MaKhachHang", maKhachHang) :
+                new ObjectParameter("MaKhachHang", typeof(string));
+    
+            var maSuatChieuParameter = maSuatChieu != null ?
+                new ObjectParameter("MaSuatChieu", maSuatChieu) :
+                new ObjectParameter("MaSuatChieu", typeof(string));
+    
+            var tongTienParameter = tongTien.HasValue ?
+                new ObjectParameter("TongTien", tongTien) :
+                new ObjectParameter("TongTien", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ThanhToan_Result>("ThanhToan", maGiuGheParameter, maKhachHangParameter, maSuatChieuParameter, tongTienParameter);
+        }
+    
+        public virtual ObjectResult<TraCuuLichChieu_Result> TraCuuLichChieu(Nullable<System.DateTime> ngayChieu, string maLoai, string diaChi, string maPhim)
+        {
+            var ngayChieuParameter = ngayChieu.HasValue ?
+                new ObjectParameter("NgayChieu", ngayChieu) :
+                new ObjectParameter("NgayChieu", typeof(System.DateTime));
+    
+            var maLoaiParameter = maLoai != null ?
+                new ObjectParameter("MaLoai", maLoai) :
+                new ObjectParameter("MaLoai", typeof(string));
+    
+            var diaChiParameter = diaChi != null ?
+                new ObjectParameter("DiaChi", diaChi) :
+                new ObjectParameter("DiaChi", typeof(string));
+    
+            var maPhimParameter = maPhim != null ?
+                new ObjectParameter("MaPhim", maPhim) :
+                new ObjectParameter("MaPhim", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<TraCuuLichChieu_Result>("TraCuuLichChieu", ngayChieuParameter, maLoaiParameter, diaChiParameter, maPhimParameter);
+        }
     }
 }

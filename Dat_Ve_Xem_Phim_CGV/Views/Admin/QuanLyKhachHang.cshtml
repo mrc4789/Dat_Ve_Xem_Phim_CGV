@@ -1,0 +1,78 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<Dat_Ve_Xem_Phim_CGV.Models.KHACHHANG>
+
+@{
+    ViewBag.Title = "QuanLyKhachHang";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .pagination-container .pagination {
+        display: flex;
+        gap: 5px;
+    }
+
+        .pagination-container .pagination li a {
+            background-color: #1f2937;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #374151;
+        }
+
+        .pagination-container .pagination li.active a {
+            background-color: #2563eb;
+            font-weight: bold;
+        }
+</style>
+<form method="get" class="mb-4 flex gap-2 m-3">
+    <input type="text" name="TimKH" placeholder="Tìm tên hoặc SĐT..." class="border p-2 rounded w-64 text-black" value="@Request.QueryString["TimKH"]" />
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Tìm kiếm</button>
+</form>
+<div class="overflow-x-auto bg-surface-dark rounded-lg border border-gray-700 m-3">
+    <table class="w-full text-left text-sm text-gray-300">
+        <thead class="bg-gray-800 uppercase font-bold text-xs text-gray-400">
+            <tr>
+                <th class="px-6 py-3">Mã KH</th>
+                <th class="px-6 py-3">Họ Tên</th>
+                <th class="px-6 py-3">SĐT</th>
+                <th class="px-6 py-3">Email</th>
+                <th class="px-6 py-3">Hạng</th>
+                <th class="px-6 py-3">Điểm</th>
+                <th class="px-6 py-3 text-center">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-700">
+            @foreach (var item in Model)
+            {
+                <tr class="hover:bg-gray-700 transition">
+                    <td class="px-6 py-4 font-mono text-primary">@item.MAKH</td>
+                    <td class="px-6 py-4 font-bold text-white">@item.HOTEN</td>
+                    <td class="px-6 py-4">@item.SDT</td>
+                    <td class="px-6 py-4">@item.EMAIL</td>
+                    <td class="px-6 py-4"><span class="bg-yellow-600/20 text-yellow-400 px-2 py-1 rounded text-xs border border-yellow-600/50">@item.HANGTHANHVIEN</span></td>
+                    <td class="px-6 py-4 font-bold text-emerald-400">@item.DIEMTICHLUY</td>
+                    <td class="px-6 py-4 text-center">
+                        <a href="@Url.Action("ChiTietKhachHang", new { id = item.MAKH })" class="text-blue-400 hover:text-blue-300 underline">Xem chi tiết</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="mt-6 flex justify-center pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("QuanLyKhachHang", new { page, TimKH = Request.QueryString["TimKH"] }),
+        new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+            DisplayLinkToLastPage = PagedListDisplayMode.Never,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToIndividualPages = true,
+            MaximumPageNumbersToDisplay = 5,
+            LinkToPreviousPageFormat = "‹ Trước",
+            LinkToNextPageFormat = "Sau ›",
+            LinkToIndividualPageFormat = "{0}"
+        })
+</div>

@@ -1,0 +1,79 @@
+﻿@model Dat_Ve_Xem_Phim_CGV.Models.PHONGCHIEU
+@{
+    ViewBag.Title = "ThemPhong";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container" style="margin-top: 50px;">
+    <h2 style="color: white;">Thêm Phòng Chiếu & Sinh Ghế Tự Động</h2>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+
+            <div class="form-group">
+                <label class="control-label col-md-2" style="color:white;">Chọn Rạp Chiếu</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.MARAP, (SelectList)ViewBag.MaRap, "-- Chọn Rạp --", new
+                    {
+                        @class = "form-control",
+                        @style = "color: #000000 !important; background-color: #ffffff !important; font-weight: bold;"
+                    })
+                    @Html.ValidationMessageFor(model => model.MARAP, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2" style="color:white;">Sức Chứa</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SUCCHUA, new
+                    {
+                        htmlAttributes = new
+                        {
+                            @class = "form-control",
+                            @type = "number",
+                            @min = "20",
+                            @required = "required",
+                            @style = "color: #000000 !important; background-color: #ffffff !important; font-weight: bold;"
+                        }
+                    })
+                    <span class="text-info" style="display:block; margin-top:5px;">* Số lượng ghế sẽ được chia theo tỷ lệ: 60% Thường, 30% VIP, 10% Đôi</span>
+                    @Html.ValidationMessageFor(model => model.SUCCHUA, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2" style="color:white;">Loại Màn Hình</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.MALOAI, (SelectList)ViewBag.MaLoai, "-- Chọn Loại Màn Hình --", new
+                    {
+                        @class = "form-control",
+                        @style = "color: #000000 !important; background-color: #ffffff !important; font-weight: bold;"
+                    })
+                    @Html.ValidationMessageFor(model => model.MALOAI, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10" style="margin-top: 20px;">
+                    <input type="submit" value="Tạo Phòng & Sinh Ghế" class="btn btn-primary"
+                           style="background-color: #007bff !important; color: white !important; border: 1px solid #0056b3;" />
+
+                    @Html.ActionLink("Quay lại", "Dashboard", null, new
+                    {
+                        @class = "btn btn-default",
+                        @style = "background-color: #ffffff !important; color: #000000 !important; margin-left: 10px;"
+                    })
+                </div>
+            </div>
+        </div>
+    }
+</div>

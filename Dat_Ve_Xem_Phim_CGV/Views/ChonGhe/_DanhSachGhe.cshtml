@@ -1,4 +1,5 @@
-﻿@model List<Dat_Ve_Xem_Phim_CGV.Models.LayDanhSachGheResult>
+﻿
+@model List<Dat_Ve_Xem_Phim_CGV.Models.LayDanhSachGheResult>
 
 
 @if (Model == null || !Model.Any())
@@ -26,18 +27,18 @@ else
             {
                 var seats = row.OrderBy(g => g.COT).ToList();
                 <div class="seat-row d-flex align-items-center justify-content-center my-4 gap-3">
-   
+
 
                     <div class="d-flex flex-nowrap justify-content-center gap-2" style="min-width:600px;">
                         @for (int i = 0; i < seats.Count; i++)
                         {
                             var ghe = seats[i];
-                            var isSweetbox = ghe.LOAIGHE.Contains("Đôi") || ghe.LOAIGHE == "SWEETBOX";
-                            var isVIP = ghe.LOAIGHE.Contains("VIP");
-                            var isDaDat = ghe.TINHTRANG.Contains("Đã");
+                            bool isSweetbox = ghe.LOAIGHE != null && ghe.LOAIGHE.Contains("Đôi");
+                            bool isVIP = ghe.LOAIGHE != null && ghe.LOAIGHE.Contains("VIP");
+                            bool isDaDat = ghe.TINHTRANG != null && ghe.TINHTRANG.Contains("Đã");
                             var seatTypeClass = isSweetbox ? "seat-sweetbox"
-                                              : isVIP ? "seat-vip"
-                                              : "seat-standard";
+                                                  : isVIP ? "seat-vip"
+                                                  : "seat-standard";
                             var statusClass = isDaDat ? "seat-unavailable" : "seat-available";
                             <div class="seat @seatTypeClass @statusClass"
                                  style="width:@(isSweetbox ? "82px" : "44px"); height:44px;"
@@ -51,36 +52,36 @@ else
         </div>
     </div>
 
-<div class="container my-5">
-    <!--Chú thích-->
-    <div class="d-flex flex-row flex-wrap justify-content-center align-items-center gap-3 mt-3 text-center">
-        <div class="d-flex align-items-center gap-3">
-            <div class="legend-seat seat-standard"></div>
-            <span class="fw-bold">Ghế thường</span>
-        </div>
+    <div class="container my-5">
+        <!--Chú thích-->
+        <div class="d-flex flex-row flex-wrap justify-content-center align-items-center gap-3 mt-3 text-center">
+            <div class="d-flex align-items-center gap-3">
+                <div class="legend-seat seat-standard"></div>
+                <span class="fw-bold">Ghế thường</span>
+            </div>
 
-        <div class="d-flex align-items-center gap-3">
-            <div class="legend-seat seat-vip"></div>
-            <span class="fw-bold">Ghế VIP</span>
-        </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="legend-seat seat-vip"></div>
+                <span class="fw-bold">Ghế VIP</span>
+            </div>
 
-        <div class="d-flex align-items-center gap-3">
-            <div class="legend-seat seat-sweetbox"></div>
-            <span class="fw-bold">Sweetbox</span>
-        </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="legend-seat seat-sweetbox"></div>
+                <span class="fw-bold">Sweetbox</span>
+            </div>
 
-        <div class="d-flex align-items-center gap-3">
-            <div class="legend-seat seat-selected"></div>
-            <span class="fw-bold">Ghế đang chọn</span>
-        </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="legend-seat seat-selected"></div>
+                <span class="fw-bold">Ghế đang chọn</span>
+            </div>
 
-        <div class="d-flex align-items-center gap-3">
-            <div class="legend-seat seat-unavailable"></div>
-            <span class="fw-bold">Đã đặt</span>
+            <div class="d-flex align-items-center gap-3">
+                <div class="legend-seat seat-unavailable"></div>
+                <span class="fw-bold">Đã đặt</span>
+            </div>
         </div>
     </div>
-</div>
-   
+
 }
 <style>
 
@@ -178,10 +179,10 @@ else
         cursor: not-allowed !important;
     }
 
-    .seat-unavailable:hover {
-        transform: none !important;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
-    }
+        .seat-unavailable:hover {
+            transform: none !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+        }
 
 
     .legend-seat {
@@ -192,31 +193,31 @@ else
         display: inline-block;
     }
 
-    .legend-seat.seat-standard {
-        border-color: #27ae60;
-        background: #fff;
-    }
+        .legend-seat.seat-standard {
+            border-color: #27ae60;
+            background: #fff;
+        }
 
-    .legend-seat.seat-vip {
-        border-color: #f59e0b;
-        background: #fff;
-    }
+        .legend-seat.seat-vip {
+            border-color: #f59e0b;
+            background: #fff;
+        }
 
-    .legend-seat.seat-sweetbox {
-        border-color: #e91e63;
-        background: #fff;
-    }
+        .legend-seat.seat-sweetbox {
+            border-color: #e91e63;
+            background: #fff;
+        }
 
-    .legend-seat.seat-selected {
-        background: #dc3545;
-        border-color: #dc3545;
-    }
+        .legend-seat.seat-selected {
+            background: #dc3545;
+            border-color: #dc3545;
+        }
 
-    .legend-seat.seat-unavailable {
-        background: #95a5a6;
-        border-color: #7f8c8d;
-        opacity: 0.6;
-    }
+        .legend-seat.seat-unavailable {
+            background: #95a5a6;
+            border-color: #7f8c8d;
+            opacity: 0.6;
+        }
 
 
     @@media (max-width: 768px) {

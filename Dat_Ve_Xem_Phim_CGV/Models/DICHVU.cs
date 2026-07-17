@@ -24,7 +24,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public string LOAIDV { get; set; }
         public string MOTA { get; set; }
         public string TRANGTHAI { get; set; }
-        public Nullable<double> GIADV { get; set; }
+        public Nullable<decimal> GIADV { get; set; }
     
         public virtual ICollection<CHITIETHOADONDICHVU> CHITIETHOADONDICHVUs { get; set; }
     }

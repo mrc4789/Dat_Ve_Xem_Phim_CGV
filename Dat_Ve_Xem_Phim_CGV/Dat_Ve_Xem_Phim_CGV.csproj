@@ -49,6 +49,12 @@
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -136,80 +142,97 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminChiTietHoaDon.cs" />
     <Compile Include="Models\CHITIETDATVE.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CHITIETHOADONDICHVU.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CHITIETHUYVE.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CHITIETKHUYENMAI.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CHUCVU.cs">
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DICHVU.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GHE.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HOADON.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HUYDOIVE.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KHACHHANG.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KHUYENMAI.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LayDanhSachGheResult.cs" />
+    <Compile Include="Models\LayDanhSachGhe_Result.cs">
+      <DependentUpon>QLDATVE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LaySuatChieu.cs" />
+    <Compile Include="Models\LayThongTinGhe_Result.cs">
+      <DependentUpon>QLDATVE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LOAIMANHINH.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHIEUTHANHTOAN.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHIM.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHONGCHIEU.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHUONGTHUCTHANHTOAN.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QLDatVe.Context.cs">
+    <Compile Include="Models\QLDATVE.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLDatVe.Context.tt</DependentUpon>
+      <DependentUpon>QLDATVE.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QLDatVe.cs">
+    <Compile Include="Models\QLDATVE.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QLDatVe.Designer.cs">
+    <Compile Include="Models\QLDATVE.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLDatVe.edmx</DependentUpon>
+      <DependentUpon>QLDATVE.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\RAP.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SUATCHIEU.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ThanhToan_Result.cs">
+      <DependentUpon>QLDATVE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ThongKePhimViewModel.cs" />
     <Compile Include="Models\ThongKeViewModel.cs" />
     <Compile Include="Models\TINHTRANGGHE.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TraCuuLichChieu_Result.cs">
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VE.cs">
-      <DependentUpon>QLDatVe.tt</DependentUpon>
+      <DependentUpon>QLDATVE.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -230,29 +253,35 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\details.css" />
     <Content Include="Content\Img\AvengersEndgame.jpg" />
     <Content Include="Content\Img\backgroundfordetails.jpg" />
+    <Content Include="Content\Img\bap.jpg" />
+    <Content Include="Content\Img\combo.jpg" />
     <Content Include="Content\Img\ConNhotMotChong.jpg" />
     <Content Include="Content\Img\DoraemonNobitavaVungDatMoi.jpg" />
     <Content Include="Content\Img\EmVaTrinh.jpg" />
     <Content Include="Content\Img\FastAndFuriosX.jpg" />
     <Content Include="Content\Img\InsideOut2.jpg" />
     <Content Include="Content\Img\JoinWick4.jpg" />
+    <Content Include="Content\Img\khuyenmai.jpg" />
     <Content Include="Content\Img\KungfuPanda5.jpg" />
     <Content Include="Content\Img\Mai.jpg" />
+    <Content Include="Content\Img\nuoc.jpg" />
     <Content Include="Content\Img\TheBatman.jpg" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\QLDatVe.Context.tt">
+    <Content Include="Models\QLDATVE.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>QLDatVe.Context.cs</LastGenOutput>
-      <DependentUpon>QLDatVe.edmx</DependentUpon>
+      <DependentUpon>QLDATVE.edmx</DependentUpon>
+      <LastGenOutput>QLDATVE.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\QLDatVe.tt">
+    <Content Include="Models\QLDATVE.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>QLDatVe.edmx</DependentUpon>
-      <LastGenOutput>QLDatVe.cs</LastGenOutput>
+      <DependentUpon>QLDATVE.edmx</DependentUpon>
+      <LastGenOutput>QLDATVE.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -260,12 +289,12 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\QLDatVe.edmx">
+    <EntityDeploy Include="Models\QLDATVE.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>QLDatVe.Designer.cs</LastGenOutput>
+      <LastGenOutput>QLDATVE.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\QLDatVe.edmx.diagram">
-      <DependentUpon>QLDatVe.edmx</DependentUpon>
+    <Content Include="Models\QLDATVE.edmx.diagram">
+      <DependentUpon>QLDATVE.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
@@ -312,8 +341,27 @@
     <Content Include="Views\QLPhim\Index.cshtml" />
     <Content Include="Views\Admin\ThongKeDoanhThu.cshtml" />
     <Content Include="Views\DichVu\Index.cshtml" />
-    <Content Include="Views\DichVu\_DanhSachCombo.cshtml" />
+    <Content Include="Views\Shared\_DanhSachCombo.cshtml" />
     <Content Include="Views\KhuyenMai\Index.cshtml" />
+    <Content Include="Views\ChonGhe\ThanhToanThanhCong.cshtml" />
+    <Content Include="Views\KhuyenMai\Details.cshtml" />
+    <Content Include="Views\Shared\_ChonKhuyenMai.cshtml" />
+    <Content Include="Views\ChonGhe\ChonComboVaKhuyenMai.cshtml" />
+    <Content Include="Views\Admin\ChiTietHoaDon.cshtml" />
+    <Content Include="Views\Admin\ChiTietKhachHang.cshtml" />
+    <Content Include="Views\Admin\Create.cshtml" />
+    <Content Include="Views\Admin\Dashboard.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\QuanLyKhachHang.cshtml" />
+    <Content Include="Views\Admin\QuanLyKhuyenMai.cshtml" />
+    <Content Include="Views\Admin\QuanLyPhim.cshtml" />
+    <Content Include="Views\Admin\QuanLySuatChieu.cshtml" />
+    <Content Include="Views\Admin\QuanLyVe.cshtml" />
+    <Content Include="Views\Admin\SuaKhuyenMai.cshtml" />
+    <Content Include="Views\Admin\ThemKhuyenMai.cshtml" />
+    <Content Include="Views\Admin\ThemPhong.cshtml" />
+    <Content Include="Views\Admin\ThongKe.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

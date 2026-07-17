@@ -1,0 +1,205 @@
+﻿@model IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.ThongKePhimViewModel>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var maxRevenue = Model.Any() ? Model.Max(x => x.DoanhThu) : 0;
+
+    var recentInvoices = ViewBag.RecentInvoices as List<Dat_Ve_Xem_Phim_CGV.Models.HOADON>;
+}
+
+<div class="h-full overflow-y-auto p-6 custom-scrollbar bg-[#0f172a]">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-surface-dark border border-white/5 p-6 rounded-2xl shadow-xl">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-slate-400 text-sm font-medium">Tổng phim</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">@ViewBag.TongPhim</h3>
+                </div>
+                <div class="p-3 bg-primary/10 rounded-lg text-primary">
+                    <span class="material-symbols-outlined">movie</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-surface-dark border border-white/5 p-6 rounded-2xl shadow-xl">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-slate-400 text-sm font-medium">Vé bán hôm nay</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">@ViewBag.VeHomNay</h3>
+                </div>
+                <div class="p-3 bg-blue-500/10 rounded-lg text-blue-500">
+                    <span class="material-symbols-outlined">confirmation_number</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-surface-dark border border-white/5 p-6 rounded-2xl shadow-xl">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-slate-400 text-sm font-medium">Doanh thu ngày</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">@ViewBag.DoanhThuNgay.ToString("N0") <span class="text-xs">đ</span></h3>
+                </div>
+                <div class="p-3 bg-emerald-500/10 rounded-lg text-emerald-500">
+                    <span class="material-symbols-outlined">payments</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-surface-dark border border-white/5 p-6 rounded-2xl shadow-xl">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-slate-400 text-sm font-medium">Khách hàng</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">@ViewBag.TongKhach</h3>
+                </div>
+                <div class="p-3 bg-purple-500/10 rounded-lg text-purple-500">
+                    <span class="material-symbols-outlined">person</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <div class="lg:col-span-2 bg-surface-dark p-6 rounded-2xl border border-white/5">
+            <h3 class="text-white font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">analytics</span>
+                Biến động doanh thu (7 ngày gần nhất)
+            </h3>
+            <div class="h-[300px]">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        @{
+            double pctThanhToan = ViewBag.PctThanhToan ?? 0;
+            double pctChuaThanhToan = ViewBag.PctChuaThanhToan ?? 0;
+            double pctHuy = ViewBag.PctHuy ?? 0;
+            string gradient = $"conic-gradient(#10b981 0% {pctThanhToan}%, #f59e0b {pctThanhToan}% {pctThanhToan + pctChuaThanhToan}%, #ef4444 {pctThanhToan + pctChuaThanhToan}% 100%)";
+        }
+        <div class="bg-surface-dark p-6 rounded-2xl border border-white/5 flex flex-col items-center">
+            <h3 class="text-white font-bold mb-6 w-full text-left">Trạng thái giao dịch</h3>
+            <div class="relative size-48 flex items-center justify-center rounded-full" style="background: @gradient;">
+                <div class="absolute inset-0 m-auto size-36 bg-[#1e293b] rounded-full flex flex-col items-center justify-center text-center">
+                    <span class="text-2xl font-bold text-white">@ViewBag.TongSoHD</span>
+                    <span class="text-[10px] text-slate-400 uppercase">Hóa đơn</span>
+                </div>
+            </div>
+            <div class="mt-6 w-full space-y-2">
+                <div class="flex justify-between text-xs text-slate-400">
+                    <div class="flex items-center gap-2"><span class="size-2 rounded-full bg-[#10b981]"></span>Đã thanh toán</div>
+                    <span class="text-white">@pctThanhToan.ToString("0")%</span>
+                </div>
+                <div class="flex justify-between text-xs text-slate-400">
+                    <div class="flex items-center gap-2"><span class="size-2 rounded-full bg-[#f59e0b]"></span>Chưa thanh toán</div>
+                    <span class="text-white">@pctChuaThanhToan.ToString("0")%</span>
+                </div>
+                <div class="flex justify-between text-xs text-slate-400">
+                    <div class="flex items-center gap-2"><span class="size-2 rounded-full bg-[#ef4444]"></span>Đã hủy</div>
+                    <span class="text-white">@pctHuy.ToString("0")%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-surface-dark p-6 rounded-2xl border border-white/5">
+            <h3 class="text-white font-bold mb-6">Top 5 Phim theo doanh thu</h3>
+            <div class="space-y-6">
+                @foreach (var movie in Model)
+                {
+                    var percentage = maxRevenue > 0 ? (movie.DoanhThu * 100 / maxRevenue) : 0;
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-slate-300 font-medium truncate w-40">@movie.TenPhim</span>
+                            <span class="text-white font-bold">@movie.DoanhThu.ToString("N0") đ</span>
+                        </div>
+                        <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                            <div class="bg-primary h-full transition-all duration-1000" style="width: @(percentage)%"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="bg-surface-dark rounded-2xl border border-white/5 overflow-hidden shadow-xl">
+            <div class="p-6 border-b border-white/5">
+                <h3 class="text-white font-bold">Giao dịch gần đây</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-white/5 text-slate-400 uppercase text-[10px] tracking-wider">
+                        <tr>
+                            <th class="px-6 py-4">Mã HD</th>
+                            <th class="px-6 py-4">Ngày</th>
+                            <th class="px-6 py-4">Thành tiền</th>
+                            <th class="px-6 py-4">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 text-slate-300">
+                        @if (recentInvoices != null)
+                        {
+                            foreach (var hd in recentInvoices)
+                            {
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="px-6 py-4 font-mono text-white">#@hd.MAHD.Trim()</td>
+                                    <td class="px-6 py-4">@hd.NGAYGD.Value.ToString("dd/MM/yyyy")</td>
+                                    <td class="px-6 py-4 text-primary font-bold">@hd.THANHTIEN.Value.ToString("N0") đ</td>
+                                    <td class="px-6 py-4">
+                                        @{
+                                            var color = hd.TRANGTHAI == "Đã thanh toán" ? "text-emerald-500 bg-emerald-500/10" :
+                                                        hd.TRANGTHAI == "Chưa thanh toán" ? "text-yellow-500 bg-yellow-500/10" : "text-red-500 bg-red-500/10";
+                                        }
+                                        <span class="px-2 py-1 rounded-full text-[10px] @color">@hd.TRANGTHAI</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RevenueLabels)),
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RevenueValues)),
+                    borderColor: '#ff0000',
+                    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#ff0000'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: {
+                            color: '#94a3b8',
+                            callback: (v) => v.toLocaleString() + ' đ'
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#94a3b8' }
+                    }
+                }
+            }
+        });
+    });
+</script>

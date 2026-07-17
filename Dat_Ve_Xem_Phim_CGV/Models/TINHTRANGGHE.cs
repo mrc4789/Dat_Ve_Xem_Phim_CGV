@@ -16,9 +16,10 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
     {
         public string MAGHE { get; set; }
         public string MASUATCHIEU { get; set; }
+        public string MAPHONG { get; set; }
+        public Nullable<System.DateTime> THOIGIANDAT { get; set; }
+        public string MAGIUGHE { get; set; }
+        public string MAKH { get; set; }
         public string TINHTRANG { get; set; }
-    
-        public virtual GHE GHE { get; set; }
-        public virtual SUATCHIEU SUATCHIEU { get; set; }
     }
 }

@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "Chọn Combo & Khuyến Mãi";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h2 class="text-center my-4 text-danger">Hoàn tất đặt vé của bạn</h2>
+
+<div class="container">
+
+    <!-- Tóm tắt thông tin vé -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-danger text-white">
+            <strong>Thông tin vé đã chọn</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>Phim:</strong> @ViewBag.TenPhim</p>
+            <p><strong>Suất chiếu:</strong> @ViewBag.GioChieu - @ViewBag.NgayChieu</p>
+            <p><strong>Rạp:</strong> @ViewBag.TenRap</p>
+            <p><strong>Ghế:</strong> @ViewBag.SeatIds (@ViewBag.SoGhe ghế)</p>
+            <p>
+                <strong>Tiền vé:</strong>
+                <span id="tienVe">
+                    @(ViewBag.TongTienVe != null ? string.Format("{0:N0}", ViewBag.TongTienVe) : "0")
+                </span> đ
+            </p>
+        </div>
+    </div>
+
+    <!-- Partial Combo -->
+    @if (ViewBag.DanhSachDichVu != null)
+    {
+        @Html.Partial("_DanhSachCombo", (IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.DICHVU>)ViewBag.DanhSachDichVu)
+    }
+    else
+    {
+        <div class="alert alert-info">Hiện tại chưa có combo nào.</div>
+    }
+
+    <!-- Partial Khuyến mãi -->
+    @if (ViewBag.DanhSachKhuyenMai != null && ((IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.KHUYENMAI>)ViewBag.DanhSachKhuyenMai).Any())
+    {
+        @Html.Partial("_ChonKhuyenMai", (IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.KHUYENMAI>)ViewBag.DanhSachKhuyenMai)
+    }
+    else
+    {
+        <div class="alert alert-info">Hiện tại không có khuyến mãi nào áp dụng.</div>
+    }
+
+    <!-- Tổng tiền -->
+    <div class="card mt-4 shadow-sm">
+        <div class="card-body text-right">
+            <h4>
+                Tổng thanh toán:
+                <strong class="text-danger">
+                    <span id="tongTien">
+                        @(ViewBag.TongTienVe != null ? string.Format("{0:N0}", ViewBag.TongTienVe) : "0")
+                    </span> đ
+                </strong>
+            </h4>
+            <p id="chiTietGiam" style="display:none; color:#28a745;">
+                <em>(Đã giảm khuyến mãi: <span id="giamGia">0</span> đ)</em>
+            </p>
+        </div>
+    </div>
+
+    <!-- Form gửi dữ liệu khi thanh toán -->
+    <form id="formThanhToan" method="post" action="@Url.Action("ThanhToan", "ChonGhe")">
+        <input type="hidden" name="ComboData" id="hiddenComboData" value="" />
+        <input type="hidden" name="MaKhuyenMai" id="hiddenMaKM" value="" />
+        <input type="hidden" name="TongTienCuoi" id="hiddenTongTien"
+               value="@(ViewBag.TongTienVe ?? 0)" />
+
+        <!-- Nút hành động - ĐỔI BUTTON THÀNH TYPE="SUBMIT" ĐỂ AN TOÀN HƠN -->
+        <div class="text-center my-5">
+            <button type="submit" class="btn btn-lg btn-danger px-5 py-3" style="border:none;">
+                <strong>Tiếp tục thanh toán</strong>
+            </button>
+            <br /><br />
+            <a href="@Url.Action("Index", "MuaVe")" class="btn btn-outline-secondary">
+                Hủy và quay lại
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    // Hàm tính tổng tiền realtime
+    function calculateTotal() {
+        var tongCombo = 0;
+        $('.combo-input').each(function () {
+            var qty = parseInt($(this).val()) || 0;
+            var price = parseFloat($(this).closest('.combo-row').find('.hidden-price').val()) || 0;
+            tongCombo += qty * price;
+        });
+
+        var giamGia = parseFloat($('input[name="SelectedPromo"]:checked').data('discount')) || 0;
+        var maKM = $('input[name="SelectedPromo"]:checked').val() || "";
+
+        var tongVe = parseFloat(@(ViewBag.TongTienVe ?? 0));
+        var tongCuoi = tongVe + tongCombo - giamGia;
+
+        $('#tongTien').text(tongCuoi.toLocaleString('vi-VN'));
+        $('#chiTietGiam').toggle(giamGia > 0);
+        $('#giamGia').text(giamGia.toLocaleString('vi-VN'));
+
+        // Cập nhật hidden fields trước khi submit
+        $('#hiddenTongTien').val(tongCuoi);
+        $('#hiddenMaKM').val(maKM);
+    }
+
+    // Thu thập combo và chuẩn bị dữ liệu trước khi submit form
+    function chuanBiThanhToan() {
+        var comboList = [];
+        $('.combo-input').each(function () {
+            var qty = parseInt($(this).val()) || 0;
+            if (qty > 0) {
+                var maDV = $(this).attr('id').replace('qty_', '');
+                var tenDV = $(this).closest('.combo-row').find('.combo-name').text().trim();
+                var gia = parseFloat($(this).closest('.combo-row').find('.hidden-price').val()) || 0;
+                comboList.push({
+                    MaDV: maDV,
+                    TenDV: tenDV,
+                    SoLuong: qty,
+                    Gia: gia
+                });
+            }
+        });
+
+        $('#hiddenComboData').val(JSON.stringify(comboList));
+
+        // Cập nhật tổng tiền lần cuối trước khi submit
+        calculateTotal();
+    }
+
+    // Khi form submit (bắt buộc gọi chuanBiThanhToan trước)
+    $('#formThanhToan').on('submit', function(e) {
+        chuanBiThanhToan(); // Đảm bảo dữ liệu mới nhất được gửi đi
+        // Không preventDefault() → để form submit bình thường
+    });
+
+    // Khởi chạy khi trang load
+    $(document).ready(function () {
+        calculateTotal();
+
+        // Gắn sự kiện realtime
+        $(document).on('click', '.btn-qty', calculateTotal);
+        $(document).on('change', '.combo-input', calculateTotal);
+        $(document).on('change', 'input[name="SelectedPromo"]', calculateTotal);
+    });
+</script>

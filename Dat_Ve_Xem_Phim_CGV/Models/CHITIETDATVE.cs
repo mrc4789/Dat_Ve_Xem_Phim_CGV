@@ -16,10 +16,12 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
     {
         public string MAGHE { get; set; }
         public string MAVE { get; set; }
+        public string MAPHONG { get; set; }
+        public string MASUATCHIEU { get; set; }
         public Nullable<System.DateTime> NGAYDAT { get; set; }
-        public string TRANGTHAI { get; set; }
     
-        public virtual GHE GHE { get; set; }
         public virtual VE VE { get; set; }
+        public virtual GHE GHE { get; set; }
+        public virtual SUATCHIEU SUATCHIEU { get; set; }
     }
 }

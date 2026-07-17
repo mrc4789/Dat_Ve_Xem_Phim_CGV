@@ -15,9 +15,10 @@
             </div>
         </div>
 
-
+        <!-- Cột trái: Form thanh toán -->
         <div class="col-lg-8">
 
+            <!-- Bước 1: Giảm giá -->
             <div class="card mb-4">
                 <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 font-weight-bold">BƯỚC 1: GIẢM GIÁ</h5>
@@ -44,7 +45,7 @@
                 </div>
             </div>
 
-
+            <!-- Bước 2: Thẻ quà tặng -->
             <div class="card mb-4">
                 <div class="card-header bg-secondary text-white">
                     <h5 class="mb-0 font-weight-bold">BƯỚC 2: THẺ QUÀ TẶNG</h5>
@@ -56,21 +57,19 @@
                 </div>
             </div>
 
-
+            <!-- Bước 3: Phương thức thanh toán -->
             <div class="card mb-4">
                 <div class="card-header bg-secondary text-white">
                     <h5 class="mb-0 font-weight-bold">BƯỚC 3: HÌNH THỨC THANH TOÁN</h5>
                 </div>
                 <div class="card-body">
                     <div class="list-group">
-
                         <label class="list-group-item d-flex align-items-center">
                             <input type="radio" name="paymentMethod" value="atm" class="mr-3">
                             <img src="https://e7.pngegg.com/pngimages/147/434/png-clipart-bank-of-montreal-mastercard-debit-card-credit-card-atm-card-mastercard-bank-debit-card.png"
                                  alt="ATM" style="height: 30px;" class="mr-3">
                             <span>ATM card (Thẻ nội địa)</span>
                         </label>
-
 
                         <label class="list-group-item d-flex align-items-center">
                             <input type="radio" name="paymentMethod" value="visa" class="mr-3">
@@ -79,14 +78,12 @@
                             <span>Thẻ quốc tế (Visa, Master, JCB)</span>
                         </label>
 
-
                         <label class="list-group-item d-flex align-items-center">
                             <input type="radio" name="paymentMethod" value="momo" class="mr-3">
                             <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png"
                                  alt="MoMo" style="height: 35px;" class="mr-3">
                             <span>Ví MoMo</span>
                         </label>
-
 
                         <label class="list-group-item d-flex align-items-center">
                             <input type="radio" name="paymentMethod" value="zalopay" class="mr-3">
@@ -95,14 +92,12 @@
                             <span>Ví ZaloPay</span>
                         </label>
 
-
                         <label class="list-group-item d-flex align-items-center">
                             <input type="radio" name="paymentMethod" value="vnpay" class="mr-3">
                             <img src="https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg"
                                  alt="VNPay" style="height: 35px;" class="mr-3">
                             <span>VNPAY</span>
                         </label>
-
 
                         <label class="list-group-item d-flex align-items-center">
                             <input type="radio" name="paymentMethod" value="shopeepay" class="mr-3">
@@ -114,7 +109,7 @@
                 </div>
             </div>
 
-
+            <!-- Đồng ý điều khoản -->
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="custom-control custom-checkbox">
@@ -128,9 +123,10 @@
             </div>
         </div>
 
-
+        <!-- Cột phải: Thông tin vé -->
         <div class="col-lg-4">
 
+            <!-- Thông tin vé -->
             <div class="card mb-3">
                 <div class="card-header bg-warning text-dark text-center font-weight-bold">
                     THÔNG TIN VÉ
@@ -139,14 +135,13 @@
                     <h6 class="font-weight-bold text-danger">@ViewBag.TenPhim</h6>
                     <hr>
                     <p class="mb-1"><i class="fas fa-map-marker-alt text-danger mr-2"></i><strong>Rạp:</strong> @ViewBag.TenRap</p>
-                    @*<p class="mb-1"><i class="fas fa-door-open text-danger mr-2"></i><strong>Phòng:</strong> @ViewBag.TenPhong</p>*@
                     <p class="mb-1"><i class="fas fa-calendar text-danger mr-2"></i><strong>Ngày:</strong> @ViewBag.NgayChieu</p>
                     <p class="mb-1"><i class="fas fa-clock text-danger mr-2"></i><strong>Giờ:</strong> @ViewBag.GioChieu</p>
                     <p class="mb-0"><i class="fas fa-couch text-danger mr-2"></i><strong>Ghế:</strong> @ViewBag.SeatIds</p>
                 </div>
             </div>
 
-
+            <!-- Tổng cộng -->
             <div class="card mb-3">
                 <div class="card-header bg-warning text-dark text-center font-weight-bold">
                     TỔNG CỘNG
@@ -168,7 +163,7 @@
                 </div>
             </div>
 
-
+            <!-- Khuyến mãi -->
             <div class="card mb-3">
                 <div class="card-header bg-warning text-dark text-center font-weight-bold">
                     KHUYẾN MÃI
@@ -178,7 +173,7 @@
                 </div>
             </div>
 
-
+            <!-- Tổng thanh toán -->
             <div class="card mb-3">
                 <div class="card-header bg-danger text-white text-center font-weight-bold">
                     TỔNG SỐ TIỀN THANH TOÁN
@@ -190,7 +185,7 @@
                 </div>
             </div>
 
-
+            <!-- Đếm ngược thời gian -->
             <div class="card mb-3">
                 <div class="card-header bg-warning text-dark text-center font-weight-bold">
                     THỜI GIAN GIỮ GHẾ
@@ -199,29 +194,42 @@
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="mx-3">
                             <div class="bg-danger text-white rounded p-3" style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;">
-                                <span class="h1 mb-0" id="minutes">5</span>
+                                <span class="h1 mb-0" id="minutes">9</span>
                             </div>
                             <small class="d-block mt-2">Phút</small>
                         </div>
                         <div class="mx-3">
                             <div class="bg-danger text-white rounded p-3" style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;">
-                                <span class="h1 mb-0" id="seconds">00</span>
+                                <span class="h1 mb-0" id="seconds">59</span>
                             </div>
                             <small class="d-block mt-2">Giây</small>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Nút thanh toán -->
             <div class="row">
                 <div class="col-9 text-right">
-                    <button class="btn btn-danger btn-lg font-weight-bold" id="btnThanhToan">
-                        <i class="fas fa-credit-card mr-2"></i> Thanh toán
-                    </button>
+                    <form method="post" action="@Url.Action("XuLyThanhToan", "ChonGhe")" id="frmThanhToan">
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="phuongThucThanhToan" id="phuongThucThanhToan" />
+
+                        <button type="submit"
+                                class="btn btn-danger btn-lg font-weight-bold w-100"
+                                id="btnThanhToan">
+                            <i class="fas fa-credit-card mr-2"></i> Thanh toán
+                        </button>
+                    </form>
                 </div>
-                <div class="col-3 text-left">
-                    <button class="btn btn-secondary btn-lg font-weight-bold" id="btnQuayLai">
-                        <i class="fas fa-credit-card mr-2"></i> Quay lại
-                    </button>
+                <div class="col-3">
+                    <form method="post" action="@Url.Action("HuyGiuGhe", "ChonGhe")" id="frmQuayLai">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-secondary btn-lg font-weight-bold w-100" id="btnQuayLai">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -231,52 +239,74 @@
 @section Scripts {
     <script>
 
-        let timeLeft = 300; // 5 phút = 300 giây
+    let timeLeft = 600;
 
-        function updateCountdown() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
+    function updateCountdown() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
 
-            document.getElementById('minutes').textContent = minutes;
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        document.getElementById('minutes').textContent = minutes;
+        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
 
-            if (timeLeft <= 0) {
-                alert('Hết thời gian giữ ghế! Vui lòng đặt lại.');
-                window.location.href = '@Url.Action("Index", "MuaVe")';
-                return;
-            }
-
-            timeLeft--;
+        if (timeLeft <= 0) {
+            alert('Hết thời gian giữ ghế! Vui lòng đặt lại.');
+            window.location.href = '@Url.Action("Index", "MuaVe")';
+            return;
         }
 
-        // Cập nhật mỗi giây
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+        if (timeLeft === 60) {
+            alert('Còn 1 phút! Vui lòng hoàn tất thanh toán.');
+        }
 
-        // Xử lý thanh toán
-        document.getElementById('btnThanhToan').addEventListener('click', function () {
-            const agreeTerms = document.getElementById('agreeTerms').checked;
-            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+        timeLeft--;
+    }
 
-            if (!agreeTerms) {
-                alert('Vui lòng đồng ý với điều khoản sử dụng!');
-                return;
-            }
+    const countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
 
-            if (!paymentMethod) {
-                alert('Vui lòng chọn hình thức thanh toán!');
-                return;
-            }
 
-            // window.location.href = '@Url.Action("XuLyThanhToan", "ChonGhe")';
-            alert('Đang xử lý thanh toán...');
-        });
-        //Xử lý quay lại
-        document.getElementById('btnQuayLai').addEventListener('click', function () {
-            window.location.href = '@Url.Action("Index", "ChonGhe", new {maSuatChieu = ViewBag.MaSuatChieu})';
-        });
+    document.getElementById('frmThanhToan').addEventListener('submit', function (e) {
+        const agreeTerms = document.getElementById('agreeTerms').checked;
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+
+        if (!agreeTerms) {
+            alert('Vui lòng đồng ý với điều khoản sử dụng!');
+            e.preventDefault();
+            return;
+        }
+
+        if (!paymentMethod) {
+            alert('Vui lòng chọn hình thức thanh toán!');
+            e.preventDefault();
+            return;
+        }
+
+
+        document.getElementById('phuongThucThanhToan').value = paymentMethod.value;
+
+
+        const btn = document.getElementById('btnThanhToan');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Đang xử lý...';
+        btn.disabled = true;
+    });
+
+    document.getElementById('btnQuayLai').addEventListener('click', function (e) {
+        if (!confirm('Bạn có chắc muốn hủy và quay lại? Ghế đã chọn sẽ bị hủy.')) {
+            e.preventDefault();
+            return false;
+        }
+        clearInterval(countdownInterval);
+    });
+
+    window.addEventListener('beforeunload', function (e) {
+        if (timeLeft > 0) {
+            e.preventDefault();
+            e.returnValue = 'Bạn có chắc muốn thoát? Ghế đã chọn sẽ bị hủy sau 10 phút.';
+        }
+    });
     </script>
 }
+
 
 <style>
     .list-group-item {
@@ -295,5 +325,20 @@
 
     .card-header {
         font-size: 0.95rem;
+    }
+
+    /* Animation cho countdown */
+    @@keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    #minutes, #seconds {
+        animation: pulse 1s ease-in-out infinite;
     }
 </style>

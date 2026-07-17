@@ -26,7 +26,9 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public string HANGTHANHVIEN { get; set; }
         public Nullable<int> DIEMTICHLUY { get; set; }
         public string MATKHAU { get; set; }
+        public Nullable<int> MACV { get; set; }
     
+        public virtual CHUCVU CHUCVU { get; set; }
         public virtual ICollection<HOADON> HOADONs { get; set; }
     }
 }

@@ -3,7 +3,7 @@
 <div class="btn-group flex-wrap" role="group">
     @foreach (var diaChi in Model)
     {
-        var isActive = diaChi == ViewBag.DiaChiDuocChon ? "btn-primary" : "btn-outline-primary";
+        var isActive = diaChi == ViewBag.DiaChiDuocChon ? "btn-primary" : "btn-light";
 
         <a href="@Url.Action("Index", "MuaVe", new {
                 maPhim = ViewBag.MaPhim,

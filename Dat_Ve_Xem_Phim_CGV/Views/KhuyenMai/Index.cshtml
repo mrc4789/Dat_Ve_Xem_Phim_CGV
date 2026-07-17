@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Dat_Ve_Xem_Phim_CGV.Models.KHUYENMAI>
 @{
-    ViewBag.Title = "Ưu Đãi";
+    ViewBag.Title = "Tin Mới & Ưu Đãi";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -8,12 +8,11 @@
     .promo-section {
         padding: 40px 0;
         background-color: #fdfcf0;
-        font-family: 'Arial', sans-serif;
     }
 
     .cgv-title {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         position: relative;
     }
 
@@ -42,19 +41,41 @@
             z-index: 1;
         }
 
-    .btn-cgv-red {
-        background: #e71a0f;
-        color: white;
-        padding: 10px 30px;
-        font-weight: bold;
-        border: none;
-        text-transform: uppercase;
-        clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
-        margin: 0 auto;
-        display: table;
-        margin-bottom: 30px;
+    /* --- STYLE CHO NÚT ĐIỀU HƯỚNG --- */
+    .nav-cgv {
+        text-align: center;
+        margin-bottom: 40px;
     }
 
+    .btn-cgv-tab {
+        display: inline-block;
+        padding: 10px 30px;
+        margin: 0 5px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: white;
+        transition: 0.3s;
+        clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+        min-width: 150px;
+        text-align: center;
+    }
+
+        .btn-cgv-tab:hover {
+            text-decoration: none;
+            color: white;
+            opacity: 0.9;
+        }
+
+    .btn-active {
+        background: #e71a0f;
+    }
+
+    .btn-inactive {
+        background: #333;
+    }
+
+    /* Card */
     .promo-card {
         margin-bottom: 30px;
         transition: 0.3s;
@@ -72,10 +93,24 @@
         border: 2px solid #333;
     }
 
-    .promo-date {
-        margin-top: 5px;
+    /* STYLE CHO TÊN KHUYẾN MÃI */
+    .promo-name {
         font-weight: bold;
+        font-size: 16px;
         color: #333;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        line-height: 1.4;
+        min-height: 45px;
+        height: auto;
+        overflow: visible;
+        display: block;
+    }
+
+    .promo-date {
+        font-weight: bold;
+        color: #777;
         font-size: 13px;
     }
 
@@ -91,20 +126,27 @@
             <h2>Tin Mới Và Ưu Đãi</h2>
         </div>
 
-        <button class="btn-cgv-red">Xem tất cả | Chọn Rạp</button>
+        <div class="nav-cgv">
+            <a href="@Url.Action("Index", "DichVu")" class="btn-cgv-tab btn-inactive">Dịch Vụ</a>
+            <a href="@Url.Action("Index", "KhuyenMai")" class="btn-cgv-tab btn-active">Khuyến Mãi</a>
+        </div>
 
         <div class="row">
             @foreach (var item in Model)
             {
                 <div class="col-md-3 col-sm-6 promo-card">
-                    <a href="@Url.Action("Details", "KhuyenMai", new { id = item.MAKM })">
-                        <img src="@Url.Content("~/Imgs/khuyenmai.jpg")" class="promo-img" alt="Khuyen Mai" />
+                    <a href="@Url.Action("Details", "KhuyenMai", new { id = item.MAKM })" style="text-decoration:none;">
+
+                        <img src="@Url.Content("~/Content/Img/khuyenmai.jpg")" class="promo-img" alt="Khuyen Mai" />
+
+                        <div class="promo-name">@item.TENKM</div>
+
+                        <div class="promo-date">
+                            <i class="fa fa-calendar-alt"></i>
+                            @(item.NGAYBD.HasValue ? item.NGAYBD.Value.ToString("dd/MM/yyyy") : "") -
+                            @(item.NGAYKT.HasValue ? item.NGAYKT.Value.ToString("dd/MM/yyyy") : "")
+                        </div>
                     </a>
-                    <div class="promo-date">
-                        <i class="fa fa-calendar-alt"></i>
-                        @(item.NGAYBD.HasValue ? item.NGAYBD.Value.ToString("dd/MM/yyyy") : "") -
-                        @(item.NGAYKT.HasValue ? item.NGAYKT.Value.ToString("dd/MM/yyyy") : "")
-                    </div>
                 </div>
             }
         </div>

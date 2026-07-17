@@ -21,13 +21,16 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
     
         public string MAVE { get; set; }
         public string MAHD { get; set; }
-        public Nullable<double> GIAVE { get; set; }
+        public string MASUATCHIEU { get; set; }
+        public string MAGHE { get; set; }
+        public string MAPHONG { get; set; }
+        public Nullable<decimal> GIAVE { get; set; }
         public string TRANGTHAI { get; set; }
         public Nullable<System.DateTime> NGAYDATVE { get; set; }
         public Nullable<System.DateTime> CHECKIN { get; set; }
-        public string MAQR { get; set; }
     
         public virtual ICollection<CHITIETDATVE> CHITIETDATVEs { get; set; }
         public virtual HOADON HOADON { get; set; }
+        public virtual SUATCHIEU SUATCHIEU { get; set; }
     }
 }

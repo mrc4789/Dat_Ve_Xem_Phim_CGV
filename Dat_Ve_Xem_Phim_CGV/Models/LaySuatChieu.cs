@@ -16,7 +16,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public string DiaChi { get; set; }     
         public DateTime NgayChieu { get; set; }
         public TimeSpan GioChieu { get; set; }
-        public double GiaCoban { get; set; }
+        public decimal GiaCoban { get; set; }
         public string MaSuatChieu { get; set; }
     }
 }

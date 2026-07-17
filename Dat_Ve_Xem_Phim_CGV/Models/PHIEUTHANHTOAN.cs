@@ -16,7 +16,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
     {
         public string MAHD { get; set; }
         public string MAPT { get; set; }
-        public Nullable<double> SOTIENTHANHTOAN { get; set; }
+        public Nullable<decimal> SOTIENTHANHTOAN { get; set; }
         public Nullable<int> DIEMSUDUNG { get; set; }
         public Nullable<System.DateTime> NGAYGD { get; set; }
     

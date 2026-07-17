@@ -8,13 +8,11 @@
     .menu-section {
         padding: 40px 0;
         background-color: #fdfcf0;
-        font-family: 'Arial', sans-serif;
     }
 
-    /* Tận dụng lại style tiêu đề của CGV */
     .cgv-title {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
         position: relative;
     }
 
@@ -42,6 +40,40 @@
             background: #444;
             z-index: 1;
         }
+
+    /* --- STYLE CHO NÚT ĐIỀU HƯỚNG --- */
+    .nav-cgv {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .btn-cgv-tab {
+        display: inline-block;
+        padding: 10px 30px;
+        margin: 0 5px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: white;
+        transition: 0.3s;
+        clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+        min-width: 150px;
+        text-align: center;
+    }
+
+        .btn-cgv-tab:hover {
+            text-decoration: none;
+            color: white;
+            opacity: 0.9;
+        }
+
+    .btn-active {
+        background: #e71a0f;
+    }
+
+    .btn-inactive {
+        background: #333;
+    }
 
     /* Card sản phẩm */
     .menu-card {
@@ -118,21 +150,25 @@
             <h2>Combo & Bắp Nước</h2>
         </div>
 
+        <div class="nav-cgv">
+            <a href="@Url.Action("Index", "DichVu")" class="btn-cgv-tab btn-active">Dịch Vụ</a>
+            <a href="@Url.Action("Index", "KhuyenMai")" class="btn-cgv-tab btn-inactive">Khuyến Mãi</a>
+        </div>
+
         <div class="row">
             @foreach (var item in Model)
             {
-                // === LOGIC CHỌN HÌNH ===
+                // LOGIC CHỌN HÌNH
                 string imgFileName = "combo.jpg";
                 string ten = (item.TENDV ?? "").ToLower();
 
                 if (ten.Contains("bắp")) { imgFileName = "bap.jpg"; }
                 else if (ten.Contains("nước") || ten.Contains("coca") || ten.Contains("pepsi")) { imgFileName = "nuoc.jpg"; }
-                // =========================================
 
                 <div class="col-md-3 col-sm-6">
                     <div class="menu-card">
                         <div class="menu-img-box">
-                            <img src="@Url.Content("~/Imgs/" + imgFileName)" class="menu-img" alt="@item.TENDV" />
+                            <img src="@Url.Content("~/Content/Img/" + imgFileName)" class="menu-img" alt="@item.TENDV" />
                         </div>
                         <div class="menu-info">
                             <div class="menu-name">@item.TENDV</div>

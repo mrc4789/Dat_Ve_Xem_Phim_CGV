@@ -18,7 +18,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public string MADV { get; set; }
         public Nullable<int> SOLUONG { get; set; }
         public Nullable<double> DONGIA { get; set; }
-        public Nullable<double> THANHTIEN { get; set; }
+        public Nullable<decimal> THANHTIEN { get; set; }
     
         public virtual DICHVU DICHVU { get; set; }
         public virtual HOADON HOADON { get; set; }

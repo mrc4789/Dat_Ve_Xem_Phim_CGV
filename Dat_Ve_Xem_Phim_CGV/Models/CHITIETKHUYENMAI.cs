@@ -16,8 +16,8 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
     {
         public string MAKM { get; set; }
         public string MAHD { get; set; }
-        public Nullable<double> SOTIENGIAM { get; set; }
-        public Nullable<double> THANHTIEN { get; set; }
+        public Nullable<decimal> SOTIENGIAM { get; set; }
+        public Nullable<decimal> THANHTIEN { get; set; }
     
         public virtual HOADON HOADON { get; set; }
         public virtual KHUYENMAI KHUYENMAI { get; set; }

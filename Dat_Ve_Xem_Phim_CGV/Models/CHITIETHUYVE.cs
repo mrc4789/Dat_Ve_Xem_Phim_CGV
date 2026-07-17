@@ -17,7 +17,7 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public string MAHD { get; set; }
         public string MAYEUCAU { get; set; }
         public Nullable<System.DateTime> NGAYHUY { get; set; }
-        public Nullable<double> SOTIENHOANLAI { get; set; }
+        public Nullable<decimal> SOTIENHOANLAI { get; set; }
     
         public virtual HOADON HOADON { get; set; }
         public virtual HUYDOIVE HUYDOIVE { get; set; }

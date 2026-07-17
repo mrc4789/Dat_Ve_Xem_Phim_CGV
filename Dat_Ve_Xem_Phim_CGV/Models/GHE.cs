@@ -17,17 +17,15 @@ namespace Dat_Ve_Xem_Phim_CGV.Models
         public GHE()
         {
             this.CHITIETDATVEs = new HashSet<CHITIETDATVE>();
-            this.TINHTRANGGHEs = new HashSet<TINHTRANGGHE>();
         }
     
         public string MAGHE { get; set; }
         public string MAPHONG { get; set; }
         public string LOAIGHE { get; set; }
         public string DAYGHE { get; set; }
-        public Nullable<double> PHUPHI { get; set; }
+        public Nullable<decimal> PHUPHI { get; set; }
     
         public virtual ICollection<CHITIETDATVE> CHITIETDATVEs { get; set; }
         public virtual PHONGCHIEU PHONGCHIEU { get; set; }
-        public virtual ICollection<TINHTRANGGHE> TINHTRANGGHEs { get; set; }
     }
 }

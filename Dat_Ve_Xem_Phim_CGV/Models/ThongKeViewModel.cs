@@ -4,6 +4,6 @@
     {
         public string TenPhim { get; set; }
         public int SoVeBan { get; set; }
-        public double DoanhThu { get; set; }
+        public decimal DoanhThu { get; set; }
     }
 }
